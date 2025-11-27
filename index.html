@@ -422,7 +422,7 @@
                 }
 
                 setTimeout(() => {
-                    window.location.href = './app.html';
+                    window.location.href = './app';
                 }, 1500);
             } else {
                 // Error
@@ -441,7 +441,7 @@
 
         // Check if already authenticated
         if (sessionStorage.getItem('authenticated') === 'true') {
-            window.location.href = './app.html';
+            window.location.href = './app';
         }
 
         // Initialize
