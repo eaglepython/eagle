@@ -9,6 +9,7 @@ import HealthTracker from './components/HealthTracker';
 import FinanceTracker from './components/FinanceTracker';
 import GoalsManager from './components/GoalsManager';
 import ReminderManager from './components/ReminderManager';
+import ResourceRecommendations from './components/ResourceRecommendations';
 import NotificationContainer from './components/NotificationContainer';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
@@ -124,7 +125,8 @@ function App() {
     health: <HealthTracker userData={userData} setUserData={setUserData} addNotification={addNotification} />,
     finance: <FinanceTracker userData={userData} setUserData={setUserData} addNotification={addNotification} />,
     goals: <GoalsManager userData={userData} setUserData={setUserData} addNotification={addNotification} />,
-    reminders: <ReminderManager userData={userData} addNotification={addNotification} />
+    reminders: <ReminderManager userData={userData} addNotification={addNotification} />,
+    resources: <ResourceRecommendations userData={userData} addNotification={addNotification} />
   };
 
   return (

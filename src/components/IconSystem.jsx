@@ -129,6 +129,13 @@ export const NavIcons = {
       <path d="M12 9v4m3-1h-6M12 1v2m8.5 3.5l-1.5 1.5M4.5 4.5l1.5 1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
+  Resources: () => (
+    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+      <path d="M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+      <path d="M8 7h8M8 11h8M8 15h4" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="19" cy="8" r="1" fill="currentColor" />
+    </svg>
+  ),
 };
 
 export const CategoryIcons = {
