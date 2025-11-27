@@ -26,11 +26,48 @@ Features:
 - 📊 Shaking board on incorrect password
 - ✨ Success animations
 - 🌟 Interactive particles
+- 📱 **Fully mobile-friendly** with responsive design
 
 Or access directly:
 ```
 https://eaglepython.github.io/eagle/
 ```
+
+---
+
+## 📱 Mobile-Friendly Design
+
+The entire application is optimized for mobile devices:
+
+✅ **Responsive Layouts**
+- Adapts to all screen sizes (mobile, tablet, desktop)
+- Touch-friendly buttons (48px minimum height)
+- Optimized spacing for small screens
+
+✅ **Mobile Optimizations**
+- Fixed viewport scaling (no unwanted zoom)
+- Safe area support for notched devices
+- Prevention of elastic scroll
+- Optimized font sizes for readability
+- Smooth scrolling with momentum
+
+✅ **Touch-Friendly**
+- Minimum 44-48px touch targets
+- No tap highlight delay
+- Proper input field sizing
+- Active state feedback
+
+✅ **Performance**
+- Reduced animations on mobile
+- Lightweight CSS (~36 KB)
+- Fast load times
+- Smooth interactions
+
+✅ **Accessibility**
+- High contrast colors
+- Readable typography
+- Proper input labels
+- Keyboard navigation support
 
 ---
 
