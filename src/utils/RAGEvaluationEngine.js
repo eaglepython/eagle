@@ -297,13 +297,13 @@ export class RAGEvaluationEngine {
       score = Math.min(100, Math.round(percentage));
 
       if (percentage >= 90) {
-        status = '✅ EXCELLENT';
+        status = 'Excellent';
       } else if (percentage >= 70) {
-        status = '🟢 GOOD';
+        status = 'Good';
       } else if (percentage >= 50) {
-        status = '🟡 NEEDS WORK';
+        status = 'Needs Work';
       } else {
-        status = '🔴 CRITICAL';
+        status = 'Critical';
       }
 
       gap = target - current;

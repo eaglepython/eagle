@@ -70,7 +70,7 @@ function AdaptiveEvaluation({ userData, setUserData }) {
       <div className={`glass rounded-2xl p-6 border ${getScoreBg(evaluation.overallScore)}`}>
         <div className="grid grid-cols-3 gap-4 items-center">
           <div className="col-span-2">
-            <h3 className="text-2xl font-bold text-white mb-2">🎯 ADAPTIVE EVALUATION</h3>
+            <h3 className="text-2xl font-bold text-white mb-2">ADAPTIVE EVALUATION</h3>
             <p className="text-slate-300 text-sm">Real-time assessment based on your actual progress toward 2026 goals</p>
           </div>
           <div className="text-right">
@@ -92,7 +92,7 @@ function AdaptiveEvaluation({ userData, setUserData }) {
       {/* Category Breakdown */}
       {evaluation.categories && Object.keys(evaluation.categories).length > 0 && (
         <div className="glass rounded-2xl p-6 border border-slate-800/50">
-          <h3 className="text-2xl font-bold text-white mb-6">📊 GOAL CATEGORIES</h3>
+          <h3 className="text-2xl font-bold text-white mb-6">GOAL CATEGORIES</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Object.entries(evaluation.categories).map(([key, data]) => (
@@ -171,7 +171,7 @@ function AdaptiveEvaluation({ userData, setUserData }) {
       {/* Key Insights */}
       {evaluation.keyInsights && evaluation.keyInsights.length > 0 && (
         <div className="glass rounded-2xl p-6 border border-purple-900/30">
-          <h3 className="text-2xl font-bold text-white mb-4">💡 KEY INSIGHTS</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">KEY INSIGHTS</h3>
           
           <div className="space-y-3">
             {evaluation.keyInsights.map((insight, idx) => (
@@ -211,7 +211,7 @@ function AdaptiveEvaluation({ userData, setUserData }) {
       {/* Goal-Aligned Recommendations */}
       {recommendations && recommendations.length > 0 && (
         <div className="glass rounded-2xl p-6 border border-orange-900/30">
-          <h3 className="text-2xl font-bold text-white mb-4">🚀 GOAL-ALIGNED RECOMMENDATIONS</h3>
+          <h3 className="text-2xl font-bold text-white mb-4">GOAL-ALIGNED RECOMMENDATIONS</h3>
           
           <div className="space-y-3">
             {recommendations.slice(0, 5).map((rec, idx) => (
@@ -234,7 +234,7 @@ function AdaptiveEvaluation({ userData, setUserData }) {
                 </div>
 
                 <div className="text-sm text-yellow-300 font-semibold mb-2 px-3 py-1 bg-yellow-900/20 rounded">
-                  💡 {rec.recommendation}
+                  {rec.recommendation}
                 </div>
 
                 <div className="text-xs text-slate-500">
