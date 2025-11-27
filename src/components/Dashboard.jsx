@@ -184,9 +184,15 @@ function CareerPipelineChart({ applications }) {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
+          aspectRatio: 2,
           indexAxis: 'y',
           animation: false,
+          animations: {
+            tension: {
+              duration: 0
+            }
+          },
           plugins: {
             legend: { labels: { color: '#e2e8f0' } },
             tooltip: {
@@ -286,8 +292,14 @@ function TradingPnLChart({ trades }) {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
+          aspectRatio: 2,
           animation: false,
+          animations: {
+            tension: {
+              duration: 0
+            }
+          },
           interaction: {
             mode: 'index',
             intersect: false
@@ -395,8 +407,14 @@ function WorkoutTypeChart({ workouts }) {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
+          aspectRatio: 1.2,
           animation: false,
+          animations: {
+            tension: {
+              duration: 0
+            }
+          },
           plugins: {
             legend: { 
               labels: { color: '#e2e8f0' },
@@ -483,8 +501,14 @@ function DailyCategoryChart({ dailyScores }) {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
+          aspectRatio: 1.1,
           animation: false,
+          animations: {
+            tension: {
+              duration: 0
+            }
+          },
           scales: {
             r: {
               beginAtZero: true,
