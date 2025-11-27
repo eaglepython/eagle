@@ -9,7 +9,10 @@ export function Navigation({ currentView, setCurrentView, views }) {
     trading: NavIcons.Trading,
     health: NavIcons.Health,
     finance: NavIcons.Finance,
-    goals: NavIcons.Goals
+    goals: NavIcons.Goals,
+    reminders: NavIcons.Reminders,
+    resources: NavIcons.Resources,
+    live: NavIcons.LiveUpdates
   };
 
   return (

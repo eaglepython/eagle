@@ -136,7 +136,7 @@ export const NavIcons = {
       <circle cx="19" cy="8" r="1" fill="currentColor" />
     </svg>
   ),
-  Live: () => (
+  LiveUpdates: () => (
     <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
       <circle cx="12" cy="12" r="10" />
       <circle cx="12" cy="12" r="6" />
