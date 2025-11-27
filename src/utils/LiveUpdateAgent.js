@@ -1,12 +1,12 @@
 /**
  * LiveUpdateAgent.js
- * Real-time internet monitoring system that fetches updates every 6 hours
+ * Real-time internet monitoring system that fetches updates every 2 hours
  * Provides live insights, news, and opportunities relevant to user goals
  */
 
 class LiveUpdateAgent {
   constructor() {
-    this.updateInterval = 6 * 60 * 60 * 1000; // 6 hours
+    this.updateInterval = 2 * 60 * 60 * 1000; // 2 hours
     this.activeListeners = [];
     this.lastUpdates = JSON.parse(localStorage.getItem('liveUpdates')) || {};
     this.updateHistory = JSON.parse(localStorage.getItem('updateHistory')) || [];
@@ -20,7 +20,7 @@ class LiveUpdateAgent {
     if (this.isRunning) return;
 
     this.isRunning = true;
-    console.log('🔴 LIVE Update Agent Started - Monitoring every 6 hours');
+    console.log('🔴 LIVE Update Agent Started - Monitoring every 2 hours');
 
     // Initial update immediately
     this.fetchAllUpdates(userData, onUpdateCallback);
