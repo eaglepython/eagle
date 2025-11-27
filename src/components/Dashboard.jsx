@@ -56,14 +56,16 @@ function WeeklyChart({ data }) {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: true,
-          aspectRatio: 2,
+          maintainAspectRatio: false,
           interaction: {
             mode: 'index',
             intersect: false
           },
-          animation: {
-            duration: 0
+          animation: false,
+          animations: {
+            tension: {
+              duration: 0
+            }
           },
           plugins: {
             legend: {
@@ -136,8 +138,13 @@ function WeeklyChart({ data }) {
   }
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '320px' }}>
-      <canvas ref={canvasRef}></canvas>
+    <div style={{ 
+      position: 'relative', 
+      width: '100%', 
+      height: '300px',
+      overflow: 'hidden'
+    }}>
+      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%' }}></canvas>
     </div>
   );
 }
@@ -179,6 +186,7 @@ function CareerPipelineChart({ applications }) {
           responsive: true,
           maintainAspectRatio: false,
           indexAxis: 'y',
+          animation: false,
           plugins: {
             legend: { labels: { color: '#e2e8f0' } },
             tooltip: {
@@ -226,7 +234,11 @@ function CareerPipelineChart({ applications }) {
     );
   }
 
-  return <canvas ref={canvasRef} height="200"></canvas>;
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '200px', overflow: 'hidden' }}>
+      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%' }}></canvas>
+    </div>
+  );
 }
 
 function TradingPnLChart({ trades }) {
@@ -275,6 +287,7 @@ function TradingPnLChart({ trades }) {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animation: false,
           interaction: {
             mode: 'index',
             intersect: false
@@ -336,7 +349,11 @@ function TradingPnLChart({ trades }) {
     );
   }
 
-  return <canvas ref={canvasRef} height="200"></canvas>;
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '200px', overflow: 'hidden' }}>
+      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%' }}></canvas>
+    </div>
+  );
 }
 
 function WorkoutTypeChart({ workouts }) {
@@ -379,6 +396,7 @@ function WorkoutTypeChart({ workouts }) {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animation: false,
           plugins: {
             legend: { 
               labels: { color: '#e2e8f0' },
@@ -419,7 +437,11 @@ function WorkoutTypeChart({ workouts }) {
     );
   }
 
-  return <canvas ref={canvasRef} height="220"></canvas>;
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '220px', overflow: 'hidden' }}>
+      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%' }}></canvas>
+    </div>
+  );
 }
 
 function DailyCategoryChart({ dailyScores }) {
@@ -462,6 +484,7 @@ function DailyCategoryChart({ dailyScores }) {
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animation: false,
           scales: {
             r: {
               beginAtZero: true,
@@ -512,7 +535,11 @@ function DailyCategoryChart({ dailyScores }) {
     );
   }
 
-  return <canvas ref={canvasRef} height="250"></canvas>;
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '250px', overflow: 'hidden' }}>
+      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%' }}></canvas>
+    </div>
+  );
 }
 
 function Dashboard({ userData, setUserData, addNotification }) {
