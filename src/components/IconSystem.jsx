@@ -136,6 +136,15 @@ export const NavIcons = {
       <circle cx="19" cy="8" r="1" fill="currentColor" />
     </svg>
   ),
+  Live: () => (
+    <svg viewBox="0 0 24 24" fill="none" strokeWidth="2">
+      <circle cx="12" cy="12" r="10" />
+      <circle cx="12" cy="12" r="6" />
+      <circle cx="12" cy="12" r="2" fill="currentColor" />
+      <circle cx="12" cy="12" r="3" opacity="0.3" />
+      <path d="M12 1v2M12 21v2M23 12h-2M3 12H1M19.5 4.5l-1.4 1.4M6.9 17.1l-1.4 1.4M19.5 19.5l-1.4-1.4M6.9 6.9l-1.4-1.4" strokeLinecap="round" />
+    </svg>
+  ),
 };
 
 export const CategoryIcons = {
