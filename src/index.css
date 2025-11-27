@@ -83,6 +83,14 @@ html {
   flex-shrink: 0;
 }
 
+@media (max-width: 640px) {
+  .icon-container {
+    width: 36px;
+    height: 36px;
+    margin: 0 auto 6px;
+  }
+}
+
 @media (min-width: 1024px) {
   .icon-container:hover {
     border-color: rgba(220, 38, 38, 0.6);
@@ -105,17 +113,10 @@ html {
   flex-shrink: 0;
 }
 
-/* Mobile responsive icon sizing */
 @media (max-width: 640px) {
-  .icon-container {
-    width: 40px;
-    height: 40px;
-    margin: 0 auto 8px;
-  }
-  
   .icon-container svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -232,7 +233,7 @@ canvas {
 
 @media (max-width: 640px) {
   .section-title {
-    @apply text-xl mb-3 pb-2;
+    @apply text-base md:text-lg lg:text-xl mb-2 md:mb-3 pb-1 md:pb-2;
   }
 }
 
@@ -275,7 +276,7 @@ canvas {
 
 @media (max-width: 640px) {
   .framework-card {
-    @apply p-4 rounded-lg;
+    @apply p-3 md:p-4 rounded-lg;
   }
 }
 
@@ -287,7 +288,7 @@ canvas {
 
 @media (max-width: 640px) {
   .stat-box {
-    @apply p-3 rounded-lg text-sm;
+    @apply p-2 md:p-3 rounded-lg text-xs md:text-sm;
   }
 }
 

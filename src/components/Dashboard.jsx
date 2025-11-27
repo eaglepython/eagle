@@ -127,11 +127,11 @@ function WeeklyChart({ data }) {
 
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-80 bg-slate-900/50 rounded-lg border border-red-900/30">
+      <div className="flex items-center justify-center h-40 md:h-80 bg-slate-900/50 rounded-lg border border-red-900/30">
         <div className="text-center text-slate-400">
-          <div className="text-3xl mb-2">📊</div>
-          <div>Log your daily scores to see trends</div>
-          <div className="text-xs text-slate-500 mt-2">Need 2+ days to display chart</div>
+          <div className="text-2xl md:text-3xl mb-2">📊</div>
+          <div className="text-xs md:text-base">Log your daily scores to see trends</div>
+          <div className="text-xs text-slate-500 mt-1">Need 2+ days to display chart</div>
         </div>
       </div>
     );
@@ -141,10 +141,11 @@ function WeeklyChart({ data }) {
     <div style={{ 
       position: 'relative', 
       width: '100%', 
-      height: '300px',
+      height: 'auto',
+      minHeight: '200px',
       overflow: 'hidden'
     }}>
-      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%' }}></canvas>
+      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%', maxHeight: '400px' }}></canvas>
     </div>
   );
 }
@@ -231,18 +232,18 @@ function CareerPipelineChart({ applications }) {
 
   if (!applications || applications.length === 0) {
     return (
-      <div className="flex items-center justify-center h-48 bg-slate-900/50 rounded-lg border border-red-900/30">
+      <div className="flex items-center justify-center h-32 md:h-48 bg-slate-900/50 rounded-lg border border-red-900/30">
         <div className="text-center text-slate-400">
-          <div className="text-2xl mb-2">💼</div>
-          <div>Log your job applications to see pipeline</div>
+          <div className="text-2xl md:text-3xl mb-2">💼</div>
+          <div className="text-xs md:text-base">Log your job applications to see pipeline</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '200px', overflow: 'hidden' }}>
-      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%' }}></canvas>
+    <div style={{ position: 'relative', width: '100%', height: 'auto', minHeight: '150px', overflow: 'hidden' }}>
+      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%', maxHeight: '300px' }}></canvas>
     </div>
   );
 }
@@ -352,18 +353,18 @@ function TradingPnLChart({ trades }) {
 
   if (!trades || trades.length === 0) {
     return (
-      <div className="flex items-center justify-center h-48 bg-slate-900/50 rounded-lg border border-red-900/30">
+      <div className="flex items-center justify-center h-32 md:h-60 bg-slate-900/50 rounded-lg border border-red-900/30">
         <div className="text-center text-slate-400">
-          <div className="text-2xl mb-2">📈</div>
-          <div>Log your trades to see P&L trends</div>
+          <div className="text-2xl md:text-3xl mb-2">💹</div>
+          <div className="text-xs md:text-base">Log your trades to see P&L chart</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '200px', overflow: 'hidden' }}>
-      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%' }}></canvas>
+    <div style={{ position: 'relative', width: '100%', height: 'auto', minHeight: '150px', overflow: 'hidden' }}>
+      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%', maxHeight: '350px' }}></canvas>
     </div>
   );
 }
@@ -550,18 +551,18 @@ function DailyCategoryChart({ dailyScores }) {
 
   if (!dailyScores || dailyScores.length === 0) {
     return (
-      <div className="flex items-center justify-center h-80 bg-slate-900/50 rounded-lg border border-red-900/30">
+      <div className="flex items-center justify-center h-32 md:h-64 bg-slate-900/50 rounded-lg border border-red-900/30">
         <div className="text-center text-slate-400">
-          <div className="text-3xl mb-2">🎯</div>
-          <div>Log your daily categories to see breakdown</div>
+          <div className="text-2xl md:text-3xl mb-2">🎯</div>
+          <div className="text-xs md:text-base">Log your daily categories to see breakdown</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '250px', overflow: 'hidden' }}>
-      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%' }}></canvas>
+    <div style={{ position: 'relative', width: '100%', height: 'auto', minHeight: '140px', overflow: 'hidden' }}>
+      <canvas ref={canvasRef} style={{ display: 'block', maxWidth: '100%', maxHeight: '320px' }}></canvas>
     </div>
   );
 }
@@ -649,17 +650,17 @@ function Dashboard({ userData, setUserData, addNotification }) {
       <AdaptiveCoach userData={userData} metrics={{ avgWeeklyScore, jobAppsThisWeek, workoutsThisWeek }} />
 
       {/* Key Metrics Section - Row 1 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
         {/* Today's Score */}
         <div className="stat-box">
           <div className="icon-container">
             <MetricIcons.Score />
           </div>
-          <div className="text-slate-300 text-sm">Today's Score</div>
-          <div className={`text-3xl font-bold ${todayScore && todayScore.totalScore >= 8 ? 'text-green-400' : 'text-orange-400'}`}>
+          <div className="text-slate-300 text-xs md:text-sm">Today's Score</div>
+          <div className={`text-xl md:text-3xl font-bold ${todayScore && todayScore.totalScore >= 8 ? 'text-green-400' : 'text-orange-400'}`}>
             {todayScore ? todayScore.totalScore.toFixed(1) : '0.0'}/10
           </div>
-          <div className="text-xs text-slate-400 mt-1">{todayScore ? '✅ Tracked' : '⏳ Not logged'}</div>
+          <div className="text-xs text-slate-400 mt-1">{todayScore ? '✅' : '⏳'}</div>
         </div>
 
         {/* Weekly Average */}
@@ -667,9 +668,9 @@ function Dashboard({ userData, setUserData, addNotification }) {
           <div className="icon-container">
             <MetricIcons.Trend />
           </div>
-          <div className="text-slate-300 text-sm">7-Day Average</div>
-          <div className="text-3xl font-bold text-blue-400">{avgWeeklyScore}/10</div>
-          <div className="text-xs text-slate-400 mt-1">{thisWeek.length} days logged</div>
+          <div className="text-slate-300 text-xs md:text-sm">7-Day Avg</div>
+          <div className="text-xl md:text-3xl font-bold text-blue-400">{avgWeeklyScore}/10</div>
+          <div className="text-xs text-slate-400 mt-1">{thisWeek.length}d</div>
         </div>
 
         {/* Job Applications */}
@@ -677,11 +678,11 @@ function Dashboard({ userData, setUserData, addNotification }) {
           <div className="icon-container">
             <MetricIcons.Applications />
           </div>
-          <div className="text-slate-300 text-sm">Apps This Week</div>
-          <div className={`text-3xl font-bold ${jobAppsThisWeek >= 15 ? 'text-green-400' : 'text-yellow-400'}`}>
+          <div className="text-slate-300 text-xs md:text-sm">Apps/Wk</div>
+          <div className={`text-xl md:text-3xl font-bold ${jobAppsThisWeek >= 15 ? 'text-green-400' : 'text-yellow-400'}`}>
             {jobAppsThisWeek}/15
           </div>
-          <div className="text-xs text-slate-400 mt-1">Target: 15/week</div>
+          <div className="text-xs text-slate-400 mt-1">Target</div>
         </div>
 
         {/* Workouts */}
@@ -689,26 +690,26 @@ function Dashboard({ userData, setUserData, addNotification }) {
           <div className="icon-container">
             <MetricIcons.Workouts />
           </div>
-          <div className="text-slate-300 text-sm">Workouts</div>
-          <div className={`text-3xl font-bold ${workoutsThisWeek >= 6 ? 'text-green-400' : 'text-yellow-400'}`}>
+          <div className="text-slate-300 text-xs md:text-sm">Workouts</div>
+          <div className={`text-xl md:text-3xl font-bold ${workoutsThisWeek >= 6 ? 'text-green-400' : 'text-yellow-400'}`}>
             {workoutsThisWeek}/6
           </div>
-          <div className="text-xs text-slate-400 mt-1">Target: 6/week</div>
+          <div className="text-xs text-slate-400 mt-1">Target</div>
         </div>
       </div>
 
       {/* Key Metrics Section - Row 2: Advanced Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
         {/* Trading P&L */}
         <div className="stat-box">
           <div className="icon-container">
             <MetricIcons.PnL />
           </div>
-          <div className="text-slate-300 text-sm">Trading P&L</div>
-          <div className={`text-3xl font-bold ${totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-            ${totalPnL.toFixed(2)}
+          <div className="text-slate-300 text-xs md:text-sm">P&L</div>
+          <div className={`text-xl md:text-3xl font-bold ${totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+            ${totalPnL.toFixed(0)}
           </div>
-          <div className="text-xs text-slate-400 mt-1">{userData.tradingJournal.length} trades</div>
+          <div className="text-xs text-slate-400 mt-1">{userData.tradingJournal.length}t</div>
         </div>
 
         {/* Win Rate */}
@@ -716,11 +717,11 @@ function Dashboard({ userData, setUserData, addNotification }) {
           <div className="icon-container">
             <MetricIcons.WinRate />
           </div>
-          <div className="text-slate-300 text-sm">Win Rate</div>
-          <div className={`text-3xl font-bold ${winRate >= 50 ? 'text-green-400' : 'text-yellow-400'}`}>
+          <div className="text-slate-300 text-xs md:text-sm">Win Rate</div>
+          <div className={`text-xl md:text-3xl font-bold ${winRate >= 50 ? 'text-green-400' : 'text-yellow-400'}`}>
             {winRate}%
           </div>
-          <div className="text-xs text-slate-400 mt-1">{winningTrades}W / {losingTrades}L</div>
+          <div className="text-xs text-slate-400 mt-1">{winningTrades}W/{losingTrades}L</div>
         </div>
 
         {/* Net Worth */}
@@ -728,11 +729,11 @@ function Dashboard({ userData, setUserData, addNotification }) {
           <div className="icon-container">
             <MetricIcons.NetWorth />
           </div>
-          <div className="text-slate-300 text-sm">Net Worth</div>
-          <div className="text-3xl font-bold text-green-400">
-            ${netWorth.toLocaleString()}
+          <div className="text-slate-300 text-xs md:text-sm">Net Worth</div>
+          <div className="text-xl md:text-3xl font-bold text-green-400">
+            ${(netWorth/1000).toFixed(0)}K
           </div>
-          <div className="text-xs text-slate-400 mt-1">Total Assets</div>
+          <div className="text-xs text-slate-400 mt-1">Assets</div>
         </div>
 
         {/* Savings Rate */}
@@ -740,81 +741,81 @@ function Dashboard({ userData, setUserData, addNotification }) {
           <div className="icon-container">
             <MetricIcons.Savings />
           </div>
-          <div className="text-slate-300 text-sm">Savings Rate</div>
-          <div className={`text-3xl font-bold ${savingsRate >= 20 ? 'text-green-400' : 'text-yellow-400'}`}>
+          <div className="text-slate-300 text-xs md:text-sm">Save Rate</div>
+          <div className={`text-xl md:text-3xl font-bold ${savingsRate >= 20 ? 'text-green-400' : 'text-yellow-400'}`}>
             {savingsRate}%
           </div>
-          <div className="text-xs text-slate-400 mt-1">Income: ${monthlyIncome.toLocaleString()}</div>
+          <div className="text-xs text-slate-400 mt-1">Monthly</div>
         </div>
       </div>
 
       {/* Health Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
         <div className="stat-box">
           <div className="icon-container">
             <MetricIcons.Time />
           </div>
-          <div className="text-slate-300 text-sm">Total Workout Time</div>
-          <div className="text-3xl font-bold text-blue-400">{totalMinutes} min</div>
-          <div className="text-xs text-slate-400 mt-1">{userData.workouts.length} workouts</div>
+          <div className="text-slate-300 text-xs md:text-sm">Workout Time</div>
+          <div className="text-xl md:text-3xl font-bold text-blue-400">{totalMinutes} min</div>
+          <div className="text-xs text-slate-400 mt-1">{userData.workouts.length}w</div>
         </div>
 
         <div className="stat-box">
           <div className="icon-container">
             <MetricIcons.Duration />
           </div>
-          <div className="text-slate-300 text-sm">Avg Duration</div>
-          <div className="text-3xl font-bold text-blue-400">{avgDuration} min</div>
-          <div className="text-xs text-slate-400 mt-1">Per workout</div>
+          <div className="text-slate-300 text-xs md:text-sm">Avg Duration</div>
+          <div className="text-xl md:text-3xl font-bold text-blue-400">{avgDuration}m</div>
+          <div className="text-xs text-slate-400 mt-1">Per WO</div>
         </div>
 
         <div className="stat-box">
           <div className="icon-container">
             <MetricIcons.Applications />
           </div>
-          <div className="text-slate-300 text-sm">Total Applications</div>
-          <div className="text-3xl font-bold text-purple-400">{userData.jobApplications.length}</div>
+          <div className="text-slate-300 text-xs md:text-sm">Total Apps</div>
+          <div className="text-xl md:text-3xl font-bold text-purple-400">{userData.jobApplications.length}</div>
           <div className="text-xs text-slate-400 mt-1">All time</div>
         </div>
       </div>
 
       {/* Tier Distribution */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
         {Object.entries(tierCounts).map(([tier, count]) => (
-          <div key={tier} className="glass rounded-lg p-4 border border-red-900/50 text-center">
-            <div className="text-slate-300 text-sm font-semibold">{tier}</div>
-            <div className="text-2xl font-bold text-red-400 mt-1">{count}</div>
+          <div key={tier} className="glass rounded-lg p-2 md:p-4 border border-red-900/50 text-center">
+            <div className="text-slate-300 text-xs md:text-sm font-semibold">{tier}</div>
+            <div className="text-lg md:text-2xl font-bold text-red-400 mt-1">{count}</div>
           </div>
         ))}
       </div>
 
       {/* 5-Year Vision */}
       <div className="framework-card">
-        <h2 className="section-title">🎯 5-YEAR VISION (2030)</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-slate-900/50 p-3 rounded-lg border border-red-900/30">
-            <div className="text-red-400 font-semibold">Financial</div>
-            <div className="text-white">$2M+ net worth, passive income exceeding expenses</div>
+        <h2 className="section-title text-lg md:text-xl">🎯 5-YEAR VISION (2030)</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
+          <div className="bg-slate-900/50 p-2 md:p-3 rounded-lg border border-red-900/30">
+            <div className="text-red-400 font-semibold text-sm md:text-base">Financial</div>
+            <div className="text-white text-xs md:text-sm">$2M+ net worth, passive income exceeding expenses</div>
           </div>
-          <div className="bg-slate-900/50 p-3 rounded-lg border border-red-900/30">
-            <div className="text-red-400 font-semibold">Career</div>
-            <div className="text-white">Senior Quant/AI Architect at tier-1 firm</div>
+          <div className="bg-slate-900/50 p-2 md:p-3 rounded-lg border border-red-900/30">
+            <div className="text-red-400 font-semibold text-sm md:text-base">Career</div>
+            <div className="text-white text-xs md:text-sm">Senior Quant/AI Architect at tier-1 firm</div>
           </div>
-          <div className="bg-slate-900/50 p-3 rounded-lg border border-red-900/30">
-            <div className="text-red-400 font-semibold">Health</div>
-            <div className="text-white">Peak physical condition, marathons, 10% body fat</div>
+          <div className="bg-slate-900/50 p-2 md:p-3 rounded-lg border border-red-900/30">
+            <div className="text-red-400 font-semibold text-sm md:text-base">Health</div>
+            <div className="text-white text-xs md:text-sm">Peak physical condition, marathons, 10% body fat</div>
           </div>
-          <div className="bg-slate-900/50 p-3 rounded-lg border border-red-900/30">
-            <div className="text-red-400 font-semibold">Skills</div>
-            <div className="text-white">Published research, thought leader in AI/Finance</div>
+          <div className="bg-slate-900/50 p-2 md:p-3 rounded-lg border border-red-900/30">
+            <div className="text-red-400 font-semibold text-sm md:text-base">Skills</div>
+            <div className="text-white text-xs md:text-sm">Published research, thought leader in AI/Finance</div>
           </div>
         </div>
       </div>
 
       {/* 2026 Immediate Objectives */}
       <div className="framework-card">
-        <h2 className="section-title">🚀 2026 IMMEDIATE OBJECTIVES</h2>
-        <div className="space-y-3">
+        <h2 className="section-title text-lg md:text-xl">🚀 2026 IMMEDIATE OBJECTIVES</h2>
+        <div className="space-y-2 md:space-y-3">
           {[
             { emoji: '💼', title: 'Career', desc: 'Quant researcher role at target firm (Q2 2026)' },
             { emoji: '📈', title: 'Trading', desc: 'Scale to $500K AUM with 20%+ annual returns' },
@@ -823,11 +824,11 @@ function Dashboard({ userData, setUserData, addNotification }) {
             { emoji: '💪', title: 'Health', desc: '12% body fat, half-marathon sub-1:45' },
             { emoji: '🤝', title: 'Network', desc: 'Build relationships with 50+ industry pros' }
           ].map((obj, idx) => (
-            <div key={idx} className="flex items-start gap-3 bg-slate-900/50 p-3 rounded-lg border border-red-900/30">
-              <span className="text-2xl">{obj.emoji}</span>
-              <div>
-                <div className="text-red-400 font-semibold">{obj.title}</div>
-                <div className="text-slate-300 text-sm">{obj.desc}</div>
+            <div key={idx} className="flex items-start gap-2 md:gap-3 bg-slate-900/50 p-2 md:p-3 rounded-lg border border-red-900/30">
+              <span className="text-xl md:text-2xl flex-shrink-0">{obj.emoji}</span>
+              <div className="min-w-0">
+                <div className="text-red-400 font-semibold text-xs md:text-sm">{obj.title}</div>
+                <div className="text-slate-300 text-xs md:text-sm line-clamp-2">{obj.desc}</div>
               </div>
             </div>
           ))}
@@ -835,17 +836,17 @@ function Dashboard({ userData, setUserData, addNotification }) {
       </div>
 
       {/* Charts Section - Row 1: Line Chart & Category Radar */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-4">
         {/* Weekly Trend */}
         <div className="framework-card">
-          <h2 className="section-title">📊 7-DAY PERFORMANCE TREND</h2>
+          <h2 className="section-title text-lg md:text-xl">📊 7-DAY TREND</h2>
           <WeeklyChart data={thisWeek} />
         </div>
 
         {/* Daily Category Breakdown */}
         {userData.dailyScores.length > 0 && (
           <div className="framework-card">
-            <h2 className="section-title">🎯 TODAY'S CATEGORY BREAKDOWN</h2>
+            <h2 className="section-title text-lg md:text-xl">🎯 TODAY'S BREAKDOWN</h2>
             <DailyCategoryChart dailyScores={userData.dailyScores} />
           </div>
         )}

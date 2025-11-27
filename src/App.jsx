@@ -134,9 +134,13 @@ function App() {
   return (
     <ErrorBoundary>
       <div className="w-full h-screen overflow-y-auto overflow-x-hidden flex flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800">
-        <Header currentTime={currentTime} />
-        <Navigation currentView={currentView} setCurrentView={setCurrentView} views={views} />
-        <div className="flex-1 overflow-y-auto overflow-x-hidden p-4">
+        <div className="px-3 md:px-4 lg:px-6 pt-3 md:pt-4">
+          <Header currentTime={currentTime} />
+        </div>
+        <div className="px-3 md:px-4 lg:px-6">
+          <Navigation currentView={currentView} setCurrentView={setCurrentView} views={views} />
+        </div>
+        <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 md:px-4 lg:px-6 py-2 md:py-4">
           {views[currentView]}
         </div>
         <NotificationContainer notifications={notifications} />
