@@ -278,12 +278,88 @@
                 opacity: 0;
             }
         }
+
+        /* Shaking board animation on load */
+        @keyframes board-shake {
+            0%, 100% { transform: translateX(0) translateY(0) rotateZ(0deg); }
+            10% { transform: translateX(-15px) translateY(-8px) rotateZ(-2deg); }
+            20% { transform: translateX(15px) translateY(8px) rotateZ(2deg); }
+            30% { transform: translateX(-12px) translateY(-6px) rotateZ(-1.5deg); }
+            40% { transform: translateX(12px) translateY(6px) rotateZ(1.5deg); }
+            50% { transform: translateX(-8px) translateY(-4px) rotateZ(-1deg); }
+            60% { transform: translateX(8px) translateY(4px) rotateZ(1deg); }
+            70% { transform: translateX(-4px) translateY(-2px) rotateZ(-0.5deg); }
+            80% { transform: translateX(4px) translateY(2px) rotateZ(0.5deg); }
+            90% { transform: translateX(-2px) translateY(-1px) rotateZ(0deg); }
+        }
+
+        .board-container {
+            animation: board-shake 2.5s ease-out 0.5s 1 forwards;
+            transform-origin: center;
+        }
+
+        /* Enhanced logo pulse on load */
+        @keyframes pulse-glow {
+            0% { 
+                filter: drop-shadow(0 0 10px rgba(220, 38, 38, 0.3));
+                transform: scale(0.95);
+            }
+            50% { 
+                filter: drop-shadow(0 0 30px rgba(220, 38, 38, 0.8));
+                transform: scale(1.05);
+            }
+            100% { 
+                filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.5));
+                transform: scale(1);
+            }
+        }
+
+        .logo img {
+            animation: float 3s ease-in-out infinite, pulse-glow 3s ease-in-out 0.3s 1;
+        }
+
+        /* Form elements glow on page load */
+        @keyframes input-glow {
+            0% { 
+                border-color: rgba(220, 38, 38, 0.1);
+                box-shadow: 0 0 0px rgba(220, 38, 38, 0);
+            }
+            50% { 
+                border-color: rgba(220, 38, 38, 0.5);
+                box-shadow: 0 0 15px rgba(220, 38, 38, 0.3);
+            }
+            100% { 
+                border-color: rgba(220, 38, 38, 0.3);
+                box-shadow: 0 0 0px rgba(220, 38, 38, 0);
+            }
+        }
+
+        input[type="password"] {
+            animation: input-glow 3s ease-in-out 1.5s;
+        }
+
+        /* Button load animation */
+        @keyframes button-slide-in {
+            0% { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        button {
+            animation: button-slide-in 0.6s ease-out 2s backwards;
+        }
     </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
     
-    <div class="container">
+    <div class="board-container">
+      <div class="container">
         <div class="logo">
             <div style="font-size: 80px; margin-bottom: 10px;">🎯</div>
             <h1>7th Sense</h1>
@@ -304,6 +380,7 @@
             </div>
             <button type="submit">🔓 Unlock</button>
         </form>
+    </div>
     </div>
 
     <div class="success-overlay" id="successOverlay">
@@ -348,7 +425,7 @@
                 }
 
                 setTimeout(() => {
-                    window.location.href = './app.html';
+                    window.location.href = './app';
                 }, 1500);
             } else {
                 // Error
@@ -367,7 +444,7 @@
 
         // Check if already authenticated
         if (sessionStorage.getItem('authenticated') === 'true') {
-            window.location.href = './app.html';
+            window.location.href = './app';
         }
 
         // Initialize
