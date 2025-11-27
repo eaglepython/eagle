@@ -18,7 +18,7 @@
 ```
 https://eaglepython.github.io/eagle/launcher.html
 ```
-**Password:** `Excellence2026`
+**Password:** ###########
 
 Features:
 - 🎨 Sophisticated animated interface
