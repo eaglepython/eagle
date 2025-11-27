@@ -56,10 +56,14 @@ function WeeklyChart({ data }) {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
+          aspectRatio: 2,
           interaction: {
             mode: 'index',
             intersect: false
+          },
+          animation: {
+            duration: 0
           },
           plugins: {
             legend: {
@@ -131,7 +135,11 @@ function WeeklyChart({ data }) {
     );
   }
 
-  return <canvas ref={canvasRef} height="300"></canvas>;
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '320px' }}>
+      <canvas ref={canvasRef}></canvas>
+    </div>
+  );
 }
 
 function CareerPipelineChart({ applications }) {

@@ -19,13 +19,22 @@ body {
   color: #e2e8f0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
-  min-height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
-html, body, #root {
+html {
+  height: 100vh;
+  overflow: hidden;
+}
+
+#root {
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   margin: 0;
   padding: 0;
 }
@@ -160,6 +169,31 @@ html, body, #root {
 }
 
 /* Input fields - Mobile optimized */
+/* Chart Container Styles - Fixed Height to Prevent Oscillation */
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+.framework-card canvas {
+  max-height: 400px;
+}
+
+/* Chart Wrapper - Prevent Bouncing */
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+/* Fixed Container for Charts */
+.glass canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 .input-field {
   @apply bg-slate-700 border border-red-900/30 text-white rounded-lg p-3 placeholder-slate-400 focus:border-red-700 focus:outline-none text-base;
   min-height: 48px;
