@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1a2847 100%);
+  color: #e2e8f0;
+}
+
+.glass {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 0, 0, 0.3);
+}
+
+.metric-card {
+  transition: all 0.3s ease;
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(139, 0, 0, 0.4);
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(139, 0, 0, 0.3);
+}
+
+/* Sophisticated Icon Styles - Optimized for Mobile */
+.icon-container {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(139, 0, 0, 0.1));
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  margin: 0 auto 10px;
+  transition: all 0.3s ease;
+}
+
+.icon-container:hover {
+  border-color: rgba(220, 38, 38, 0.6);
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.15), rgba(139, 0, 0, 0.15));
+  transform: scale(1.05);
+}
+
+.icon-container svg {
+  width: 24px;
+  height: 24px;
+  stroke: rgb(220, 38, 38);
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Mobile responsive icon sizing */
+@media (max-width: 640px) {
+  .icon-container {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 8px;
+  }
+  
+  .icon-container svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.icon-container.success svg {
+  stroke: rgb(34, 197, 94);
+}
+
+.icon-container.warning svg {
+  stroke: rgb(250, 204, 21);
+}
+
+.icon-container.info svg {
+  stroke: rgb(59, 130, 246);
+}
+
+.btn-primary {
+  @apply bg-red-900 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-lg transition-all;
+}
+
+.btn-secondary {
+  @apply bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded-lg transition-all;
+}
+
+.btn-accent {
+  @apply bg-red-800 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-all;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.celebration {
+  animation: celebrate 0.5s ease-in-out;
+}
+
+@keyframes celebrate {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.notification {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(400px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.framework-card {
+  @apply bg-gradient-to-br from-slate-800 to-slate-900 border border-red-900/40 rounded-xl p-6;
+}
+
+.stat-box {
+  @apply bg-slate-700/50 border border-red-900/30 rounded-lg p-4 text-center;
+}
+
+.input-field {
+  @apply bg-slate-700 border border-red-900/30 text-white rounded-lg p-3 placeholder-slate-400 focus:border-red-700 focus:outline-none;
+}
+
+.textarea-field {
+  @apply bg-slate-700 border border-red-900/30 text-white rounded-lg p-3 placeholder-slate-400 focus:border-red-700 focus:outline-none h-24;
+}
+
+.section-title {
+  @apply text-2xl font-bold text-white mb-4 border-b border-red-900/50 pb-2;
+}
