@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta name="description" content="Life Excellence Tracker - Quantitative Life Optimization System" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="7th Sense" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-TileColor" content="#0f172a" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <title>Life Excellence Tracker - Joseph Bidias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      /* Prevent iOS zoom on input focus */
+      input, textarea, select {
+        font-size: 16px !important;
+      }
+      
+      /* Fixed viewport structure - CRITICAL for scroll */
+      html {
+        height: 100vh;
+        overflow: hidden;
+      }
+      
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+        background: linear-gradient(135deg, #0f172a 0%, #1a2847 100%);
+      }
+      
+      #root {
+        height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* Prevent long press menu on mobile */
+      img {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+             user-select: none;
+        -webkit-touch-callout: none;
+      }
+    </style>
+    <script type="module" crossorigin src="/eagle/assets/app-CfNx6rCr.js"></script>
+    <link rel="stylesheet" crossorigin href="/eagle/assets/app-5rB4vdtT.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // Check authentication
+      if (sessionStorage.getItem('authenticated') !== 'true') {
+        window.location.href = './index.html';
+      }
+    </script>
+  </body>
+</html>
