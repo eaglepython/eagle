@@ -17,20 +17,29 @@
 🔐 **7th Sense Launcher** (Password Protected)
 ```
 https://eaglepython.github.io/eagle/launcher.html
+https://eaglepython.github.io/eagle/  (Clean URL)
 ```
-**Password:** ###########
+**Password:** Excellence2026
 
 Features:
-- 🎨 Sophisticated animated interface
+- 🎨 Sophisticated animated interface with shaking board animation
 - 🧠 Advanced AI gateway design
-- 📊 Shaking board on incorrect password
-- ✨ Success animations
-- 🌟 Interactive particles
+- 📊 Shaking board feedback on incorrect password
+- ✨ Success animations on correct entry
+- 🌟 Interactive particles and visual effects
 - 📱 **Fully mobile-friendly** with responsive design
+- ⚡ Clean URLs - no .html extensions needed
 
-Or access directly:
+**Direct App Access:**
 ```
-https://eaglepython.github.io/eagle/
+https://eaglepython.github.io/eagle/app  (Clean URL)
+https://eaglepython.github.io/eagle/app.html
+```
+
+**Direct Access Links:**
+```
+Launcher: https://eaglepython.github.io/eagle/
+App:      https://eaglepython.github.io/eagle/app
 ```
 
 ---
@@ -112,7 +121,13 @@ User Data → 5 Specialized Agents → RAG Evaluation → Adaptive Dashboard
 ### 📈 **Real-Time Dashboards**
 
 - **Adaptive Evaluation** - Visual progress on all 10 goals with color-coded status
-- **Interactive Charts** - Chart.js visualizations of trends
+- **Interactive Charts** - 5 Chart.js visualizations optimized for smooth rendering:
+  - Weekly Performance Trend (7-day line chart)
+  - Career Pipeline (applications by stage)
+  - Trading P&L (cumulative performance)
+  - Workout Type Distribution (doughnut chart)
+  - Daily Category Breakdown (radar chart)
+- **Chart Optimization** - ✅ All charts optimized (no oscillation, smooth rendering)
 - **Live Metrics** - Current performance vs 2026 targets
 - **AI Recommendations** - Prioritized actions (CRITICAL → HIGH → MEDIUM)
 
@@ -254,13 +269,39 @@ npm run dev
 
 ## 📊 System Stats
 
-- **Build Size**: 529 KB JS (gzip: 165 KB)
+- **Build Size**: 530.10 KB JS (gzip: 165.24 KB)
+- **CSS Size**: 37.97 KB (gzip: 7.34 KB)
 - **Load Time**: ~1.9 seconds
-- **Modules**: 60 compiled
+- **Modules**: 63 compiled
 - **Components**: 16 main + utilities
 - **Agents**: 5 specialized
 - **Goals Tracked**: 10 major
 - **Demo Data**: 78 interactions
+- **Chart Types**: 5 (Line, Bar, Doughnut, Radar)
+- **Chart Oscillation**: ✅ FIXED (disabled animations, fixed aspect ratios)
+
+---
+
+## ✨ Recent Improvements (v1.1)
+
+### Chart Rendering Optimization ✅
+- Fixed all chart oscillation issues on 7-day performance trend
+- Disabled animations for smooth, stable rendering
+- Implemented fixed aspect ratios for consistent sizing
+- Optimized container dimensions
+- All 5 charts now render without shaking
+
+### Architecture Separation ✅
+- Launcher and app now on separate entry points
+- Password-protected gateway (7th Sense with Excellence2026)
+- Clean URL structure (no .html extensions needed)
+- Improved routing for better user experience
+
+### Mobile Enhancements ✅
+- Safe area support for notched devices
+- Touch-friendly interface elements
+- Responsive chart sizing for all screen sizes
+- Optimized viewport scaling
 
 ---
 
@@ -282,7 +323,13 @@ npm run deploy
 
 Your app will be live at:
 ```
-https://yourusername.github.io/life-tracker-app/
+Launcher:  https://yourusername.github.io/eagle/
+           https://yourusername.github.io/eagle/launcher.html
+App:       https://yourusername.github.io/eagle/app
+Direct:    https://yourusername.github.io/eagle/app.html
+
+Password: Excellence2026
+https://yourusername.github.io/eagle/app (Direct app access)
 ```
 
 ### ✅ GitHub Pages Features
@@ -366,6 +413,29 @@ Expense tracking, savings rate optimization, net worth progression.
 - **Phase 2**: Keyboard shortcuts, advanced analytics, weekly reports
 - **Phase 3**: Export/import data, goal predictions, collaborative features
 - **Phase 4**: Mobile app, backend integration, multi-device sync
+
+---
+
+## ✨ Recent Improvements (v1.1)
+
+### Chart Rendering Optimization
+- ✅ Fixed all chart oscillation issues
+- ✅ Disabled animations for smooth rendering
+- ✅ Implemented fixed aspect ratios
+- ✅ Optimized container sizing
+- ✅ All 5 charts now render smoothly without shaking
+
+### Architecture Separation
+- ✅ Launcher and app now on separate entry points
+- ✅ Password-protected gateway (7th Sense)
+- ✅ Clean URL structure (no .html extensions)
+- ✅ Improved routing for better UX
+
+### Mobile Enhancements
+- ✅ Safe area support for notched devices
+- ✅ Touch-friendly interface elements
+- ✅ Responsive chart sizing
+- ✅ Optimized viewport scaling
 
 ---
 
