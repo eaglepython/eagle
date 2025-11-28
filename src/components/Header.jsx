@@ -2,49 +2,64 @@ import { useState, useEffect } from 'react';
 
 export function Header({ currentTime }) {
   const [weather, setWeather] = useState(null);
-  const [city, setCity] = useState('Loading...');
+  const [city, setCity] = useState('Detecting...');
   const [upcomingEvents, setUpcomingEvents] = useState([]);
-  const [seconds, setSeconds] = useState(0);
 
-  // Update seconds every second
-  useEffect(() => {
-    setSeconds(currentTime.getSeconds());
-    const interval = setInterval(() => {
-      setSeconds(new Date().getSeconds());
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [currentTime]);
-
-  // Fetch weather and location
+  // Fetch weather and location with proper error handling
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        // Get location from IP
-        const geoRes = await fetch('https://ipapi.co/json/', { timeout: 5000 });
-        const geoData = await geoRes.json();
-        setCity(geoData.city || 'Unknown');
+        // Get location from IP with abort controller for timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-        // Get weather from Open-Meteo (free, no key needed)
+        const geoRes = await fetch('https://ipapi.co/json/', { 
+          signal: controller.signal 
+        });
+        clearTimeout(timeoutId);
+        
+        if (!geoRes.ok) throw new Error('Geo fetch failed');
+        const geoData = await geoRes.json();
+        const cityName = geoData.city || geoData.region_code || 'Unknown';
+        setCity(cityName);
+
+        // Get weather from Open-Meteo with abort controller
+        const weatherController = new AbortController();
+        const weatherTimeoutId = setTimeout(() => weatherController.abort(), 8000);
+
         const weatherRes = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${geoData.latitude}&longitude=${geoData.longitude}&current=temperature_2m,weather_code,relative_humidity&temperature_unit=fahrenheit`,
-          { timeout: 5000 }
+          `https://api.open-meteo.com/v1/forecast?latitude=${geoData.latitude}&longitude=${geoData.longitude}&current=temperature_2m,weather_code,relative_humidity,wind_speed_10m&temperature_unit=fahrenheit`,
+          { signal: weatherController.signal }
         );
+        clearTimeout(weatherTimeoutId);
+
+        if (!weatherRes.ok) throw new Error('Weather fetch failed');
         const weatherData = await weatherRes.json();
         
         if (weatherData.current) {
           setWeather({
             temp: Math.round(weatherData.current.temperature_2m),
             code: weatherData.current.weather_code,
-            humidity: weatherData.current.relative_humidity
+            humidity: weatherData.current.relative_humidity,
+            wind: Math.round(weatherData.current.wind_speed_10m)
           });
         }
       } catch (error) {
-        console.log('Weather fetch skipped');
+        console.error('Weather/location error:', error.message);
+        // Set defaults on error
+        setCity('Location');
+        setWeather({
+          temp: '--',
+          code: 0,
+          humidity: '--',
+          wind: '--'
+        });
       }
     };
 
     fetchWeather();
-    const weatherInterval = setInterval(fetchWeather, 600000); // Update every 10 min
+    // Update every 30 minutes
+    const weatherInterval = setInterval(fetchWeather, 1800000);
     return () => clearInterval(weatherInterval);
   }, []);
 
@@ -70,25 +85,23 @@ export function Header({ currentTime }) {
     const upcoming = events
       .filter(e => e.date >= today)
       .sort((a, b) => a.date - b.date)
-      .slice(0, 2); // Show next 2 events
+      .slice(0, 2);
 
     setUpcomingEvents(upcoming);
   }, []);
 
-  // Get weather emoji
+  // Get weather emoji based on WMO code
   const getWeatherEmoji = (code) => {
-    if (!code) return '🌤️';
-    if (code === 0) return '☀️';
-    if (code === 1 || code === 2) return '🌤️';
-    if (code === 3) return '☁️';
-    if (code === 45 || code === 48) return '🌫️';
-    if (code === 51 || code === 53 || code === 55) return '🌦️';
-    if (code === 61 || code === 63 || code === 65) return '🌧️';
-    if (code === 71 || code === 73 || code === 75) return '❄️';
-    if (code === 77) return '🌨️';
-    if (code === 80 || code === 81 || code === 82) return '⛈️';
-    if (code === 85 || code === 86) return '🌨️';
-    if (code === 95 || code === 96 || code === 99) return '⚡🌩️';
+    if (code === 0) return '☀️';           // Clear
+    if (code === 1 || code === 2) return '🌤️';    // Mostly clear
+    if (code === 3) return '☁️';           // Overcast
+    if (code === 45 || code === 48) return '🌫️';  // Foggy
+    if (code >= 51 && code <= 55) return '🌦️';    // Drizzle
+    if (code >= 61 && code <= 65) return '🌧️';    // Rain
+    if (code >= 71 && code <= 77) return '❄️';    // Snow
+    if (code >= 80 && code <= 82) return '⛈️';    // Showers
+    if (code === 85 || code === 86) return '🌨️';  // Snow showers
+    if (code >= 95 && code <= 99) return '⚡';     // Thunderstorm
     return '🌤️';
   };
 
@@ -101,6 +114,9 @@ export function Header({ currentTime }) {
     const diff = target - today;
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
   };
+
+  const timeStr = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const dateStr = currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
   return (
     <div className="glass rounded-xl md:rounded-2xl p-3 md:p-6 mb-4 md:mb-6 border-b-2 md:border-b-4 border-red-900 space-y-3 md:space-y-4">
@@ -115,10 +131,9 @@ export function Header({ currentTime }) {
         {/* Time with Seconds & Date */}
         <div className="text-right bg-slate-800 rounded-lg md:rounded-xl p-2 md:p-4 border border-red-900/50 flex-shrink-0">
           <div className="text-2xl md:text-4xl lg:text-5xl font-bold text-white font-mono whitespace-nowrap">
-            {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            <span className="text-sm md:text-xl text-red-400">:{seconds.toString().padStart(2, '0')}</span>
+            {timeStr}
           </div>
-          <div className="text-red-400 text-xs md:text-sm truncate">{currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</div>
+          <div className="text-red-400 text-xs md:text-sm truncate">{dateStr}</div>
         </div>
       </div>
 
@@ -126,33 +141,35 @@ export function Header({ currentTime }) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
         {/* Weather & Humidity */}
         {weather && (
-          <div className="bg-slate-800/50 rounded-lg p-2 md:p-3 border border-slate-700 flex items-center gap-2">
-            <span className="text-2xl md:text-3xl">{getWeatherEmoji(weather.code)}</span>
-            <div className="min-w-0">
+          <div className="bg-slate-800/50 rounded-lg p-2 md:p-3 border border-slate-700 flex items-center gap-2 hover:bg-slate-800/70 transition">
+            <span className="text-2xl md:text-3xl flex-shrink-0">{getWeatherEmoji(weather.code)}</span>
+            <div className="min-w-0 flex-1">
               <div className="text-xs md:text-sm text-slate-300">Weather</div>
-              <div className="text-sm md:text-base font-semibold text-white">{weather.temp}°F</div>
+              <div className="text-base md:text-lg font-semibold text-white">
+                {typeof weather.temp === 'number' ? `${weather.temp}°F` : weather.temp}
+              </div>
               <div className="text-xs text-slate-400">{weather.humidity}% humidity</div>
             </div>
           </div>
         )}
 
         {/* City/Location */}
-        <div className="bg-slate-800/50 rounded-lg p-2 md:p-3 border border-slate-700 flex items-center gap-2">
-          <span className="text-2xl md:text-3xl">📍</span>
-          <div className="min-w-0">
+        <div className="bg-slate-800/50 rounded-lg p-2 md:p-3 border border-slate-700 flex items-center gap-2 hover:bg-slate-800/70 transition">
+          <span className="text-2xl md:text-3xl flex-shrink-0">📍</span>
+          <div className="min-w-0 flex-1">
             <div className="text-xs md:text-sm text-slate-300">Location</div>
-            <div className="text-sm md:text-base font-semibold text-white truncate">{city}</div>
+            <div className="text-base md:text-lg font-semibold text-white truncate">{city}</div>
             <div className="text-xs text-slate-400">Current</div>
           </div>
         </div>
 
         {/* Upcoming Event 1 */}
         {upcomingEvents.length > 0 && (
-          <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-lg p-2 md:p-3 border border-purple-600/30 flex items-center gap-2">
-            <span className="text-2xl md:text-3xl">{upcomingEvents[0].emoji}</span>
-            <div className="min-w-0">
+          <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-lg p-2 md:p-3 border border-purple-600/30 flex items-center gap-2 hover:border-purple-500/50 transition">
+            <span className="text-2xl md:text-3xl flex-shrink-0">{upcomingEvents[0].emoji}</span>
+            <div className="min-w-0 flex-1">
               <div className="text-xs md:text-sm text-slate-300 truncate">{upcomingEvents[0].name}</div>
-              <div className="text-sm md:text-base font-semibold text-white">{daysUntilEvent(upcomingEvents[0].date)}d</div>
+              <div className="text-base md:text-lg font-semibold text-white">{daysUntilEvent(upcomingEvents[0].date)}d</div>
               <div className="text-xs text-slate-400">away</div>
             </div>
           </div>
@@ -160,11 +177,11 @@ export function Header({ currentTime }) {
 
         {/* Upcoming Event 2 */}
         {upcomingEvents.length > 1 && (
-          <div className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 rounded-lg p-2 md:p-3 border border-blue-600/30 flex items-center gap-2">
-            <span className="text-2xl md:text-3xl">{upcomingEvents[1].emoji}</span>
-            <div className="min-w-0">
+          <div className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 rounded-lg p-2 md:p-3 border border-blue-600/30 flex items-center gap-2 hover:border-blue-500/50 transition">
+            <span className="text-2xl md:text-3xl flex-shrink-0">{upcomingEvents[1].emoji}</span>
+            <div className="min-w-0 flex-1">
               <div className="text-xs md:text-sm text-slate-300 truncate">{upcomingEvents[1].name}</div>
-              <div className="text-sm md:text-base font-semibold text-white">{daysUntilEvent(upcomingEvents[1].date)}d</div>
+              <div className="text-base md:text-lg font-semibold text-white">{daysUntilEvent(upcomingEvents[1].date)}d</div>
               <div className="text-xs text-slate-400">away</div>
             </div>
           </div>
