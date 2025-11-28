@@ -3,10 +3,13 @@
  * Integrates with browser notifications and calendar sync
  */
 
+import { AudioNotifications } from './AudioNotifications';
+
 export class ReminderSystem {
   constructor(userData) {
     this.userData = userData;
     this.reminders = [];
+    this.audioNotifications = new AudioNotifications();
     this.initializeNotifications();
   }
 
@@ -48,6 +51,17 @@ export class ReminderSystem {
         requireInteraction: options.requireInteraction || false,
         ...options
       });
+
+      // Play notification sound
+      if (this.audioNotifications.enabled) {
+        if (options.soundType === 'alert') {
+          this.audioNotifications.playAlertSound();
+        } else if (options.soundType === 'success') {
+          this.audioNotifications.playSuccessSound();
+        } else {
+          this.audioNotifications.playNotificationSound();
+        }
+      }
 
       // Handle notification click
       notification.onclick = () => {
