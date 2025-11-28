@@ -8,6 +8,7 @@ import AdaptiveEvaluation from './AdaptiveEvaluation';
 import IntelligentChatbox from './IntelligentChatbox';
 import QuickActionRecommendations from './QuickActionRecommendations';
 import QuickActionAgent from '../utils/QuickActionAgent';
+import PsychologyCoachPanel from './PsychologyCoachPanel';
 
 function WeeklyChart({ data }) {
   const canvasRef = useRef(null);
@@ -922,6 +923,11 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
       {/* Adaptive Evaluation Section - GOAL TRACKING */}
       <div className="mt-8 pt-8 border-t border-slate-700">
         <AdaptiveEvaluation userData={userData} setUserData={() => {}} />
+      </div>
+
+      {/* Psychology Coach Panel - Brain Enhancement & Master Integration */}
+      <div className="mt-8 pt-8 border-t border-slate-700">
+        <PsychologyCoachPanel userData={userData} />
       </div>
 
       {/* Quick Actions */}

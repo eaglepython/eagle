@@ -5,6 +5,8 @@ import { CareerTrackerAgent } from '../utils/CareerTrackerAgent';
 import { TradingJournalAgent } from '../utils/TradingJournalAgent';
 import { HealthTrackerAgent } from '../utils/HealthTrackerAgent';
 import { FinanceTrackerAgent } from '../utils/FinanceTrackerAgent';
+import { PsychologyCoachAgent } from '../utils/PsychologyCoachAgent';
+import { MasterIntegrationAgent } from '../utils/MasterIntegrationAgent';
 
 /**
  * Hook: Get RAG evaluation and recommendations
@@ -235,4 +237,51 @@ export function useInteractionTracking() {
   };
 
   return { trackInteraction };
+}
+
+/**
+ * Hook: Get Psychology Coach Agent analysis
+ * @param {Object} userData - User data
+ * @returns {Object} { coaching, isLoading }
+ */
+export function usePsychologyCoach(userData) {
+  const [coaching, setCoaching] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    try {
+      const coach = new PsychologyCoachAgent(userData);
+      setCoaching(coach.getMasterPsychologyCoaching());
+    } catch (error) {
+      console.error('Psychology Coach Error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [userData]);
+
+  return { coaching, isLoading };
+}
+
+/**
+ * Hook: Get Master Integration Agent analysis
+ * @param {Object} userData - User data
+ * @param {Array} interactions - User interactions
+ * @returns {Object} { analysis, isLoading }
+ */
+export function useMasterIntegration(userData, interactions = []) {
+  const [analysis, setAnalysis] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    try {
+      const master = new MasterIntegrationAgent(userData, interactions);
+      setAnalysis(master.getMasterAnalysis());
+    } catch (error) {
+      console.error('Master Integration Error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [userData, interactions]);
+
+  return { analysis, isLoading };
 }
