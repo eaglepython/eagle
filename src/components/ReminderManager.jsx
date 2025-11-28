@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import ReminderSystem from '../utils/ReminderSystem';
-import GoogleCalendarIntegration from '../utils/GoogleCalendarIntegration';
+import { GoogleCalendarIntegration } from '../utils/GoogleCalendarIntegration';
+import { AudioNotifications } from '../utils/AudioNotifications';
+import AudioNotificationManager from './AudioNotificationManager';
 import { NavIcons } from './IconSystem';
 
 function ReminderManager({ userData, addNotification }) {
   const [reminders, setReminders] = useState([]);
   const [reminderSystem, setReminderSystem] = useState(null);
   const [calendarIntegration, setCalendarIntegration] = useState(null);
+  const [audioNotifications, setAudioNotifications] = useState(null);
   const [isGoogleConnected, setIsGoogleConnected] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [customReminder, setCustomReminder] = useState({
@@ -24,16 +27,27 @@ function ReminderManager({ userData, addNotification }) {
     const calendarInt = new GoogleCalendarIntegration();
     setCalendarIntegration(calendarInt);
 
+    // Initialize Audio Notifications
+    const audioNotifs = new AudioNotifications();
+    setAudioNotifications(audioNotifs);
+
     // Check if Google Calendar is connected
-    const isConnected = localStorage.getItem('googleCalendarToken') !== null;
+    const isConnected = localStorage.getItem('googleAccessToken') !== null;
     setIsGoogleConnected(isConnected);
+
+    // Initialize Google Calendar if connected
+    if (isConnected) {
+      calendarInt.initializeGoogleCalendar();
+    }
 
     // Load saved reminders
     const savedReminders = JSON.parse(localStorage.getItem('customReminders') || '[]');
     setReminders(savedReminders);
 
-    // Schedule daily reminders
-    remindersys.scheduleDailyReminders();
+    // Schedule daily reminders with sound
+    remindersys.scheduleDailyReminders(() => {
+      audioNotifs.playReminderSound();
+    });
 
     return () => {
       if (remindersys) {
@@ -143,6 +157,17 @@ function ReminderManager({ userData, addNotification }) {
 
   return (
     <div className="space-y-6">
+      {/* Audio Notifications */}
+      {audioNotifications && (
+        <div className="glass rounded-2xl p-6 border border-purple-900/30">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-2xl">🔊</span>
+            <h3 className="text-xl font-bold text-white">SOUND NOTIFICATIONS</h3>
+          </div>
+          <AudioNotificationManager addNotification={addNotification} />
+        </div>
+      )}
+
       {/* Phone Notifications */}
       <div className="glass rounded-2xl p-6 border border-blue-900/30">
         <div className="flex items-center gap-3 mb-4">

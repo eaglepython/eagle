@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import ErrorBoundary from './components/ErrorBoundary';
+import GoogleAuthCallback from './components/GoogleAuthCallback';
 import Dashboard from './components/Dashboard';
 import DailyTracker from './components/DailyTracker';
 import WeeklyReview from './components/WeeklyReview';
@@ -116,6 +117,13 @@ function App() {
       setNotifications(prev => prev.filter(n => n.id !== id));
     }, 5000);
   };
+
+  // Check if we're on the Google auth callback page
+  const isAuthCallback = window.location.search.includes('code=') || window.location.search.includes('error=');
+
+  if (isAuthCallback) {
+    return <GoogleAuthCallback />;
+  }
 
   const views = {
     dashboard: <Dashboard userData={userData} setUserData={setUserData} addNotification={addNotification} />,

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import LiveUpdateAgent from '../utils/LiveUpdateAgent';
+import { AudioNotifications } from '../utils/AudioNotifications';
 
 const LiveUpdatesComponent = ({ userData, addNotification }) => {
   const [liveAgent] = useState(() => new LiveUpdateAgent());
+  const [audioNotifications] = useState(() => new AudioNotifications());
   const [updates, setUpdates] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isRunning, setIsRunning] = useState(liveAgent.isSystemRunning());
@@ -15,6 +17,8 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
     const handleUpdate = (newUpdates) => {
       setUpdates(newUpdates);
       setStats(liveAgent.getUpdateStats());
+      // Play update sound notification
+      audioNotifications.playUpdateSound();
       addNotification(`📡 Live Updates Received - ${newUpdates.summary.totalUpdates} new insights!`, 'info');
     };
 
