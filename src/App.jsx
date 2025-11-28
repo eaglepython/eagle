@@ -126,7 +126,7 @@ function App() {
   }
 
   const views = {
-    dashboard: <Dashboard userData={userData} setUserData={setUserData} addNotification={addNotification} />,
+    dashboard: <Dashboard userData={userData} setUserData={setUserData} addNotification={addNotification} setCurrentView={setCurrentView} />,
     daily: <DailyTracker userData={userData} setUserData={setUserData} addNotification={addNotification} />,
     weekly: <WeeklyReview userData={userData} setUserData={setUserData} addNotification={addNotification} />,
     career: <CareerTracker userData={userData} setUserData={setUserData} addNotification={addNotification} />,

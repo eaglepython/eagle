@@ -6,6 +6,8 @@ import { InteractionTracker } from '../utils/InteractionTracker';
 import { IntelligentAgent, AdaptiveCoach, PerformanceInsights } from './IntelligentAgent';
 import AdaptiveEvaluation from './AdaptiveEvaluation';
 import IntelligentChatbox from './IntelligentChatbox';
+import QuickActionRecommendations from './QuickActionRecommendations';
+import QuickActionAgent from '../utils/QuickActionAgent';
 
 function WeeklyChart({ data }) {
   const canvasRef = useRef(null);
@@ -567,10 +569,46 @@ function DailyCategoryChart({ dailyScores }) {
   );
 }
 
-function Dashboard({ userData, setUserData, addNotification }) {
+function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
   const [agentRecommendations, setAgentRecommendations] = useState([]);
   const [predictions, setPredictions] = useState({});
   const [nudges, setNudges] = useState([]);
+  const [showActionRecommendations, setShowActionRecommendations] = useState(false);
+  const [currentActionRecommendations, setCurrentActionRecommendations] = useState(null);
+
+  // Quick Actions Handler - navigates to correct view based on action
+  const handleQuickAction = (action) => {
+    const quickActionAgent = new QuickActionAgent(userData);
+    const recs = quickActionAgent.getRecommendations(action);
+    
+    if (recs) {
+      setCurrentActionRecommendations(recs);
+      setShowActionRecommendations(true);
+    }
+
+    const actionMap = {
+      'Log today': () => setCurrentView('daily'),
+      'Add app': () => setCurrentView('career'),
+      'Log trade': () => setCurrentView('trading'),
+      'Log workout': () => setCurrentView('health'),
+      'Track hours': () => setCurrentView('resources'),
+      'Reflect': () => setCurrentView('weekly')
+    };
+
+    if (actionMap[action]) {
+      // Show recommendations first, then navigate after a short delay
+      setTimeout(() => {
+        actionMap[action]();
+        addNotification(`📍 Smart recommendations shown for ${action}`, 'success');
+      }, 500);
+    }
+  };
+
+  // Close recommendations and navigate
+  const handleRecommendationsDismiss = () => {
+    setShowActionRecommendations(false);
+    setCurrentActionRecommendations(null);
+  };
 
   useEffect(() => {
     // Initialize recommendation engine
@@ -900,8 +938,8 @@ function Dashboard({ userData, setUserData, addNotification }) {
           ].map((action, idx) => (
             <button
               key={idx}
-              onClick={() => addNotification(`Navigate to ${action.label}`, 'info')}
-              className="bg-red-900 hover:bg-red-800 text-white font-semibold py-3 px-2 rounded-lg transition-all text-center"
+              onClick={() => handleQuickAction(action.action)}
+              className="bg-red-900 hover:bg-red-800 text-white font-semibold py-3 px-2 rounded-lg transition-all text-center transform hover:scale-105"
             >
               <div className="text-2xl mb-1">{action.emoji}</div>
               <div className="text-xs">{action.action}</div>
@@ -912,6 +950,14 @@ function Dashboard({ userData, setUserData, addNotification }) {
 
       {/* Intelligent Chatbox - Fixed Position */}
       <IntelligentChatbox userData={userData} setUserData={setUserData} />
+
+      {/* Quick Action Recommendations Modal */}
+      {showActionRecommendations && currentActionRecommendations && (
+        <QuickActionRecommendations
+          recommendations={currentActionRecommendations}
+          onDismiss={handleRecommendationsDismiss}
+        />
+      )}
     </div>
   );
 }
