@@ -86,7 +86,7 @@ export function RealTimePerformanceDashboard({ userData }) {
               ></div>
             </div>
             <div className="text-xs text-slate-400 mt-1">
-              {Math.min(100, metrics.consistency?.neuroplasticityLevel || 0).toFixed(0)}% to automation
+              {(Math.min(100, metrics.consistency?.neuroplasticityLevel || 0)).toFixed(0)}% to automation
             </div>
           </div>
 
@@ -110,7 +110,7 @@ export function RealTimePerformanceDashboard({ userData }) {
           <div className="bg-slate-900/50 p-4 rounded-lg border border-purple-500/30">
             <div className="text-sm text-slate-400">Focus Quality</div>
             <div className="text-3xl font-bold text-purple-400 mt-2">
-              {(metrics.focus?.focusQuality || 0).toFixed(0)}%
+              {((metrics.focus?.focusQuality || 0)).toFixed(0)}%
             </div>
             <div className="text-xs text-slate-300 mt-2">
               {metrics.focus?.status === 'excellent' && '✅ Excellent'}
