@@ -71,11 +71,6 @@ function App() {
     // Check if already authenticated
     return auth === 'true';
   });
-  
-  // Debug: Log authentication state
-  useEffect(() => {
-    console.log('🎯 App rendering - isAuthenticated:', isAuthenticated);
-  }, [isAuthenticated]);
   const [currentView, setCurrentView] = useState('dashboard');
   const [userData, setUserData] = useState(() => {
     const saved = localStorage.getItem('lifeTrackerData');
