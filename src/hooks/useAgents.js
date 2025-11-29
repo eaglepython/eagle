@@ -10,6 +10,7 @@ import { MasterIntegrationAgent } from '../utils/MasterIntegrationAgent';
 import { PerformanceMonitorAgent } from '../utils/PerformanceMonitorAgent';
 import { AdaptivePerformanceOptimizer } from '../utils/AdaptivePerformanceOptimizer';
 import { PersonalAICoach } from '../utils/PersonalAICoach';
+import { GoalAchievementPredictorAgent } from '../utils/GoalAchievementPredictorAgent';
 
 /**
  * Hook: Get RAG evaluation and recommendations
@@ -376,4 +377,27 @@ export function usePerformanceMonitor(userData) {
   }, [userData]);
 
   return { dashboard, isLoading };
+}
+
+/**
+ * Hook: Get 2026 Goal Achievement Predictions
+ * @param {Object} userData - User data
+ * @returns {Object} { predictions, isLoading }
+ */
+export function useGoalPredictions(userData) {
+  const [predictions, setPredictions] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    try {
+      const predictor = new GoalAchievementPredictorAgent(userData);
+      setPredictions(predictor.get2026Predictions());
+    } catch (error) {
+      console.error('Goal Predictions Error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [userData]);
+
+  return { predictions, isLoading };
 }

@@ -10,6 +10,8 @@ import QuickActionRecommendations from './QuickActionRecommendations';
 import QuickActionAgent from '../utils/QuickActionAgent';
 import PsychologyCoachPanel from './PsychologyCoachPanel';
 import RealTimePerformanceDashboard from './RealTimePerformanceDashboard';
+import GoalPredictionDashboard from './GoalPredictionDashboard';
+import { GoalAchievementPredictorAgent } from '../utils/GoalAchievementPredictorAgent';
 
 function WeeklyChart({ data }) {
   const canvasRef = useRef(null);
@@ -620,6 +622,18 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
     setAgentRecommendations(engine.generateRecommendations());
     setPredictions(engine.predictGoalAchievement());
     setNudges(engine.generateNudges());
+
+    // Generate 2026 goal predictions
+    try {
+      const predictor = new GoalAchievementPredictorAgent(userData);
+      const goalPredictions = predictor.get2026Predictions();
+      setPredictions(prev => ({
+        ...prev,
+        predictions: goalPredictions
+      }));
+    } catch (error) {
+      console.error('Goal Prediction Error:', error);
+    }
   }, [userData]);
 
   const today = new Date().toISOString().split('T')[0];
@@ -688,6 +702,9 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
 
       {/* Real-Time Performance Monitor */}
       <RealTimePerformanceDashboard userData={userData} />
+
+      {/* 2026 Goal Predictions */}
+      <GoalPredictionDashboard predictions={predictions.predictions} />
 
       {/* Adaptive Coach */}
       <AdaptiveCoach userData={userData} metrics={{ avgWeeklyScore, jobAppsThisWeek, workoutsThisWeek }} />
