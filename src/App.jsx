@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import ErrorBoundary from './components/ErrorBoundary';
 import GoogleAuthCallback from './components/GoogleAuthCallback';
+import HighValueReminder from './components/HighValueReminder';
 import Dashboard from './components/Dashboard';
 import DailyTracker from './components/DailyTracker';
 import WeeklyReview from './components/WeeklyReview';
@@ -60,6 +61,12 @@ const DEFAULT_USER_DATA = {
 };
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    // Check if already authenticated - if not, show launcher
+    const auth = localStorage.getItem('launcherAuthenticated');
+    console.log('🔐 Launcher auth state:', auth);
+    return auth === 'true';
+  });
   const [currentView, setCurrentView] = useState('dashboard');
   const [userData, setUserData] = useState(() => {
     const saved = localStorage.getItem('lifeTrackerData');
@@ -67,6 +74,35 @@ function App() {
   });
   const [notifications, setNotifications] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Listen for launcher authentication message from iframe
+  useEffect(() => {
+    const handleMessage = (event) => {
+      // Check for the authentication message from launcher.html
+      if (event.data === 'launcher-authenticated') {
+        console.log('✅ Launcher authenticated, showing app');
+        localStorage.setItem('launcherAuthenticated', 'true');
+        setIsAuthenticated(true);
+      }
+    };
+
+    // Reset launcher with Ctrl+Shift+L
+    const handleKeyPress = (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+        console.log('🔄 Resetting launcher...');
+        localStorage.removeItem('launcherAuthenticated');
+        setIsAuthenticated(false);
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
 
   // Save data to localStorage
   useEffect(() => {
@@ -125,6 +161,30 @@ function App() {
     return <GoogleAuthCallback />;
   }
 
+  // Show launcher/passcode screen if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="w-full h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 flex items-center justify-center">
+        <div style={{ width: '100%', height: '100%' }}>
+          <iframe
+            src="/launcher.html"
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none',
+              display: 'block',
+              backgroundColor: 'transparent'
+            }}
+            title="7th Sense Launcher"
+            onLoad={() => {
+              console.log('Launcher iframe loaded');
+            }}
+          />
+        </div>
+      </div>
+    );
+  }
+
   const views = {
     dashboard: <Dashboard userData={userData} setUserData={setUserData} addNotification={addNotification} setCurrentView={setCurrentView} />,
     daily: <DailyTracker userData={userData} setUserData={setUserData} addNotification={addNotification} />,
@@ -141,6 +201,7 @@ function App() {
 
   return (
     <ErrorBoundary>
+      <HighValueReminder userData={userData} addNotification={addNotification} />
       <div className="w-full h-screen overflow-y-auto overflow-x-hidden flex flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800">
         <div className="px-3 md:px-4 lg:px-6 pt-3 md:pt-4">
           <Header currentTime={currentTime} />

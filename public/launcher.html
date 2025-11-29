@@ -641,7 +641,13 @@
 
         // Enter dashboard
         function enterDashboard() {
-            window.location.href = './index.html';
+            // Send message to parent window (React app)
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage('launcher-authenticated', '*');
+            } else {
+                // Fallback to regular navigation if not in iframe
+                window.location.href = './index.html';
+            }
         }
 
         // Allow Enter key to submit

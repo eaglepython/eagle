@@ -1,99 +1,29 @@
 import { useState, useEffect } from 'react';
 
 export function Header({ currentTime }) {
-  const [weather, setWeather] = useState(null);
-  const [city, setCity] = useState('Detecting...');
   const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [todayFormula, setTodayFormula] = useState('');
 
-  // Fetch weather and location with Nexus API integration
+  // Formula database
+  const formulas = [
+    { name: 'Brownian Motion', symbol: 'dW_t', formula: '√dt · N(0,1)', category: 'paths' },
+    { name: 'Black-Scholes', symbol: 'C = S₀N(d₁)', formula: '- Ke^(-rT)N(d₂)', category: 'finance' },
+    { name: 'Vasicek Model', symbol: 'dr_t', formula: 'a(b-r_t)dt + σdW_t', category: 'finance' },
+    { name: 'MLP Forward Pass', symbol: 'h = σ(Wx + b)', formula: 'activation(weight·input + bias)', category: 'dl' },
+    { name: 'Backpropagation', symbol: '∂L/∂W', formula: '∂L/∂h · ∂h/∂W', category: 'dl' },
+    { name: 'Q-Learning', symbol: 'Q(s,a)', formula: 'r + γ·max(Q(s\',a\'))', category: 'ml' },
+    { name: 'Entropy', symbol: 'H(X)', formula: '-Σ p(x)·log(p(x))', category: 'ml' },
+    { name: 'Quantum Superposition', symbol: '|ψ⟩', formula: 'α|0⟩ + β|1⟩', category: 'quantum' },
+    { name: 'Schrodinger Equation', symbol: 'iℏ∂ψ/∂t', formula: 'Ĥψ', category: 'quantum' },
+    { name: 'Wiener Process', symbol: 'W(t)', formula: 'continuous path, N(0,t)', category: 'paths' }
+  ];
+
   useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        // Try Nexus API first (https://eaglepython.github.io/Nexus/)
-        try {
-          const nexusController = new AbortController();
-          const nexusTimeoutId = setTimeout(() => nexusController.abort(), 5000);
+    // Rotate formula every load
+    const randomFormula = formulas[Math.floor(Math.random() * formulas.length)];
+    setTodayFormula(randomFormula);
 
-          const nexusRes = await fetch('https://eaglepython.github.io/Nexus/', {
-            signal: nexusController.signal
-          });
-          clearTimeout(nexusTimeoutId);
-
-          if (nexusRes.ok) {
-            const nexusData = await nexusRes.json();
-            if (nexusData.location?.city) {
-              setCity(nexusData.location.city);
-            }
-            if (nexusData.weather?.temperature !== undefined) {
-              setWeather({
-                temp: nexusData.weather.temperature,
-                code: nexusData.weather.code || 0,
-                humidity: nexusData.weather.humidity || '--',
-                wind: nexusData.weather.wind || '--'
-              });
-              return; // Success with Nexus
-            }
-          }
-        } catch (nexusError) {
-          console.debug('Nexus API unavailable, falling back to standard APIs');
-        }
-
-        // Fallback: Get location from IP
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-        const geoRes = await fetch('https://ipapi.co/json/', { 
-          signal: controller.signal 
-        });
-        clearTimeout(timeoutId);
-        
-        if (!geoRes.ok) throw new Error('Geo fetch failed');
-        const geoData = await geoRes.json();
-        const cityName = geoData.city || geoData.region_code || 'Your Location';
-        setCity(cityName);
-
-        // Get weather from Open-Meteo
-        const weatherController = new AbortController();
-        const weatherTimeoutId = setTimeout(() => weatherController.abort(), 8000);
-
-        const weatherRes = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${geoData.latitude}&longitude=${geoData.longitude}&current=temperature_2m,weather_code,relative_humidity,wind_speed_10m&temperature_unit=fahrenheit`,
-          { signal: weatherController.signal }
-        );
-        clearTimeout(weatherTimeoutId);
-
-        if (!weatherRes.ok) throw new Error('Weather fetch failed');
-        const weatherData = await weatherRes.json();
-        
-        if (weatherData.current) {
-          setWeather({
-            temp: Math.round(weatherData.current.temperature_2m),
-            code: weatherData.current.weather_code,
-            humidity: weatherData.current.relative_humidity,
-            wind: Math.round(weatherData.current.wind_speed_10m)
-          });
-        }
-      } catch (error) {
-        console.error('Weather/location error:', error.message);
-        // Set safe defaults on error
-        setCity('Your Location');
-        setWeather({
-          temp: '--',
-          code: 0,
-          humidity: '--',
-          wind: '--'
-        });
-      }
-    };
-
-    fetchWeather();
-    // Update every 30 minutes
-    const weatherInterval = setInterval(fetchWeather, 1800000);
-    return () => clearInterval(weatherInterval);
-  }, []);
-
-  // Get upcoming events/dates
-  useEffect(() => {
+    // Get upcoming events
     const events = [
       { date: new Date(2025, 11, 25), name: 'Christmas Day', emoji: '🎄' },
       { date: new Date(2025, 11, 31), name: 'New Year\'s Eve', emoji: '🎉' },
@@ -119,21 +49,6 @@ export function Header({ currentTime }) {
     setUpcomingEvents(upcoming);
   }, []);
 
-  // Get weather emoji based on WMO code
-  const getWeatherEmoji = (code) => {
-    if (code === 0) return '☀️';           // Clear
-    if (code === 1 || code === 2) return '🌤️';    // Mostly clear
-    if (code === 3) return '☁️';           // Overcast
-    if (code === 45 || code === 48) return '🌫️';  // Foggy
-    if (code >= 51 && code <= 55) return '🌦️';    // Drizzle
-    if (code >= 61 && code <= 65) return '🌧️';    // Rain
-    if (code >= 71 && code <= 77) return '❄️';    // Snow
-    if (code >= 80 && code <= 82) return '⛈️';    // Showers
-    if (code === 85 || code === 86) return '🌨️';  // Snow showers
-    if (code >= 95 && code <= 99) return '⚡';     // Thunderstorm
-    return '🌤️';
-  };
-
   // Calculate days until event
   const daysUntilEvent = (eventDate) => {
     const today = new Date();
@@ -142,6 +57,17 @@ export function Header({ currentTime }) {
     target.setHours(0, 0, 0, 0);
     const diff = target - today;
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
+  };
+
+  const getFormulaColor = (category) => {
+    switch(category) {
+      case 'finance': return 'from-green-900/30 to-emerald-900/30 border-green-600/30';
+      case 'dl': return 'from-orange-900/30 to-amber-900/30 border-orange-600/30';
+      case 'ml': return 'from-purple-900/30 to-violet-900/30 border-purple-600/30';
+      case 'quantum': return 'from-indigo-900/30 to-blue-900/30 border-indigo-600/30';
+      case 'paths': return 'from-pink-900/30 to-rose-900/30 border-pink-600/30';
+      default: return 'from-slate-900/30 to-slate-800/30 border-slate-600/30';
+    }
   };
 
   const timeStr = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -166,31 +92,19 @@ export function Header({ currentTime }) {
         </div>
       </div>
 
-      {/* Bottom Row: Weather, City, Location & Upcoming Events */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
-        {/* Weather & Humidity */}
-        {weather && (
-          <div className="bg-slate-800/50 rounded-lg p-2 md:p-3 border border-slate-700 flex items-center gap-2 hover:bg-slate-800/70 transition">
-            <span className="text-2xl md:text-3xl flex-shrink-0">{getWeatherEmoji(weather.code)}</span>
+      {/* Bottom Row: Formulas & Upcoming Events */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-3">
+        {/* Daily Formula */}
+        {todayFormula && (
+          <div className={`bg-gradient-to-br ${getFormulaColor(todayFormula.category)} rounded-lg p-2 md:p-3 border hover:border-opacity-100 transition`}>
+            <span className="text-2xl md:text-3xl flex-shrink-0">📐</span>
             <div className="min-w-0 flex-1">
-              <div className="text-xs md:text-sm text-slate-300">Weather</div>
-              <div className="text-base md:text-lg font-semibold text-white">
-                {typeof weather.temp === 'number' ? `${weather.temp}°F` : weather.temp}
-              </div>
-              <div className="text-xs text-slate-400">{weather.humidity}% humidity</div>
+              <div className="text-xs md:text-sm text-slate-300">{todayFormula.name}</div>
+              <div className="text-xs md:text-sm font-mono text-white">{todayFormula.symbol}</div>
+              <div className="text-xs text-slate-400 line-clamp-1">{todayFormula.formula}</div>
             </div>
           </div>
         )}
-
-        {/* City/Location */}
-        <div className="bg-slate-800/50 rounded-lg p-2 md:p-3 border border-slate-700 flex items-center gap-2 hover:bg-slate-800/70 transition">
-          <span className="text-2xl md:text-3xl flex-shrink-0">📍</span>
-          <div className="min-w-0 flex-1">
-            <div className="text-xs md:text-sm text-slate-300">Location</div>
-            <div className="text-base md:text-lg font-semibold text-white truncate">{city}</div>
-            <div className="text-xs text-slate-400">Current</div>
-          </div>
-        </div>
 
         {/* Upcoming Event 1 */}
         {upcomingEvents.length > 0 && (
