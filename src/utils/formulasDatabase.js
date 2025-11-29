@@ -21,4 +21,5 @@ export const COMPREHENSIVE_FORMULAS = [
   { name: 'Brownian Motion', symbol: 'dW_t', formula: '√dt · N(0,1)', domain: 'Stochastic Processes', usage: 'Price modeling', applications: 'Monte Carlo', category: 'finance', code: `W = np.cumsum(np.sqrt(dt) * np.random.randn(N))\nS = S0 * np.exp((mu - σ²/2) * t + σ * W)` },
 ];
 
+export { COMPREHENSIVE_FORMULAS };
 export default COMPREHENSIVE_FORMULAS;

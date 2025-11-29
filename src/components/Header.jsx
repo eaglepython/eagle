@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import COMPREHENSIVE_FORMULAS from '../utils/formulasDatabase';
+import COMPREHENSIVE_FORMULAS from '../utils/formulasDatabase.js';
 
 export function Header({ currentTime }) {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
@@ -82,6 +82,12 @@ export function Header({ currentTime }) {
 
   const timeStr = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   const dateStr = currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+  // Debug logging
+  useEffect(() => {
+    console.log('📐 Formulas loaded:', COMPREHENSIVE_FORMULAS.length);
+    console.log('📍 Current formula:', currentFormula);
+  }, [currentFormula]);
 
   return (
     <>
