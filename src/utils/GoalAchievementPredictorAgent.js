@@ -87,12 +87,21 @@ export class GoalAchievementPredictorAgent {
     let totalWeight = 0;
 
     Object.entries(predictions).forEach(([goal, pred]) => {
-      const weight = weights[goal] || 1;
-      // Parse probability string (e.g., "75.3%") to number
-      const probStr = String(pred.probability || '0').replace('%', '').trim();
-      const probNum = parseFloat(probStr) / 100 || 0; // Convert back to 0-1 scale
-      totalScore += probNum * weight;
-      totalWeight += weight;
+      try {
+        const weight = Number(weights[goal] || 1) || 1;
+        // Parse probability string (e.g., "75.3%") to number
+        const probStr = String(pred?.probability || '0').replace('%', '').trim();
+        let probNum = parseFloat(probStr);
+        
+        // Ensure probNum is a valid number
+        if (isNaN(probNum)) probNum = 0;
+        else probNum = Math.max(0, Math.min(1, probNum / 100));
+        
+        totalScore += (Number(probNum) || 0) * (Number(weight) || 1);
+        totalWeight += (Number(weight) || 1);
+      } catch (e) {
+        console.error('Error parsing probability for goal', goal, e);
+      }
     });
 
     const overallProbability = totalWeight > 0 ? totalScore / totalWeight : 0;
@@ -144,35 +153,42 @@ export class GoalAchievementPredictorAgent {
    * Predict Daily Score (7 → 8+)
    */
   _predictDailyScore() {
-    const last7 = this.dailyScores.slice(-7).map(s => s?.score || 0);
-    const last30 = this.dailyScores.slice(-30).map(s => s?.score || 0);
-    
-    const avg7 = last7.length > 0 ? last7.reduce((a, b) => a + b, 0) / last7.length : 0;
-    const avg30 = last30.length > 0 ? last30.reduce((a, b) => a + b, 0) / last30.length : 0;
-    
-    // Calculate velocity
-    const weeklyVelocity = (avg7 - avg30) / 4; // per week
-    const velocity = Math.max(0.1, weeklyVelocity); // Min 0.1 per week
-    
-    // Project to 2026
-    const weeksRemaining = Math.floor(this.daysRemaining / 7);
-    const projected = avg7 + (velocity * weeksRemaining);
-    const target = 8;
+    try {
+      const last7 = this.dailyScores.slice(-7).map(s => Number(s?.score || 0) || 0);
+      const last30 = this.dailyScores.slice(-30).map(s => Number(s?.score || 0) || 0);
+      
+      const avg7 = last7.length > 0 ? last7.reduce((a, b) => a + b, 0) / last7.length : 0;
+      const avg30 = last30.length > 0 ? last30.reduce((a, b) => a + b, 0) / last30.length : 0;
+      
+      // Calculate velocity
+      const weeklyVelocity = (avg7 - avg30) / 4; // per week
+      const velocity = Math.max(0.1, weeklyVelocity); // Min 0.1 per week
+      
+      // Project to 2026
+      const weeksRemaining = Math.floor(this.daysRemaining / 7);
+      const projected = avg7 + (velocity * weeksRemaining);
+      const target = 8;
 
-    return {
-      current: avg7.toFixed(1),
-      target: target,
-      projected: Math.min(10, projected).toFixed(1),
-      probability: this._calculateProbability(projected, target, 10),
-      velocity: `+${velocity.toFixed(2)}/week`,
-      timeToTarget: projected >= target ? 'Achieved' : `${Math.ceil((target - projected) / Math.max(0.01, velocity))} weeks`,
-      factors: [
-        `Current: ${avg7.toFixed(1)}/10 (${(avg7/10*100).toFixed(0)}%)`,
-        `Trend: +${velocity.toFixed(2)}/week`,
-        `Neuroplasticity phase: ${this._getNeuroplasticityPhase(this.dailyScores.length)}`,
-        `Psychology coaching active: +0.5/week expected`
-      ]
-    };
+      const probability = this._calculateProbability(projected, target, 10);
+
+      return {
+        current: Number(avg7).toFixed(1),
+        target: target,
+        projected: Number(Math.min(10, projected)).toFixed(1),
+        probability: (Math.max(0, Math.min(1, probability)) * 100).toFixed(1) + '%',
+        velocity: `+${Number(velocity).toFixed(2)}/week`,
+        timeToTarget: projected >= target ? 'Achieved' : `${Math.ceil((target - projected) / Math.max(0.01, velocity))} weeks`,
+        factors: [
+          `Current: ${Number(avg7).toFixed(1)}/10 (${(Number(avg7)/10*100).toFixed(0)}%)`,
+          `Trend: +${Number(velocity).toFixed(2)}/week`,
+          `Neuroplasticity phase: ${this._getNeuroplasticityPhase(this.dailyScores.length)}`,
+          `Psychology coaching active: +0.5/week expected`
+        ]
+      };
+    } catch (error) {
+      console.error('Error predicting daily score:', error);
+      return { probability: '0%', current: 0, target: 8, factors: [] };
+    }
   }
 
   /**
