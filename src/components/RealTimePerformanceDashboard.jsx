@@ -94,7 +94,7 @@ export function RealTimePerformanceDashboard({ userData }) {
           <div className="bg-slate-900/50 p-4 rounded-lg border border-blue-500/30">
             <div className="text-sm text-slate-400">Productivity</div>
             <div className="text-3xl font-bold text-blue-400 mt-2">
-              {(metrics.productivity?.last7DayAverage || 0).toFixed(1)}/10
+              {(Number(metrics.productivity?.last7DayAverage) || 0).toFixed(1)}/10
             </div>
             <div className="text-xs text-slate-300 mt-2">{metrics.productivity?.trend || 'Stable'}</div>
             <div className="mt-3 text-xs text-slate-300">
@@ -110,7 +110,7 @@ export function RealTimePerformanceDashboard({ userData }) {
           <div className="bg-slate-900/50 p-4 rounded-lg border border-purple-500/30">
             <div className="text-sm text-slate-400">Focus Quality</div>
             <div className="text-3xl font-bold text-purple-400 mt-2">
-              {((metrics.focus?.focusQuality || 0)).toFixed(0)}%
+              {(Number(metrics.focus?.focusQuality) || 0).toFixed(0)}%
             </div>
             <div className="text-xs text-slate-300 mt-2">
               {metrics.focus?.status === 'excellent' && '✅ Excellent'}

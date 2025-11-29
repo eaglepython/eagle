@@ -120,8 +120,8 @@ export class PerformanceMonitorAgent {
     const trend = avg7Day - avg30Day;
 
     return {
-      last7DayAverage: avg7Day.toFixed(1),
-      last30DayAverage: avg30Day.toFixed(1),
+      last7DayAverage: parseFloat(avg7Day.toFixed(1)),
+      last30DayAverage: parseFloat(avg30Day.toFixed(1)),
       trend: trend > 0 ? `📈 +${trend.toFixed(1)}` : trend < 0 ? `📉 ${trend.toFixed(1)}` : '→ Stable',
       deepWorkHoursNeeded: 4.5,
       estimatedDeepWorkHours: (avg7Day / 10) * 4.5,
@@ -154,7 +154,7 @@ export class PerformanceMonitorAgent {
     const focusQuality = 100 - distractionEstimate;
 
     return {
-      focusQuality: focusQuality.toFixed(0) + '%',
+      focusQuality: parseInt(focusQuality),
       estimatedDistractionIncidents: Math.round(distractionEstimate / 10),
       timeWastedToDistraction: `${(distractionEstimate / 100 * 8).toFixed(1)}h/day`,
       status: focusQuality >= 80 ? 'excellent' : focusQuality >= 60 ? 'good' : 'needs-improvement',
@@ -210,7 +210,7 @@ export class PerformanceMonitorAgent {
     return {
       energyTrend: energyTrend > 0 ? `📈 Rising` : energyTrend < 0 ? `📉 Declining` : '→ Stable',
       burnoutRisk,
-      currentEnergyLevel: secondHalf.toFixed(1),
+      currentEnergyLevel: parseFloat(secondHalf.toFixed(1)),
       activityLoad: totalActivityLoad,
       recoveryNeeded: burnoutRisk === 'HIGH',
       recoveryProtocol: burnoutRisk === 'HIGH' ? [
