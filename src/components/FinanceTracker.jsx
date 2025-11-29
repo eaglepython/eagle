@@ -41,7 +41,7 @@ function FinanceTracker({ userData, setUserData, addNotification }) {
   };
 
   const savingsRate = finance.monthlyIncome > 0
-    ? ((finance.monthlyIncome - finance.monthlyExpenses) / finance.monthlyIncome * 100).toFixed(1)
+    ? parseFloat(((finance.monthlyIncome - finance.monthlyExpenses) / finance.monthlyIncome * 100).toFixed(1))
     : 0;
 
   const milestones = [

@@ -79,7 +79,7 @@ export class HealthTrackerAgent {
       return wDate > monthAgo;
     });
 
-    const avgPerWeek = (last4Weeks.length / 4).toFixed(1);
+    const avgPerWeek = parseFloat((last4Weeks.length / 4).toFixed(1));
     
     if (avgPerWeek >= 1.5) return 'HIGH_CONSISTENCY';
     if (avgPerWeek >= 0.75) return 'MODERATE_CONSISTENCY';
@@ -99,11 +99,11 @@ export class HealthTrackerAgent {
       return wDate > monthAgo;
     });
 
-    const avgPerWeek = (lastMonth.length / 4.3).toFixed(1);
+    const avgPerWeek = parseFloat((lastMonth.length / 4.3).toFixed(1));
 
     return {
       totalLastMonth: lastMonth.length,
-      avgPerWeek: parseFloat(avgPerWeek),
+      avgPerWeek: avgPerWeek,
       target: 6,
       status: avgPerWeek >= 6 ? 'ON_TRACK' : avgPerWeek >= 4 ? 'BUILDING' : 'NEEDS_FOCUS'
     };

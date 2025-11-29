@@ -431,7 +431,7 @@ export class InteractionTracker {
   _assessFitnessConsistency(workoutInteractions) {
     if (workoutInteractions.length < 4) return 'Building consistency';
     const last4Weeks = workoutInteractions.slice(-24);
-    const avgPerWeek = (last4Weeks.length / 4).toFixed(1);
+    const avgPerWeek = parseFloat((last4Weeks.length / 4).toFixed(1));
     return `${avgPerWeek} workouts/week`;
   }
 

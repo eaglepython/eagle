@@ -451,7 +451,7 @@ export class RAGEvaluationEngine {
     Object.entries(goals).forEach(([key, goal]) => {
       if (goal.current < goal.target) {
         const shortfall = goal.target - goal.current;
-        const percentBehind = ((shortfall / goal.target) * 100).toFixed(0);
+        const percentBehind = parseFloat(((shortfall / goal.target) * 100).toFixed(0));
 
         recs.push({
           goal: goal.metric,

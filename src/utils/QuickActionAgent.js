@@ -49,7 +49,7 @@ export class QuickActionAgent {
       });
 
       // Generate insights
-      const avgScore = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
+      const avgScore = parseFloat((scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1));
       if (avgScore >= 8) {
         recommendations.insights.push({
           type: 'success',
@@ -102,10 +102,10 @@ export class QuickActionAgent {
     // Predict likely score
     const recentScores = this.userData.dailyScores.slice(-7).map(s => s.totalScore);
     const avgRecent = recentScores.length > 0 
-      ? (recentScores.reduce((a, b) => a + b, 0) / recentScores.length).toFixed(1)
+      ? parseFloat((recentScores.reduce((a, b) => a + b, 0) / recentScores.length).toFixed(1))
       : 6.0;
     
-    recommendations.predictedScore = Math.min(10, parseFloat(avgRecent) + 0.5);
+    recommendations.predictedScore = Math.min(10, avgRecent + 0.5);
 
     return recommendations;
   }
@@ -233,7 +233,7 @@ export class QuickActionAgent {
     // Calculate metrics
     const allPnL = thisWeek.reduce((sum, t) => sum + (t.pnl || 0), 0);
     const winningTrades = thisWeek.filter(t => (t.pnl || 0) > 0).length;
-    const winRate = thisWeek.length > 0 ? ((winningTrades / thisWeek.length) * 100).toFixed(1) : 0;
+    const winRate = thisWeek.length > 0 ? parseFloat(((winningTrades / thisWeek.length) * 100).toFixed(1)) : 0;
     const avgWin = winningTrades > 0 
       ? (thisWeek.filter(t => (t.pnl || 0) > 0).reduce((sum, t) => sum + t.pnl, 0) / winningTrades).toFixed(2)
       : 0;
@@ -348,7 +348,7 @@ export class QuickActionAgent {
 
     // Calculate metrics
     const totalMinutes = thisWeek.reduce((sum, w) => sum + (w.duration || 0), 0);
-    const avgDuration = thisWeek.length > 0 ? (totalMinutes / thisWeek.length).toFixed(0) : 0;
+    const avgDuration = thisWeek.length > 0 ? parseFloat((totalMinutes / thisWeek.length).toFixed(0)) : 0;
     const types = {};
     thisWeek.forEach(w => { types[w.type] = (types[w.type] || 0) + 1; });
 
