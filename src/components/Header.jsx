@@ -59,6 +59,17 @@ export function Header({ currentTime }) {
     }
   };
 
+  const getCategoryEmoji = (category) => {
+    switch(category) {
+      case 'finance': return '💰';
+      case 'dl': return '🧠';
+      case 'ml': return '🤖';
+      case 'quantum': return '⚛️';
+      case 'paths': return '📊';
+      default: return '📐';
+    }
+  };
+
   const nextFormula = () => {
     setFormulaIndex((prev) => (prev + 1) % COMPREHENSIVE_FORMULAS.length);
   };
