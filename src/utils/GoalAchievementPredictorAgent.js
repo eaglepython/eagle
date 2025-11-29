@@ -37,16 +37,31 @@ export class GoalAchievementPredictorAgent {
    * Get comprehensive 2026 predictions
    */
   get2026Predictions() {
-    return {
-      overallScore: this._predictOverallAchievement(),
-      byGoal: this._predictIndividualGoals(),
-      timeline: this._predictTimeline(),
-      riskFactors: this._identifyRiskFactors(),
-      opportunities: this._identifyOpportunities(),
-      criticalFactors: this._identifyCriticalFactors(),
-      confidenceScore: this._calculateConfidence(),
-      recommendation: this._generateRecommendation()
-    };
+    try {
+      return {
+        overallScore: this._predictOverallAchievement(),
+        byGoal: this._predictIndividualGoals(),
+        timeline: this._predictTimeline(),
+        riskFactors: this._identifyRiskFactors(),
+        opportunities: this._identifyOpportunities(),
+        criticalFactors: this._identifyCriticalFactors(),
+        confidenceScore: this._calculateConfidence(),
+        recommendation: this._generateRecommendation()
+      };
+    } catch (error) {
+      console.error('Error generating 2026 predictions:', error);
+      // Return safe defaults on error
+      return {
+        overallScore: { probability: '0%', description: 'Error calculating', status: 'Unknown', lastUpdated: new Date().toISOString() },
+        byGoal: {},
+        timeline: {},
+        riskFactors: [],
+        opportunities: [],
+        criticalFactors: [],
+        confidenceScore: { dataPoints: 0, level: 'Low', percentage: '0%' },
+        recommendation: 'Unable to generate recommendation at this time'
+      };
+    }
   }
 
   /**
@@ -97,17 +112,32 @@ export class GoalAchievementPredictorAgent {
    * Predict individual goal achievements
    */
   _predictIndividualGoals() {
-    return {
-      dailyScore: this._predictDailyScore(),
-      careerRole: this._predictCareerAchievement(),
-      tradingAUM: this._predictTradingAUM(),
-      netWorth: this._predictNetWorth(),
-      bodyFat: this._predictBodyFat(),
-      workouts: this._predictWorkoutConsistency(),
-      applications: this._predictApplicationSuccess(),
-      savingsRate: this._predictSavingsRate(),
-      learningHours: this._predictLearningProgress()
-    };
+    try {
+      return {
+        dailyScore: this._predictDailyScore(),
+        careerRole: this._predictCareerAchievement(),
+        tradingAUM: this._predictTradingAUM(),
+        netWorth: this._predictNetWorth(),
+        bodyFat: this._predictBodyFat(),
+        workouts: this._predictWorkoutConsistency(),
+        applications: this._predictApplicationSuccess(),
+        savingsRate: this._predictSavingsRate(),
+        learningHours: this._predictLearningProgress()
+      };
+    } catch (error) {
+      console.error('Error predicting individual goals:', error);
+      return {
+        dailyScore: { probability: '0%', current: 0, target: 8 },
+        careerRole: { probability: '0%', target: 'Unknown' },
+        tradingAUM: { probability: '0%', target: '$500K' },
+        netWorth: { probability: '0%', target: '$250K' },
+        bodyFat: { probability: '0%', target: '12%' },
+        workouts: { probability: '0%', target: 6 },
+        applications: { probability: '0%', target: 15 },
+        savingsRate: { probability: '0%', target: '30%' },
+        learningHours: { probability: '0%', target: '250h/year' }
+      };
+    }
   }
 
   /**
@@ -462,40 +492,51 @@ export class GoalAchievementPredictorAgent {
    * Identify risk factors
    */
   _identifyRiskFactors() {
-    const risks = [];
-    const predictions = this._predictIndividualGoals();
+    try {
+      const risks = [];
+      const predictions = this._predictIndividualGoals();
 
-    // Low app volume
-    if (predictions.applications.lastMonthAverage < 10) {
-      risks.push({
-        factor: 'Insufficient Career Application Volume',
-        severity: 'CRITICAL',
-        impact: 'Career goal achievement probability -40%',
-        mitigation: 'Increase to 15+ apps/week immediately'
-      });
+      // Low app volume - safely check
+      if (predictions.applications && predictions.applications.lastMonthAverage) {
+        const avgApps = parseFloat(String(predictions.applications.lastMonthAverage || '10'));
+        if (avgApps < 10) {
+          risks.push({
+            factor: 'Insufficient Career Application Volume',
+            severity: 'CRITICAL',
+            impact: 'Career goal achievement probability -40%',
+            mitigation: 'Increase to 15+ apps/week immediately'
+          });
+        }
+      }
+
+      // Low consistency
+      if (this.dailyScores.length < 30) {
+        risks.push({
+          factor: 'Consistency Not Established',
+          severity: 'HIGH',
+          impact: 'Neuroplasticity not activated, willpower still scarce',
+          mitigation: 'Build 21-day consistency streak (builds neural pathways)'
+        });
+      }
+
+      // Low workouts - safely check
+      if (predictions.workouts && predictions.workouts.lastMonthAverage) {
+        const avgWorkouts = parseFloat(String(predictions.workouts.lastMonthAverage || '5'));
+        if (avgWorkouts < 5) {
+          risks.push({
+            factor: 'Insufficient Workout Volume',
+            severity: 'MEDIUM',
+            impact: 'Health goal at risk, energy management compromised',
+            mitigation: 'Schedule 6+ workouts/week, habit stack to make automatic'
+          });
+        }
+      }
+
+      return risks;
+    } catch (error) {
+      console.error('Error identifying risk factors:', error);
+      return [];
     }
-
-    // Low consistency
-    if (this.dailyScores.length < 30) {
-      risks.push({
-        factor: 'Consistency Not Established',
-        severity: 'HIGH',
-        impact: 'Neuroplasticity not activated, willpower still scarce',
-        mitigation: 'Build 21-day consistency streak (builds neural pathways)'
-      });
-    }
-
-    // Low workouts
-    if (predictions.workouts.lastMonthAverage < 5) {
-      risks.push({
-        factor: 'Insufficient Workout Volume',
-        severity: 'MEDIUM',
-        impact: 'Health goal at risk, energy management compromised',
-        mitigation: 'Schedule 6+ workouts/week, habit stack to make automatic'
-      });
-    }
-
-    return risks;
   }
 
   /**
