@@ -103,28 +103,22 @@ export class MasterIntegrationAgent {
       }, {}),
       
       dailyTracker: this._safeExecute(() => 
-        this.agents.dailyTracker.analyzeDailyPerformance(),
-      {}),
+        this.agents.dailyTracker.analyzeCategoryDetails(), {}),
       
       careerTracker: this._safeExecute(() => 
-        this.agents.careerTracker.analyzeCareerProgress(),
-      {}),
+        this.agents.careerTracker.analyzeTierPerformance(), {}),
       
       tradingJournal: this._safeExecute(() => 
-        this.agents.tradingJournal.analyzeTradingPerformance(),
-      {}),
+        this.agents.tradingJournal.analyzePerformance?.() || this.agents.tradingJournal.getTradingStats?.() || {}, {}),
       
       healthTracker: this._safeExecute(() => 
-        this.agents.healthTracker.analyzeHealthProgress(),
-      {}),
+        this.agents.healthTracker.analyzeProgress?.() || this.agents.healthTracker.getHealthMetrics?.() || {}, {}),
       
       financeTracker: this._safeExecute(() => 
-        this.agents.financeTracker.analyzeFinancialHealth(),
-      {}),
+        this.agents.financeTracker.analyzeFinancialHealth?.() || this.agents.financeTracker.getFinancialMetrics?.() || {}, {}),
       
       ragEngine: this._safeExecute(() => 
-        this.agents.ragEngine.generateAdaptiveEvaluation(),
-      {}),
+        this.agents.ragEngine.generateAdaptiveEvaluation(), {}),
       
       recommendationEngine: this._safeExecute(() => ({
         recommendations: this.agents.recommendationEngine.generateRecommendations(),
@@ -144,30 +138,35 @@ export class MasterIntegrationAgent {
    * Analyze overall system state
    */
   _analyzeSystemState() {
-    const dailyAnalysis = this.agents.dailyTracker.analyzeDailyPerformance();
-    const careerAnalysis = this.agents.careerTracker.analyzeCareerProgress();
-    const tradingAnalysis = this.agents.tradingJournal.analyzeTradingPerformance();
-    const healthAnalysis = this.agents.healthTracker.analyzeHealthProgress();
-    const financeAnalysis = this.agents.financeTracker.analyzeFinancialHealth();
+    try {
+      const dailyAnalysis = this.agents.dailyTracker.analyzeCategoryDetails?.() || {};
+      const careerAnalysis = this.agents.careerTracker.analyzeTierPerformance?.() || {};
+      const tradingAnalysis = this.agents.tradingJournal.analyzePerformance?.() || {};
+      const healthAnalysis = this.agents.healthTracker.analyzeProgress?.() || {};
+      const financeAnalysis = this.agents.financeTracker.analyzeFinancialHealth?.() || {};
 
-    const avgDailyScore = dailyAnalysis?.averageScore || 0;
-    const careerProgress = careerAnalysis?.progress || 0;
-    const tradingPerformance = tradingAnalysis?.winRate || 0;
-    const healthProgress = healthAnalysis?.consistency || 0;
-    const financeProgress = financeAnalysis?.progress || 0;
+      const avgDailyScore = dailyAnalysis?.averageScore || 0;
+      const careerProgress = careerAnalysis?.progress || 0;
+      const tradingPerformance = tradingAnalysis?.winRate || 0;
+      const healthProgress = healthAnalysis?.consistency || 0;
+      const financeProgress = financeAnalysis?.progress || 0;
 
-    return {
-      domains: {
-        daily: { score: avgDailyScore, status: this._getStatus(avgDailyScore, 7) },
-        career: { progress: careerProgress, status: this._getStatus(careerProgress, 15) },
-        trading: { performance: tradingPerformance, status: this._getStatus(tradingPerformance * 100, 50) },
-        health: { consistency: healthProgress, status: this._getStatus(healthProgress, 0.7) },
-        finance: { progress: financeProgress, status: this._getStatus(financeProgress, 7) }
-      },
-      overallScore: this._calculateOverallScore(avgDailyScore, careerProgress, tradingPerformance, healthProgress, financeProgress),
-      trend: this._calculateSystemTrend(),
-      momentum: this._calculateMomentum()
-    };
+      return {
+        domains: {
+          daily: { score: avgDailyScore, status: this._getStatus(avgDailyScore, 7) },
+          career: { progress: careerProgress, status: this._getStatus(careerProgress, 15) },
+          trading: { performance: tradingPerformance, status: this._getStatus(tradingPerformance * 100, 50) },
+          health: { consistency: healthProgress, status: this._getStatus(healthProgress, 0.7) },
+          finance: { progress: financeProgress, status: this._getStatus(financeProgress, 7) }
+        },
+        overallScore: this._calculateOverallScore(avgDailyScore, careerProgress, tradingPerformance, healthProgress, financeProgress),
+        trend: this._calculateSystemTrend(),
+        momentum: this._calculateMomentum()
+      };
+    } catch (error) {
+      console.error('Error analyzing system state:', error);
+      return { domains: {}, overallScore: 0, trend: 'stable', momentum: 0 };
+    }
   }
 
   /**
