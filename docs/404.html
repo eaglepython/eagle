@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        // Handle clean URLs on GitHub Pages
+        var pathName = window.location.pathname;
+        var basePath = '/eagle/';
+        var relativePath = pathName.replace(basePath, '');
+        
+        // Map clean URLs to HTML files
+        if (relativePath === 'app' || relativePath === 'app/') {
+            window.location.href = basePath + 'app.html';
+        } else if (relativePath === 'launcher' || relativePath === 'launcher/') {
+            window.location.href = basePath + 'launcher.html';
+        } else if (relativePath === '' || relativePath === '/') {
+            window.location.href = basePath + 'index.html';
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

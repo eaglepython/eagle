@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="7th Sense">
+    <meta name="theme-color" content="#0f172a">
+    <title>7th Sense - Life Excellence Launcher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+                 user-select: none;
+        }
+
+        input {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+                 user-select: text;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(0px, env(safe-area-inset-left));
+                padding-right: max(0px, env(safe-area-inset-right));
+                padding-top: max(0px, env(safe-area-inset-top));
+                padding-bottom: max(0px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Animated background stars */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px 0;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                width: 95%;
+                padding: 16px 0;
+            }
+        }
+
+        /* 7th Sense Logo */
+        .logo {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .logo-circle {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 25px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon {
+            width: 100%;
+            height: 100%;
+            color: #dc2626;
+            filter: drop-shadow(0 0 25px rgba(220, 38, 38, 0.4));
+            animation: float 3s ease-in-out infinite, pulse-glow 3s ease-in-out 0.3s 1;
+        }
+
+        .logo h1 {
+            color: #fff;
+            font-size: 36px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 640px) {
+            .logo h1 {
+                font-size: 28px;
+                letter-spacing: 2px;
+            }
+            .logo-circle {
+                width: 100px;
+                height: 100px;
+            }
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 16px 18px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1.5px solid rgba(148, 163, 184, 0.2);
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 48px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.3em;
+        }
+
+        input[type="password"]::-moz-placeholder {
+            color: rgba(148, 163, 184, 0.4);
+        }
+
+        input[type="password"]::placeholder {
+            color: rgba(148, 163, 184, 0.4);
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: rgba(220, 38, 38, 0.6);
+            background: rgba(30, 41, 59, 0.8);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1), inset 0 0 20px rgba(220, 38, 38, 0.05);
+        }
+
+        .input-focus-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 8px;
+            pointer-events: none;
+            opacity: 0;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+            transition: opacity 0.3s ease;
+        }
+
+        input[type="password"]:focus ~ .input-focus-ring {
+            opacity: 1;
+        }
+
+        /* Button */
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.95) 0%, rgba(185, 28, 28, 0.95) 100%);
+            color: white;
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 48px;
+            -webkit-tap-highlight-color: transparent;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(220, 38, 38, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 1) 0%, rgba(185, 28, 28, 1) 100%);
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Error state */
+        .error {
+            animation: shake 0.5s ease-in-out;
+            border-color: #ef4444 !important;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .error-message {
+            color: #fca5a5;
+            font-size: 12px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Success overlay */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(34, 197, 94, 0.08);
+            backdrop-filter: blur(2px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .success-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.95) 0%, rgba(22, 163, 74, 0.95) 100%);
+            color: white;
+            padding: 40px 50px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .success-checkmark {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: checkmark-draw 0.6s ease-out;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .success-checkmark::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 16px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            animation: checkmark-check 0.5s ease-out 0.1s backwards;
+        }
+
+        @keyframes checkmark-draw {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes checkmark-check {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Particles */
+        .particle {
+            position: fixed;
+            pointer-events: none;
+        }
+
+        .particle-dot {
+            width: 8px;
+            height: 8px;
+            background: #dc2626;
+            border-radius: 50%;
+            animation: float-up 2s ease-out forwards;
+        }
+
+        @keyframes float-up {
+            to {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        /* Shaking board animation on load */
+        @keyframes board-shake {
+            0%, 100% { transform: translateX(0) translateY(0) rotateZ(0deg); }
+            10% { transform: translateX(-15px) translateY(-8px) rotateZ(-2deg); }
+            20% { transform: translateX(15px) translateY(8px) rotateZ(2deg); }
+            30% { transform: translateX(-12px) translateY(-6px) rotateZ(-1.5deg); }
+            40% { transform: translateX(12px) translateY(6px) rotateZ(1.5deg); }
+            50% { transform: translateX(-8px) translateY(-4px) rotateZ(-1deg); }
+            60% { transform: translateX(8px) translateY(4px) rotateZ(1deg); }
+            70% { transform: translateX(-4px) translateY(-2px) rotateZ(-0.5deg); }
+            80% { transform: translateX(4px) translateY(2px) rotateZ(0.5deg); }
+            90% { transform: translateX(-2px) translateY(-1px) rotateZ(0deg); }
+        }
+
+        .board-container {
+            animation: board-shake 2.5s ease-out 0.5s 1 forwards;
+            transform-origin: center;
+        }
+
+        /* Enhanced logo pulse on load */
+        @keyframes pulse-glow {
+            0% { 
+                filter: drop-shadow(0 0 10px rgba(220, 38, 38, 0.3));
+                transform: scale(0.95);
+            }
+            50% { 
+                filter: drop-shadow(0 0 30px rgba(220, 38, 38, 0.8));
+                transform: scale(1.05);
+            }
+            100% { 
+                filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.5));
+                transform: scale(1);
+            }
+        }
+
+        .logo img {
+            animation: float 3s ease-in-out infinite, pulse-glow 3s ease-in-out 0.3s 1;
+        }
+
+        /* Form elements glow on page load */
+        @keyframes input-glow {
+            0% { 
+                border-color: rgba(220, 38, 38, 0.1);
+                box-shadow: 0 0 0px rgba(220, 38, 38, 0);
+            }
+            50% { 
+                border-color: rgba(220, 38, 38, 0.5);
+                box-shadow: 0 0 15px rgba(220, 38, 38, 0.3);
+            }
+            100% { 
+                border-color: rgba(220, 38, 38, 0.3);
+                box-shadow: 0 0 0px rgba(220, 38, 38, 0);
+            }
+        }
+
+        input[type="password"] {
+            animation: input-glow 3s ease-in-out 1.5s;
+        }
+
+        /* Button load animation */
+        @keyframes button-slide-in {
+            0% { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        button {
+            animation: button-slide-in 0.6s ease-out 2s backwards;
+        }
+    </style>
+  <script type="module" crossorigin src="/eagle/assets/main-BABJrgTX.js"></script>
+  <link rel="stylesheet" crossorigin href="/eagle/assets/main-QOHojolD.css">
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="board-container">
+      <div class="container">
+        <div class="logo">
+            <div class="logo-circle">
+              <svg class="logo-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Target rings -->
+                <circle cx="100" cy="100" r="70" fill="none" stroke="currentColor" stroke-width="3" opacity="0.3"/>
+                <circle cx="100" cy="100" r="45" fill="none" stroke="currentColor" stroke-width="3" opacity="0.6"/>
+                <circle cx="100" cy="100" r="20" fill="currentColor"/>
+                <!-- Arrow accent -->
+                <g transform="translate(100, 100)">
+                  <path d="M 0 -60 L 20 -30 L 0 -40 L -20 -30 Z" fill="currentColor" opacity="0.8"/>
+                  <path d="M 0 -60 Q 30 -40 50 -20" stroke="currentColor" stroke-width="2" fill="none"/>
+                </g>
+              </svg>
+            </div>
+            <h1>7th Sense</h1>
+            <p style="color: #94a3b8; font-size: 14px; margin-top: 10px; font-weight: 300; letter-spacing: 1px;">LIFE EXCELLENCE GATEWAY</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="password">ENTER PASSWORD</label>
+                <div class="input-wrapper">
+                  <input 
+                      type="password" 
+                      id="password" 
+                      placeholder="••••••••••••" 
+                      autocomplete="off"
+                      required
+                  >
+                  <div class="input-focus-ring"></div>
+                </div>
+                <div class="error-message" id="errorMessage">Incorrect password. Try again.</div>
+            </div>
+            <button type="submit">UNLOCK ACCESS</button>
+        </form>
+    </div>
+    </div>
+
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-message">
+            <div class="success-checkmark"></div>
+            <span>Welcome! Redirecting...</span>
+        </div>
+    </div>
+
+    <script>
+        // Generate stars
+        function generateStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Handle login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const correctPassword = 'Excellence2026';
+
+            if (password === correctPassword) {
+                // Success
+                document.getElementById('successOverlay').classList.add('show');
+                sessionStorage.setItem('authenticated', 'true');
+                
+                // Create particles
+                for (let i = 0; i < 20; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.innerHTML = '<div class="particle-dot"></div>';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = '50%';
+                    document.body.appendChild(particle);
+                }
+
+                setTimeout(() => {
+                    window.location.href = './app';
+                }, 1500);
+            } else {
+                // Error
+                const passwordInput = document.getElementById('password');
+                const errorMessage = document.getElementById('errorMessage');
+                passwordInput.classList.add('error');
+                errorMessage.classList.add('show');
+                passwordInput.value = '';
+
+                setTimeout(() => {
+                    passwordInput.classList.remove('error');
+                    errorMessage.classList.remove('show');
+                }, 3000);
+            }
+        });
+
+        // Check if already authenticated
+        if (sessionStorage.getItem('authenticated') === 'true') {
+            window.location.href = './app';
+        }
+
+        // Initialize
+        generateStars();
+    </script>
+    <div id="root"></div>
+</body>
+</html>

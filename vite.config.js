@@ -3,19 +3,20 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: process.env.NODE_ENV === 'production' ? '/eagle/' : '/',
-  server: {
-    historyApiFallback: true,
-    proxy: {
-      '/oauth2/': 'https://accounts.google.com'
-    }
-  },
+  base: '/eagle/',
   build: {
+    outDir: 'docs',
     rollupOptions: {
       input: {
         main: './index.html',
         app: './app.html'
       }
+    }
+  },
+  server: {
+    historyApiFallback: true,
+    proxy: {
+      '/oauth2/': 'https://accounts.google.com'
     }
   },
   define: {
