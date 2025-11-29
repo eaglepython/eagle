@@ -64,7 +64,12 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     // Check if already authenticated - if not, show launcher
     const auth = localStorage.getItem('launcherAuthenticated');
-    console.log('🔐 Launcher auth state:', auth);
+    console.log('🔐 Current launcher auth state:', auth);
+    
+    // For testing: uncomment to force show launcher
+    // localStorage.removeItem('launcherAuthenticated');
+    // return false;
+    
     return auth === 'true';
   });
   const [currentView, setCurrentView] = useState('dashboard');
