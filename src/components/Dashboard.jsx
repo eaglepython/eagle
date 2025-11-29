@@ -39,7 +39,7 @@ function WeeklyChart({ data }) {
         return score ? score.totalScore : 0;
       });
 
-      const avgScore = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
+      const avgScore = parseFloat((scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1));
 
       chartRef.current = new Chart(ctx, {
         type: 'line',
@@ -646,7 +646,7 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
   });
 
   const avgWeeklyScore = thisWeek.length > 0
-    ? (thisWeek.reduce((sum, s) => sum + s.totalScore, 0) / thisWeek.length).toFixed(1)
+    ? parseFloat((thisWeek.reduce((sum, s) => sum + s.totalScore, 0) / thisWeek.length).toFixed(1))
     : 0;
 
   const jobAppsThisWeek = userData.jobApplications.filter(app => {
@@ -668,18 +668,18 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
   const winningTrades = userData.tradingJournal.filter(t => (t.pnl || 0) > 0).length;
   const losingTrades = userData.tradingJournal.filter(t => (t.pnl || 0) < 0).length;
   const winRate = userData.tradingJournal.length > 0 
-    ? ((winningTrades / userData.tradingJournal.length) * 100).toFixed(1)
+    ? parseFloat(((winningTrades / userData.tradingJournal.length) * 100).toFixed(1))
     : 0;
 
   // Financial metrics
   const netWorth = userData.financialData?.netWorth || 0;
   const monthlyIncome = userData.financialData?.monthlyIncome || 0;
   const monthlyExpenses = userData.financialData?.monthlyExpenses || 0;
-  const savingsRate = monthlyIncome > 0 ? (((monthlyIncome - monthlyExpenses) / monthlyIncome) * 100).toFixed(1) : 0;
+  const savingsRate = monthlyIncome > 0 ? parseFloat((((monthlyIncome - monthlyExpenses) / monthlyIncome) * 100).toFixed(1)) : 0;
 
   // Health metrics
   const totalMinutes = userData.workouts.reduce((sum, w) => sum + (w.duration || 0), 0);
-  const avgDuration = userData.workouts.length > 0 ? (totalMinutes / userData.workouts.length).toFixed(1) : 0;
+  const avgDuration = userData.workouts.length > 0 ? parseFloat((totalMinutes / userData.workouts.length).toFixed(1)) : 0;
 
   // Career metrics
   const tierCounts = {
