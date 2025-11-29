@@ -7,6 +7,9 @@ import { HealthTrackerAgent } from '../utils/HealthTrackerAgent';
 import { FinanceTrackerAgent } from '../utils/FinanceTrackerAgent';
 import { PsychologyCoachAgent } from '../utils/PsychologyCoachAgent';
 import { MasterIntegrationAgent } from '../utils/MasterIntegrationAgent';
+import { PerformanceMonitorAgent } from '../utils/PerformanceMonitorAgent';
+import { AdaptivePerformanceOptimizer } from '../utils/AdaptivePerformanceOptimizer';
+import { PersonalAICoach } from '../utils/PersonalAICoach';
 
 /**
  * Hook: Get RAG evaluation and recommendations
@@ -284,4 +287,93 @@ export function useMasterIntegration(userData, interactions = []) {
   }, [userData, interactions]);
 
   return { analysis, isLoading };
+}
+
+/**
+ * Hook: Get Adaptive Performance Optimizer analysis
+ * @param {Object} userData - User data
+ * @returns {Object} { schedule, energy, stress, focus, forecast, realTime, isLoading }
+ */
+export function useAdaptivePerformance(userData) {
+  const [schedule, setSchedule] = useState(null);
+  const [energy, setEnergy] = useState(null);
+  const [stress, setStress] = useState(null);
+  const [focus, setFocus] = useState(null);
+  const [forecast, setForecast] = useState(null);
+  const [realTime, setRealTime] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    try {
+      const optimizer = new AdaptivePerformanceOptimizer(userData);
+      setSchedule(optimizer.getOptimalSchedule());
+      setEnergy(optimizer.getEnergyPrediction());
+      setStress(optimizer.getStressTriggerAnalysis());
+      setFocus(optimizer.getFocusCapacityPrediction());
+      setForecast(optimizer.getPerformanceForecast());
+      setRealTime(optimizer.getRealTimeRecommendations());
+    } catch (error) {
+      console.error('Adaptive Performance Error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [userData]);
+
+  return { schedule, energy, stress, focus, forecast, realTime, isLoading };
+}
+
+/**
+ * Hook: Get Personal AI Coach real-time coaching
+ * @param {Object} userData - User data
+ * @returns {Object} { nextAction, motivation, challenge, tip, dayPrediction, progress, isLoading }
+ */
+export function usePersonalAICoach(userData) {
+  const [nextAction, setNextAction] = useState(null);
+  const [motivation, setMotivation] = useState(null);
+  const [challenge, setChallenge] = useState(null);
+  const [tip, setTip] = useState(null);
+  const [dayPrediction, setDayPrediction] = useState(null);
+  const [progress, setProgress] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    try {
+      const coach = new PersonalAICoach(userData);
+      setNextAction(coach.getNextAction());
+      setMotivation(coach.getMotivationalMessage());
+      setChallenge(coach.getAccountabilityChallenge());
+      setTip(coach.getPersonalizedTip());
+      setDayPrediction(coach.getDayPrediction());
+      setProgress(coach.getProgressReport());
+    } catch (error) {
+      console.error('Personal AI Coach Error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [userData]);
+
+  return { nextAction, motivation, challenge, tip, dayPrediction, progress, isLoading };
+}
+
+/**
+ * Hook: Get Performance Monitor metrics
+ * @param {Object} userData - User data
+ * @returns {Object} { dashboard, isLoading }
+ */
+export function usePerformanceMonitor(userData) {
+  const [dashboard, setDashboard] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    try {
+      const monitor = new PerformanceMonitorAgent(userData);
+      setDashboard(monitor.getPerformanceDashboard());
+    } catch (error) {
+      console.error('Performance Monitor Error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [userData]);
+
+  return { dashboard, isLoading };
 }

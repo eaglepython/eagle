@@ -9,6 +9,7 @@ import IntelligentChatbox from './IntelligentChatbox';
 import QuickActionRecommendations from './QuickActionRecommendations';
 import QuickActionAgent from '../utils/QuickActionAgent';
 import PsychologyCoachPanel from './PsychologyCoachPanel';
+import RealTimePerformanceDashboard from './RealTimePerformanceDashboard';
 
 function WeeklyChart({ data }) {
   const canvasRef = useRef(null);
@@ -684,6 +685,9 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
           nudges={nudges}
         />
       </div>
+
+      {/* Real-Time Performance Monitor */}
+      <RealTimePerformanceDashboard userData={userData} />
 
       {/* Adaptive Coach */}
       <AdaptiveCoach userData={userData} metrics={{ avgWeeklyScore, jobAppsThisWeek, workoutsThisWeek }} />
