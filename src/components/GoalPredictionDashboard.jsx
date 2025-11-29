@@ -102,7 +102,8 @@ export default function GoalPredictionDashboard({ predictions }) {
         <div className="space-y-4">
           {goalsList.map(goal => {
             const data = predictions.byGoal[goal.key];
-            const prob = parseFloat(data.probability);
+            // Extract numeric value from probability string (e.g., "75.3%" -> 75.3)
+            const prob = parseFloat(data.probability?.toString().replace('%', '') || '0');
             
             return (
               <div
