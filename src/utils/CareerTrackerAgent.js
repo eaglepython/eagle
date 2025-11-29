@@ -70,9 +70,9 @@ export class CareerTrackerAgent {
       };
 
       const conversionRates = {
-        applicationToInterview: statuses.applied > 0 ? (statuses.interview / statuses.applied * 100).toFixed(1) : 0,
-        interviewToOffer: statuses.interview > 0 ? (statuses.offer / statuses.interview * 100).toFixed(1) : 0,
-        applicationToOffer: tierApps.length > 0 ? (statuses.offer / tierApps.length * 100).toFixed(1) : 0
+        applicationToInterview: statuses.applied > 0 ? parseFloat((statuses.interview / statuses.applied * 100).toFixed(1)) : 0,
+        interviewToOffer: statuses.interview > 0 ? parseFloat((statuses.offer / statuses.interview * 100).toFixed(1)) : 0,
+        applicationToOffer: tierApps.length > 0 ? parseFloat((statuses.offer / tierApps.length * 100).toFixed(1)) : 0
       };
 
       analysis[key] = {
@@ -80,7 +80,7 @@ export class CareerTrackerAgent {
         total: tierApps.length,
         statuses,
         conversionRates,
-        expectedOffers: (tierApps.length * tier.successRate).toFixed(1),
+        expectedOffers: parseFloat((tierApps.length * tier.successRate).toFixed(1)),
         pipelineHealth: this._assessPipelineHealth(tierApps, tier),
         qualityFlags: this._identifyQualityIssues(tierApps, tier)
       };
@@ -235,10 +235,10 @@ export class CareerTrackerAgent {
 
     if (totalApps > 0) {
       const ratios = {
-        tier1Pct: ((tierDistribution.tier1 / totalApps) * 100).toFixed(0),
-        tier2Pct: ((tierDistribution.tier2 / totalApps) * 100).toFixed(0),
-        tier3Pct: ((tierDistribution.tier3 / totalApps) * 100).toFixed(0),
-        tier4Pct: ((tierDistribution.tier4 / totalApps) * 100).toFixed(0)
+        tier1Pct: parseFloat(((tierDistribution.tier1 / totalApps) * 100).toFixed(0)),
+        tier2Pct: parseFloat(((tierDistribution.tier2 / totalApps) * 100).toFixed(0)),
+        tier3Pct: parseFloat(((tierDistribution.tier3 / totalApps) * 100).toFixed(0)),
+        tier4Pct: parseFloat(((tierDistribution.tier4 / totalApps) * 100).toFixed(0))
       };
 
       const idealRatio = { tier1: 40, tier2: 30, tier3: 25, tier4: 5 };
@@ -336,7 +336,7 @@ export class CareerTrackerAgent {
       interviews: interviews.length,
       offers: offers.length,
       rejected: rejected.length,
-      conversionRate: applications.length > 0 ? ((offers.length / applications.length) * 100).toFixed(1) : 0,
+      conversionRate: applications.length > 0 ? parseFloat(((offers.length / applications.length) * 100).toFixed(1)) : 0,
       expectedOffers: this._calculateExpectedOffers(),
       upcomingInterviews: interviews.slice(0, 5).map(i => ({
         company: i.company,

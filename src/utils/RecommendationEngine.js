@@ -81,7 +81,7 @@ export class RecommendationEngine {
     };
 
     const conversionRate = apps.length > 0
-      ? ((statusDistribution.phoneScreen + statusDistribution.interview + statusDistribution.offer) / apps.length * 100).toFixed(1)
+      ? parseFloat(((statusDistribution.phoneScreen + statusDistribution.interview + statusDistribution.offer) / apps.length * 100).toFixed(1))
       : 0;
 
     return {
@@ -90,7 +90,7 @@ export class RecommendationEngine {
       statusDistribution,
       tierDistribution,
       conversionRate,
-      averagePerWeek: (apps.length / Math.max(1, this._getWeeksInData())).toFixed(1),
+      averagePerWeek: parseFloat((apps.length / Math.max(1, this._getWeeksInData())).toFixed(1)),
       trajectory: thisWeek.length >= 15 ? 'on-track' : 'needs-focus'
     };
   }
@@ -108,7 +108,7 @@ export class RecommendationEngine {
     const losses = completedTrades.filter(t => parseFloat(t.result) < 0);
     const totalPnL = completedTrades.reduce((sum, t) => sum + parseFloat(t.result || 0), 0);
     const avgPnL = totalPnL / completedTrades.length;
-    const winRate = (wins.length / completedTrades.length * 100).toFixed(1);
+    const winRate = parseFloat((wins.length / completedTrades.length * 100).toFixed(1));
 
     const thisWeekTrades = completedTrades.filter(t => this._isThisWeek(t.date));
     const weeklyPnL = thisWeekTrades.reduce((sum, t) => sum + parseFloat(t.result || 0), 0);
@@ -136,7 +136,7 @@ export class RecommendationEngine {
     const thisWeek = workouts.filter(w => this._isThisWeek(w.date));
 
     const totalMinutes = thisWeek.reduce((sum, w) => sum + parseInt(w.duration || 0), 0);
-    const avgDuration = thisWeek.length > 0 ? (totalMinutes / thisWeek.length).toFixed(1) : 0;
+    const avgDuration = thisWeek.length > 0 ? parseFloat((totalMinutes / thisWeek.length).toFixed(1)) : 0;
 
     const workoutTypes = {};
     workouts.forEach(w => {
@@ -164,7 +164,7 @@ export class RecommendationEngine {
     const monthlyData = this.userData.monthlyFinance || [];
 
     const savingsRate = finance.monthlyIncome > 0
-      ? ((finance.monthlyIncome - finance.monthlyExpenses) / finance.monthlyIncome * 100).toFixed(1)
+      ? parseFloat(((finance.monthlyIncome - finance.monthlyExpenses) / finance.monthlyIncome * 100).toFixed(1))
       : 0;
 
     const netWorth = finance.netWorth || 0;

@@ -34,7 +34,7 @@ export class TradingJournalAgent {
 
     // Calculate overall statistics
     const totalPnL = recentTrades.reduce((sum, t) => sum + (parseFloat(t.pnl) || 0), 0);
-    const winRate = recentTrades.length > 0 ? (patterns.wins.length / recentTrades.length * 100).toFixed(1) : 0;
+    const winRate = recentTrades.length > 0 ? parseFloat((patterns.wins.length / recentTrades.length * 100).toFixed(1)) : 0;
     const avgWin = patterns.wins.length > 0 
       ? patterns.wins.reduce((sum, t) => sum + Math.abs(parseFloat(t.pnl)), 0) / patterns.wins.length
       : 0;
@@ -90,9 +90,9 @@ export class TradingJournalAgent {
       data.stats = {
         count: tradeList.length,
         totalPnL: parseFloat(totalPnL.toFixed(2)),
-        winRate: ((wins.length / tradeList.length) * 100).toFixed(1),
-        avgWin: wins.length > 0 ? (wins.reduce((sum, t) => sum + parseFloat(t.pnl), 0) / wins.length).toFixed(2) : 0,
-        avgLoss: losses.length > 0 ? (losses.reduce((sum, t) => sum + parseFloat(t.pnl), 0) / losses.length).toFixed(2) : 0,
+        winRate: parseFloat(((wins.length / tradeList.length) * 100).toFixed(1)),
+        avgWin: wins.length > 0 ? parseFloat((wins.reduce((sum, t) => sum + parseFloat(t.pnl), 0) / wins.length).toFixed(2)) : 0,
+        avgLoss: losses.length > 0 ? parseFloat((losses.reduce((sum, t) => sum + parseFloat(t.pnl), 0) / losses.length).toFixed(2)) : 0,
         consistency: this._assessConsistency(tradeList)
       };
     });
@@ -126,8 +126,8 @@ export class TradingJournalAgent {
       data.stats = {
         count: tradeList.length,
         totalPnL: parseFloat(totalPnL.toFixed(2)),
-        winRate: ((wins.length / tradeList.length) * 100).toFixed(1),
-        avgTrade: (totalPnL / tradeList.length).toFixed(2)
+        winRate: parseFloat(((wins.length / tradeList.length) * 100).toFixed(1)),
+        avgTrade: parseFloat((totalPnL / tradeList.length).toFixed(2))
       };
     });
 
