@@ -32,10 +32,19 @@ export function RealTimePerformanceDashboard({ userData }) {
     }
   }, [userData]);
 
-  if (loading || !metrics) {
+  if (loading) {
     return (
       <div className="bg-slate-900/50 rounded-lg p-8 text-center">
         <div className="animate-pulse text-slate-400">Loading live metrics...</div>
+      </div>
+    );
+  }
+
+  if (!metrics || !metrics.consistency) {
+    return (
+      <div className="bg-slate-900/50 rounded-lg p-8 text-center border border-red-500/30">
+        <div className="text-red-400">⚠️ Performance metrics temporarily unavailable</div>
+        <div className="text-sm text-slate-400 mt-2">Please log today's score to initialize metrics</div>
       </div>
     );
   }
@@ -67,17 +76,17 @@ export function RealTimePerformanceDashboard({ userData }) {
           <div className="bg-slate-900/50 p-4 rounded-lg border border-green-500/30">
             <div className="text-sm text-slate-400">Consistency Streak</div>
             <div className="text-3xl font-bold text-green-400 mt-2">
-              {metrics.consistency.streak}d
+              {metrics.consistency?.streak || 0}d
             </div>
-            <div className="text-xs text-slate-300 mt-2">{metrics.consistency.phase}</div>
+            <div className="text-xs text-slate-300 mt-2">{metrics.consistency?.phase || 'Starting'}</div>
             <div className="mt-3 h-2 bg-slate-700 rounded-full overflow-hidden">
               <div 
                 className="h-full bg-green-500"
-                style={{ width: `${metrics.consistency.neuroplasticityLevel}%` }}
+                style={{ width: `${Math.min(100, metrics.consistency?.neuroplasticityLevel || 0)}%` }}
               ></div>
             </div>
             <div className="text-xs text-slate-400 mt-1">
-              {metrics.consistency.neuroplasticityLevel.toFixed(0)}% to automation
+              {Math.min(100, metrics.consistency?.neuroplasticityLevel || 0).toFixed(0)}% to automation
             </div>
           </div>
 
@@ -85,14 +94,15 @@ export function RealTimePerformanceDashboard({ userData }) {
           <div className="bg-slate-900/50 p-4 rounded-lg border border-blue-500/30">
             <div className="text-sm text-slate-400">Productivity</div>
             <div className="text-3xl font-bold text-blue-400 mt-2">
-              {metrics.productivity.last7DayAverage}/10
+              {(metrics.productivity?.last7DayAverage || 0).toFixed(1)}/10
             </div>
-            <div className="text-xs text-slate-300 mt-2">{metrics.productivity.trend}</div>
+            <div className="text-xs text-slate-300 mt-2">{metrics.productivity?.trend || 'Stable'}</div>
             <div className="mt-3 text-xs text-slate-300">
-              {metrics.productivity.status === 'excellent' && '🎯 Peak performance'}
-              {metrics.productivity.status === 'good' && '✅ On track'}
-              {metrics.productivity.status === 'fair' && '⚠️ Below target'}
-              {metrics.productivity.status === 'needs-work' && '🚨 Critical'}
+              {metrics.productivity?.status === 'excellent' && '🎯 Peak performance'}
+              {metrics.productivity?.status === 'good' && '✅ On track'}
+              {metrics.productivity?.status === 'fair' && '⚠️ Below target'}
+              {metrics.productivity?.status === 'needs-work' && '🚨 Critical'}
+              {!metrics.productivity?.status && '📊 Data loading'}
             </div>
           </div>
 
@@ -100,14 +110,15 @@ export function RealTimePerformanceDashboard({ userData }) {
           <div className="bg-slate-900/50 p-4 rounded-lg border border-purple-500/30">
             <div className="text-sm text-slate-400">Focus Quality</div>
             <div className="text-3xl font-bold text-purple-400 mt-2">
-              {metrics.focus.focusQuality}
+              {(metrics.focus?.focusQuality || 0).toFixed(0)}%
             </div>
             <div className="text-xs text-slate-300 mt-2">
-              {metrics.focus.status === 'excellent' && '✅ Excellent'}
-              {metrics.focus.status === 'good' && '✅ Good'}
-              {metrics.focus.status === 'needs-improvement' && '⚠️ Needs work'}
+              {metrics.focus?.status === 'excellent' && '✅ Excellent'}
+              {metrics.focus?.status === 'good' && '✅ Good'}
+              {metrics.focus?.status === 'needs-improvement' && '⚠️ Needs work'}
+              {!metrics.focus?.status && '📊 Data loading'}
             </div>
-            {metrics.focus.timeWastedToDistraction && (
+            {metrics.focus?.timeWastedToDistraction && (
               <div className="mt-2 text-xs text-red-400">
                 Wasted: {metrics.focus.timeWastedToDistraction}
               </div>
@@ -119,17 +130,17 @@ export function RealTimePerformanceDashboard({ userData }) {
             <div className="text-sm text-slate-400">Energy Status</div>
             <div className="text-3xl font-bold mt-2">
               <span className={
-                metrics.energy.burnoutRisk === 'LOW' ? 'text-green-400' :
-                metrics.energy.burnoutRisk === 'MODERATE' ? 'text-yellow-400' :
+                metrics.energy?.burnoutRisk === 'LOW' ? 'text-green-400' :
+                metrics.energy?.burnoutRisk === 'MODERATE' ? 'text-yellow-400' :
                 'text-red-400'
               }>
-                {metrics.energy.energyTrend}
+                {metrics.energy?.energyTrend || 'Stable'}
               </span>
             </div>
             <div className="text-xs text-slate-300 mt-2">
-              Burnout: {metrics.energy.burnoutRisk}
+              Burnout: {metrics.energy?.burnoutRisk || 'LOW'}
             </div>
-            {metrics.energy.burnoutRisk !== 'LOW' && (
+            {metrics.energy?.burnoutRisk !== 'LOW' && (
               <div className="mt-2 text-xs text-red-400">⚠️ Recovery needed</div>
             )}
           </div>

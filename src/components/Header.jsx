@@ -5,11 +5,40 @@ export function Header({ currentTime }) {
   const [city, setCity] = useState('Detecting...');
   const [upcomingEvents, setUpcomingEvents] = useState([]);
 
-  // Fetch weather and location with proper error handling
+  // Fetch weather and location with Nexus API integration
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        // Get location from IP with abort controller for timeout
+        // Try Nexus API first (https://eaglepython.github.io/Nexus/)
+        try {
+          const nexusController = new AbortController();
+          const nexusTimeoutId = setTimeout(() => nexusController.abort(), 5000);
+
+          const nexusRes = await fetch('https://eaglepython.github.io/Nexus/', {
+            signal: nexusController.signal
+          });
+          clearTimeout(nexusTimeoutId);
+
+          if (nexusRes.ok) {
+            const nexusData = await nexusRes.json();
+            if (nexusData.location?.city) {
+              setCity(nexusData.location.city);
+            }
+            if (nexusData.weather?.temperature !== undefined) {
+              setWeather({
+                temp: nexusData.weather.temperature,
+                code: nexusData.weather.code || 0,
+                humidity: nexusData.weather.humidity || '--',
+                wind: nexusData.weather.wind || '--'
+              });
+              return; // Success with Nexus
+            }
+          }
+        } catch (nexusError) {
+          console.debug('Nexus API unavailable, falling back to standard APIs');
+        }
+
+        // Fallback: Get location from IP
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 8000);
 
@@ -20,10 +49,10 @@ export function Header({ currentTime }) {
         
         if (!geoRes.ok) throw new Error('Geo fetch failed');
         const geoData = await geoRes.json();
-        const cityName = geoData.city || geoData.region_code || 'Unknown';
+        const cityName = geoData.city || geoData.region_code || 'Your Location';
         setCity(cityName);
 
-        // Get weather from Open-Meteo with abort controller
+        // Get weather from Open-Meteo
         const weatherController = new AbortController();
         const weatherTimeoutId = setTimeout(() => weatherController.abort(), 8000);
 
@@ -46,8 +75,8 @@ export function Header({ currentTime }) {
         }
       } catch (error) {
         console.error('Weather/location error:', error.message);
-        // Set defaults on error
-        setCity('Location');
+        // Set safe defaults on error
+        setCity('Your Location');
         setWeather({
           temp: '--',
           code: 0,
