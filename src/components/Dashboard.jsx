@@ -616,23 +616,27 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
 
   useEffect(() => {
     // Initialize recommendation engine
-    const engine = new RecommendationEngine(userData);
-    
-    // Generate all AI insights
-    setAgentRecommendations(engine.generateRecommendations());
-    setPredictions(engine.predictGoalAchievement());
-    setNudges(engine.generateNudges());
-
-    // Generate 2026 goal predictions
     try {
-      const predictor = new GoalAchievementPredictorAgent(userData);
-      const goalPredictions = predictor.get2026Predictions();
-      setPredictions(prev => ({
-        ...prev,
-        predictions: goalPredictions
-      }));
+      const engine = new RecommendationEngine(userData);
+      
+      // Generate all AI insights
+      setAgentRecommendations(engine.generateRecommendations());
+      setPredictions(engine.predictGoalAchievement());
+      setNudges(engine.generateNudges());
+
+      // Generate 2026 goal predictions
+      try {
+        const predictor = new GoalAchievementPredictorAgent(userData);
+        const goalPredictions = predictor.get2026Predictions();
+        setPredictions(prev => ({
+          ...prev,
+          predictions: goalPredictions
+        }));
+      } catch (error) {
+        console.error('Goal Prediction Error:', error);
+      }
     } catch (error) {
-      console.error('Goal Prediction Error:', error);
+      console.error('Dashboard initialization error:', error);
     }
   }, [userData]);
 
