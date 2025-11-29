@@ -432,18 +432,24 @@ export class GoalAchievementPredictorAgent {
   _predictTimeline() {
     const predictions = this._predictIndividualGoals();
     
+    // Helper to safely extract probability value from percentage string
+    const getProb = (probStr) => {
+      const num = parseFloat(String(probStr || '0').replace('%', ''));
+      return isNaN(num) ? 0 : num / 100;
+    };
+    
     return {
       q4_2025: [
-        predictions.dailyScore.probability >= 0.5 ? '✅ Daily Score 7.5+' : '⚠️ Daily Score building',
-        predictions.applications.last7Days >= 10 ? '✅ Career momentum' : '⚠️ Increase app volume'
+        getProb(predictions.dailyScore?.probability) >= 0.5 ? '✅ Daily Score 7.5+' : '⚠️ Daily Score building',
+        (predictions.applications?.last7Days || 0) >= 10 ? '✅ Career momentum' : '⚠️ Increase app volume'
       ],
       q1_2026: [
-        predictions.careerRole.projectedInterviews > 0 ? '✅ Career interviews' : '⚠️ Interview prep needed',
-        predictions.tradingAUM.probability >= 0.5 ? '✅ Trading scalable' : '⚠️ Focus on consistency'
+        (predictions.careerRole?.projectedInterviews || 0) > 0 ? '✅ Career interviews' : '⚠️ Interview prep needed',
+        getProb(predictions.tradingAUM?.probability) >= 0.5 ? '✅ Trading scalable' : '⚠️ Focus on consistency'
       ],
       q2_q3_2026: [
-        predictions.careerRole.probability >= 0.7 ? '✅ Offer likely' : '⚠️ Maintain pressure',
-        predictions.netWorth.probability >= 0.7 ? '✅ Net worth on track' : '⚠️ Income acceleration needed'
+        getProb(predictions.careerRole?.probability) >= 0.7 ? '✅ Offer likely' : '⚠️ Maintain pressure',
+        getProb(predictions.netWorth?.probability) >= 0.7 ? '✅ Net worth on track' : '⚠️ Income acceleration needed'
       ],
       q4_2026: [
         '✅ 2026 objectives achieved',
@@ -508,22 +514,28 @@ export class GoalAchievementPredictorAgent {
       });
     }
 
-    // Trading growth
-    if (predictions.trading.probability >= 0.5) {
-      opportunities.push({
-        opportunity: 'Trading Momentum',
-        potential: 'Compound growth to $500K AUM',
-        action: 'Scale position sizing, diversify strategies'
-      });
+    // Trading growth - safely extract probability
+    if (predictions.tradingAUM && predictions.tradingAUM.probability) {
+      const tradingProb = parseFloat(String(predictions.tradingAUM.probability || '0').replace('%', '')) / 100;
+      if (tradingProb >= 0.5) {
+        opportunities.push({
+          opportunity: 'Trading Momentum',
+          potential: 'Compound growth to $500K AUM',
+          action: 'Scale position sizing, diversify strategies'
+        });
+      }
     }
 
-    // Career momentum
-    if (predictions.applications.lastMonthAverage >= 12) {
-      opportunities.push({
-        opportunity: 'Career Pipeline Building',
-        potential: '85%+ probability of Tier 1 offer',
-        action: 'Accelerate networking + interview prep'
-      });
+    // Career momentum - safely extract average
+    if (predictions.applications && predictions.applications.lastMonthAverage) {
+      const avgApps = parseFloat(String(predictions.applications.lastMonthAverage || '0'));
+      if (avgApps >= 12) {
+        opportunities.push({
+          opportunity: 'Career Pipeline Building',
+          potential: '85%+ probability of Tier 1 offer',
+          action: 'Accelerate networking + interview prep'
+        });
+      }
     }
 
     return opportunities;
@@ -567,7 +579,8 @@ export class GoalAchievementPredictorAgent {
    */
   _generateRecommendation() {
     const overall = this._predictOverallAchievement();
-    const prob = parseFloat(overall.probability) / 100;
+    const probStr = String(overall?.probability || '0').replace('%', '');
+    const prob = (parseFloat(probStr) || 0) / 100;
 
     if (prob >= 0.85) {
       return '🟢 EXCELLENT - On track for 95%+ of 2026 goals. Maintain systems, execute, optimize.';
