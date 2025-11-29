@@ -465,10 +465,10 @@ export class PerformanceMonitorAgent {
     const diff = week2 - week1;
 
     return {
-      week1Average: week1.toFixed(1),
-      week2Average: week2.toFixed(1),
+      week1Average: parseFloat(week1.toFixed(1)),
+      week2Average: parseFloat(week2.toFixed(1)),
       trend: diff > 0.5 ? '📈 Strong positive' : diff > 0 ? '📈 Positive' : diff < -0.5 ? '📉 Strong negative' : '→ Stable',
-      change: diff.toFixed(2),
+      change: parseFloat(diff.toFixed(2)),
       projection: week2 + diff * 2 // Predict 2 weeks ahead
     };
   }
@@ -485,16 +485,16 @@ export class PerformanceMonitorAgent {
     
     if (trend === 'Insufficient data') return 'Insufficient data';
 
-    const weeklyChange = trend.change;
+    const weeklyChange = parseFloat(trend.change) || 0;
     const predicted4Weeks = avg7 + (weeklyChange * 4);
 
     return {
-      projected: Math.min(10, Math.max(0, predicted4Weeks)).toFixed(1),
+      projected: parseFloat(Math.min(10, Math.max(0, predicted4Weeks)).toFixed(1)),
       confidence: last7Days.length >= 7 ? 'High' : 'Medium',
       scenario: {
-        conservative: Math.min(10, Math.max(0, avg7)).toFixed(1),
-        optimistic: Math.min(10, Math.max(0, predicted4Weeks + 1)).toFixed(1),
-        pessimistic: Math.min(10, Math.max(0, predicted4Weeks - 1)).toFixed(1)
+        conservative: parseFloat(Math.min(10, Math.max(0, avg7)).toFixed(1)),
+        optimistic: parseFloat(Math.min(10, Math.max(0, predicted4Weeks + 1)).toFixed(1)),
+        pessimistic: parseFloat(Math.min(10, Math.max(0, predicted4Weeks - 1)).toFixed(1))
       }
     };
   }
