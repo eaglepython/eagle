@@ -73,14 +73,17 @@ export class GoalAchievementPredictorAgent {
 
     Object.entries(predictions).forEach(([goal, pred]) => {
       const weight = weights[goal] || 1;
-      totalScore += pred.probability * weight;
+      // Parse probability string (e.g., "75.3%") to number
+      const probStr = String(pred.probability || '0').replace('%', '').trim();
+      const probNum = parseFloat(probStr) / 100 || 0; // Convert back to 0-1 scale
+      totalScore += probNum * weight;
       totalWeight += weight;
     });
 
-    const overallProbability = totalScore / totalWeight;
+    const overallProbability = totalWeight > 0 ? totalScore / totalWeight : 0;
 
     return {
-      probability: (overallProbability * 100).toFixed(1) + '%',
+      probability: (Math.max(0, Math.min(1, overallProbability)) * 100).toFixed(1) + '%',
       description: this._getAchievementDescription(overallProbability),
       status: overallProbability >= 0.85 ? 'Excellent' : 
               overallProbability >= 0.70 ? 'Very Good' : 
