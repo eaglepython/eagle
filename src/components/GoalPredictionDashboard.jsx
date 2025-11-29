@@ -14,7 +14,10 @@ export default function GoalPredictionDashboard({ predictions }) {
   if (!predictions) return null;
 
   const getProbaColor = (prob) => {
-    const val = parseFloat(prob);
+    // Safely extract numeric value from probability string (e.g., "75.3%" -> 75.3)
+    const numStr = String(prob || '0').replace('%', '').trim();
+    const val = parseFloat(numStr);
+    if (isNaN(val)) return 'from-gray-500 to-gray-500';
     if (val >= 85) return 'from-green-500 to-emerald-500';
     if (val >= 70) return 'from-blue-500 to-cyan-500';
     if (val >= 50) return 'from-yellow-500 to-orange-500';
@@ -22,7 +25,10 @@ export default function GoalPredictionDashboard({ predictions }) {
   };
 
   const getStatusEmoji = (prob) => {
-    const val = parseFloat(prob);
+    // Safely extract numeric value from probability string (e.g., "75.3%" -> 75.3)
+    const numStr = String(prob || '0').replace('%', '').trim();
+    const val = parseFloat(numStr);
+    if (isNaN(val)) return '❓';
     if (val >= 85) return '🟢';
     if (val >= 70) return '🟡';
     if (val >= 50) return '🟠';
@@ -57,26 +63,26 @@ export default function GoalPredictionDashboard({ predictions }) {
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4">
           <div className="bg-white/20 rounded-lg p-4 backdrop-blur">
             <p className="text-indigo-100 text-sm mb-1">Overall Achievement</p>
-            <p className="text-4xl font-bold">{predictions.overallScore.probability}</p>
-            <p className="text-indigo-100 text-xs mt-1">{predictions.overallScore.status}</p>
+            <p className="text-4xl font-bold">{predictions.overallScore?.probability || 'N/A'}</p>
+            <p className="text-indigo-100 text-xs mt-1">{predictions.overallScore?.status || '—'}</p>
           </div>
 
           <div className="bg-white/20 rounded-lg p-4 backdrop-blur">
             <p className="text-indigo-100 text-sm mb-1">Confidence Level</p>
-            <p className="text-3xl font-bold">{predictions.confidenceScore.percentage}</p>
-            <p className="text-indigo-100 text-xs mt-1">{predictions.confidenceScore.dataPoints} data points</p>
+            <p className="text-3xl font-bold">{predictions.confidenceScore?.percentage || 'N/A'}</p>
+            <p className="text-indigo-100 text-xs mt-1">{predictions.confidenceScore?.dataPoints || 0} data points</p>
           </div>
 
           <div className="bg-white/20 rounded-lg p-4 backdrop-blur col-span-2 sm:col-span-1">
             <p className="text-indigo-100 text-sm mb-1">Status</p>
-            <p className="text-lg font-semibold">{predictions.overallScore.description}</p>
+            <p className="text-lg font-semibold">{predictions.overallScore?.description || '—'}</p>
           </div>
         </div>
 
         {/* Recommendation */}
         <div className="mt-6 bg-white/10 border border-white/20 rounded-lg p-4">
           <p className="text-sm font-semibold mb-2">🎯 Recommendation</p>
-          <p className="text-white">{predictions.recommendation}</p>
+          <p className="text-white">{predictions.recommendation || 'Analyzing your data...'}</p>
         </div>
       </div>
 
@@ -101,9 +107,12 @@ export default function GoalPredictionDashboard({ predictions }) {
       {activeTab === 'overview' && (
         <div className="space-y-4">
           {goalsList.map(goal => {
-            const data = predictions.byGoal[goal.key];
+            const data = predictions.byGoal?.[goal.key];
+            if (!data) return null;
+            
             // Extract numeric value from probability string (e.g., "75.3%" -> 75.3)
-            const prob = parseFloat(data.probability?.toString().replace('%', '') || '0');
+            const probStr = String(data.probability || '0').replace('%', '').trim();
+            const prob = parseFloat(probStr) || 0;
             
             return (
               <div
@@ -117,7 +126,7 @@ export default function GoalPredictionDashboard({ predictions }) {
                       <span className="text-2xl">{goal.icon}</span>
                       <div>
                         <p className="font-semibold text-gray-800">{goal.name}</p>
-                        <p className="text-sm text-gray-500">{data.target || data.monthlyTarget}</p>
+                        <p className="text-sm text-gray-500">{data.target || data.monthlyTarget || '—'}</p>
                       </div>
                     </div>
 
@@ -125,13 +134,13 @@ export default function GoalPredictionDashboard({ predictions }) {
                     <div className="mt-3 bg-gray-200 rounded-full h-2 overflow-hidden">
                       <div
                         className={`h-full bg-gradient-to-r ${getProbaColor(data.probability)} transition-all`}
-                        style={{ width: `${prob}%` }}
+                        style={{ width: `${Math.min(prob, 100)}%` }}
                       />
                     </div>
                   </div>
 
                   <div className="text-right ml-4">
-                    <p className="text-2xl font-bold">{data.probability}</p>
+                    <p className="text-2xl font-bold">{data.probability || '—'}</p>
                     <p className="text-sm text-gray-500">{getStatusEmoji(data.probability)}</p>
                   </div>
                 </div>
