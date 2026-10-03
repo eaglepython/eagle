@@ -3,174 +3,128 @@
  * Sync events and reminders with Google Calendar
  */
 
+let sharedTokenClient = null;
+let sharedAccessToken = null;
+let sharedTokenExpiresAt = 0;
+
 export class GoogleCalendarIntegration {
   constructor() {
     this.calendarId = 'primary';
-    this.clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || process.env.REACT_APP_GOOGLE_CLIENT_ID;
-    this.clientSecret = import.meta.env.VITE_GOOGLE_CLIENT_SECRET || process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
-    this.redirectUri = this.getRedirectUri();
-    this.isAuthenticated = false;
-    this.accessToken = localStorage.getItem('googleAccessToken');
-    if (this.accessToken) {
-      this.isAuthenticated = true;
-    }
+    this.accessToken = sharedAccessToken;
+    this.tokenExpiresAt = sharedTokenExpiresAt;
+    this.tokenClient = sharedTokenClient;
+    this.isAuthenticated = Boolean(this.accessToken && Date.now() < this.tokenExpiresAt - 30_000);
+    this.removeLegacyTokens();
+  }
+
+  removeLegacyTokens() {
+    // Older versions persisted bearer and refresh tokens in localStorage.
+    localStorage.removeItem('googleAccessToken');
+    localStorage.removeItem('googleRefreshToken');
   }
 
   /**
-   * Get appropriate redirect URI based on environment
+   * Load Google Identity Services. No OAuth secrets are used in this browser app.
    */
-  getRedirectUri() {
-    const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    if (isDev) {
-      return `http://localhost:5173`;
-    }
-    return `https://eaglepython.github.io`;
-  }
+  async loadGoogleIdentityServices() {
+    if (window.google?.accounts?.oauth2) return;
 
-  /**
-   * Initialize Google API and get OAuth token
-   */
-  async initializeGoogleCalendar() {
-    try {
-      // Check if token exists in localStorage
-      const token = localStorage.getItem('googleAccessToken');
-      if (token) {
-        this.accessToken = token;
-        this.isAuthenticated = true;
-        return true;
-      }
-
-      // Check for authorization code in URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get('code');
-      
-      if (code) {
-        const success = await this.exchangeCodeForToken(code);
-        if (success) {
-          // Clean up URL
-          window.history.replaceState({}, document.title, window.location.pathname);
-          return true;
-        }
-      }
-
-      return false;
-    } catch (error) {
-      console.error('Google Calendar initialization error:', error);
-      return false;
-    }
-  }
-
-  /**
-   * Exchange authorization code for access token
-   */
-  async exchangeCodeForToken(code) {
-    try {
-      // For browser-based apps, we need to use a backend or public flow
-      // Using PKCE flow for enhanced security
-      const response = await fetch('https://oauth2.googleapis.com/token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          code: code,
-          client_id: this.clientId,
-          client_secret: this.clientSecret,
-          redirect_uri: this.redirectUri,
-          grant_type: 'authorization_code',
-        }).toString(),
+    if (!GoogleCalendarIntegration.gisScriptPromise) {
+      GoogleCalendarIntegration.gisScriptPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error('Google sign-in could not be loaded. Check your connection and try again.'));
+        document.head.appendChild(script);
+      }).catch((error) => {
+        GoogleCalendarIntegration.gisScriptPromise = null;
+        throw error;
       });
-
-      if (!response.ok) {
-        console.error('Token exchange failed:', response.status);
-        return false;
-      }
-
-      const data = await response.json();
-      this.accessToken = data.access_token;
-      
-      // Save tokens to localStorage
-      localStorage.setItem('googleAccessToken', data.access_token);
-      if (data.refresh_token) {
-        localStorage.setItem('googleRefreshToken', data.refresh_token);
-      }
-
-      this.isAuthenticated = true;
-      console.log('Successfully authenticated with Google Calendar');
-      return true;
-    } catch (error) {
-      console.error('Token exchange error:', error);
-      return false;
     }
+
+    await GoogleCalendarIntegration.gisScriptPromise;
   }
 
   /**
-   * Get authorization URL for Google OAuth
+   * Open Google's consent popup. Call from a user click handler.
    */
-  getAuthorizationUrl() {
-    const params = new URLSearchParams({
-      client_id: this.clientId,
-      redirect_uri: this.redirectUri,
-      response_type: 'code',
-      scope: 'https://www.googleapis.com/auth/calendar',
-      access_type: 'offline',
-      prompt: 'consent',
+  connectCalendar() {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    if (!clientId) {
+      throw new Error('Google Calendar is not configured. Set VITE_GOOGLE_CLIENT_ID in .env.local.');
+    }
+    if (!window.google?.accounts?.oauth2) {
+      throw new Error('Google sign-in is still loading. Try again in a moment.');
+    }
+    sharedTokenClient = window.google.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: 'https://www.googleapis.com/auth/calendar.events',
+      callback: () => {},
     });
+    this.tokenClient = sharedTokenClient;
 
-    return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+    return new Promise((resolve, reject) => {
+      this.tokenClient.callback = (response) => {
+        if (response.error) {
+          reject(new Error(response.error_description || response.error));
+          return;
+        }
+
+        this.setAccessToken(response);
+        resolve(true);
+      };
+      this.tokenClient.error_callback = (error) => {
+        reject(new Error(error.message || 'Google sign-in was closed before it completed.'));
+      };
+      this.tokenClient.requestAccessToken({ prompt: '' });
+    });
   }
 
   /**
-   * Save authentication token
-   */
-  saveAuthToken(token, refreshToken = null) {
-    localStorage.setItem('googleAccessToken', token);
-    if (refreshToken) {
-      localStorage.setItem('googleRefreshToken', refreshToken);
-    }
-    this.accessToken = token;
-    this.isAuthenticated = true;
-  }
-
-  /**
-   * Refresh access token if expired
+   * Request a fresh short-lived access token without storing it on disk.
    */
   async refreshAccessToken() {
-    try {
-      const refreshToken = localStorage.getItem('googleRefreshToken');
-      if (!refreshToken) {
-        this.isAuthenticated = false;
-        return false;
-      }
-
-      const response = await fetch('https://oauth2.googleapis.com/token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          client_id: this.clientId,
-          client_secret: this.clientSecret,
-          refresh_token: refreshToken,
-          grant_type: 'refresh_token',
-        }).toString(),
-      });
-
-      if (!response.ok) {
-        this.isAuthenticated = false;
-        return false;
-      }
-
-      const data = await response.json();
-      this.accessToken = data.access_token;
-      localStorage.setItem('googleAccessToken', data.access_token);
-      this.isAuthenticated = true;
-      return true;
-    } catch (error) {
-      console.error('Token refresh error:', error);
+    this.tokenClient = sharedTokenClient;
+    if (!this.tokenClient) {
       this.isAuthenticated = false;
       return false;
     }
+
+    return new Promise((resolve, reject) => {
+      this.tokenClient.callback = (response) => {
+        if (response.error) {
+          this.isAuthenticated = false;
+          resolve(false);
+          return;
+        }
+        this.setAccessToken(response);
+        resolve(true);
+      };
+      this.tokenClient.error_callback = () => {
+        this.isAuthenticated = false;
+        resolve(false);
+      };
+      this.tokenClient.requestAccessToken({ prompt: '' });
+    });
+  }
+
+  setAccessToken(response) {
+    this.accessToken = response.access_token;
+    this.tokenExpiresAt = Date.now() + (Number(response.expires_in) || 3600) * 1000;
+    this.isAuthenticated = true;
+    sharedAccessToken = this.accessToken;
+    sharedTokenExpiresAt = this.tokenExpiresAt;
+  }
+
+  async initializeGoogleCalendar() {
+    if (!this.accessToken || Date.now() >= this.tokenExpiresAt - 30_000) {
+      this.isAuthenticated = false;
+      this.accessToken = null;
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -378,9 +332,18 @@ export class GoogleCalendarIntegration {
    * Disconnect from Google Calendar
    */
   disconnectCalendar() {
-    localStorage.removeItem('googleAccessToken');
-    localStorage.removeItem('googleRefreshToken');
+    if (this.accessToken && window.google?.accounts?.oauth2) {
+      window.google.accounts.oauth2.revoke(this.accessToken, () => {});
+    }
+    this.removeLegacyTokens();
     this.isAuthenticated = false;
     this.accessToken = null;
+    this.tokenExpiresAt = 0;
+    this.tokenClient = null;
+    sharedAccessToken = null;
+    sharedTokenExpiresAt = 0;
+    sharedTokenClient = null;
   }
 }
+
+GoogleCalendarIntegration.gisScriptPromise = null;

@@ -199,6 +199,15 @@ npm run dev
 - **Career Tracker**: Add a job application
 - **Trading Journal**: Log a trade
 
+### Google Calendar (optional)
+
+1. Follow [Google Calendar setup](REMINDER_SETUP.md) to enable the Calendar API and create a Google OAuth **Web application** client.
+2. Add `http://localhost:5173` and `https://eaglepython.github.io` as authorized JavaScript origins in Google Cloud Console.
+3. Put the client ID in `.env.local` as `VITE_GOOGLE_CLIENT_ID=your_client_id.apps.googleusercontent.com`, then restart Vite.
+4. In the app, open **Reminders**, choose **Connect Google Calendar**, approve access, then choose **Sync to Calendar**.
+
+For GitHub Pages, add `VITE_GOOGLE_CLIENT_ID` as an Actions **repository variable** under **Settings → Secrets and variables → Actions → Variables**. The deploy workflow passes it to Vite at build time. The app uses Google's popup token flow and the `calendar.events` scope. It does not use a client secret, redirect URI, or API key. Access tokens stay in memory, so reconnect after reloading the page or when a token expires.
+
 ---
 
 ## 🏗️ Architecture Overview
@@ -310,26 +319,26 @@ npm run dev
 ### Deploy to GitHub Pages (3 steps)
 
 ```bash
-# 1. Build the app
+# 1. Build the app into docs/
 npm run build
 
-# 2. Test locally
+# 2. Preview the build locally
 npm run preview
 # Visit http://localhost:4173
 
-# 3. Deploy to GitHub Pages
-npm run deploy
+# 3. Push to main; GitHub Actions builds and deploys docs/ to Pages
+git push origin main
 ```
 
 Your app will be live at:
 ```
-Launcher:  https://yourusername.github.io/eagle/
-           https://yourusername.github.io/eagle/launcher.html
-App:       https://yourusername.github.io/eagle/app
-Direct:    https://yourusername.github.io/eagle/app.html
+Launcher:  https://eaglepython.github.io/eagle/
+           https://eaglepython.github.io/eagle/launcher.html
+App:       https://eaglepython.github.io/eagle/app
+Direct:    https://eaglepython.github.io/eagle/app.html
 
 Password: Excellence2026
-https://yourusername.github.io/eagle/app (Direct app access)
+https://eaglepython.github.io/eagle/app (Direct app access)
 ```
 
 ### ✅ GitHub Pages Features
@@ -392,7 +401,8 @@ Expense tracking, savings rate optimization, net worth progression.
 ## 🔒 Privacy & Data
 
 - ✅ **100% Local**: All data stored in browser localStorage
-- ✅ **No Cloud**: No data sent to servers
+- ✅ **Local by default**: Tracker data stays in the browser unless you choose an integration
+- ✅ **Google Calendar is optional**: Only events you sync are sent to Google Calendar, with your consent
 - ✅ **No Tracking**: No analytics or telemetry
 - ✅ **Fully Portable**: Export data anytime
 - ✅ **Offline**: Works completely offline
@@ -503,8 +513,10 @@ For issues or questions:
 
 ## 🌟 Quick Links
 
-- 🚀 **Live Demo**: Deploy with `npm run deploy`
+- 🚀 **Live Demo**: [eaglepython.github.io/eagle](https://eaglepython.github.io/eagle/)
 - 📖 **Full Architecture**: [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md)
+- 🔐 **Google Calendar OAuth**: [Setup and troubleshooting](REMINDER_SETUP.md)
+- 🚢 **Deployment**: [GitHub Pages and OAuth configuration](DEPLOYMENT.md)
 - 🔧 **Tech Stack**: React 18, Vite 5, Tailwind CSS
 - 💾 **Data**: 100% localStorage, no backend
 - 🤖 **AI**: 5 agents + RAG evaluation engine

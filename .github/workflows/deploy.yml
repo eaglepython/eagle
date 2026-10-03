@@ -23,9 +23,11 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       
       - name: Build
+        env:
+          VITE_GOOGLE_CLIENT_ID: ${{ vars.VITE_GOOGLE_CLIENT_ID }}
         run: npm run build
       
       - name: Setup Pages
@@ -34,7 +36,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: 'dist'
+          path: 'docs'
       
       - name: Deploy to GitHub Pages
         id: deployment

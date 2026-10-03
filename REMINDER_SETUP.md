@@ -1,162 +1,38 @@
-# Google Calendar Integration Setup
+# Google Calendar and Reminder Setup
 
-## Overview
-This integration allows Life Tracker to sync events with Google Calendar and send reminders to your phone.
+The app can sync tracker events with Google Calendar and send local browser notifications. Google Calendar is optional; tracker data remains in the browser unless you choose to sync events.
 
-## Features
-✅ Sync career applications to calendar
-✅ Log trades as calendar events
-✅ Schedule workouts
-✅ Create daily routine reminders
-✅ Share calendar link
-✅ Phone notifications
+## Configure Google Calendar
 
----
+1. Create or select a project in the [Google Cloud Console](https://console.cloud.google.com/).
+2. Enable the **Google Calendar API**.
+3. Configure the OAuth consent screen. While the app is in testing, add your Google account as a test user.
+4. Create an OAuth client ID with application type **Web application**.
+5. Add these **Authorized JavaScript origins**:
+   - `http://localhost:5173` for local development
+   - `https://eaglepython.github.io` for the hosted app
+6. Copy the client ID into `.env.local`:
 
-## Setup Steps
+   ```env
+   VITE_GOOGLE_CLIENT_ID=your_client_id.apps.googleusercontent.com
+   ```
 
-### 1. Create Google Cloud Project
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Click "Create Project"
-3. Name it "Life Tracker"
-4. Click "Create"
+The app uses Google Identity Services' popup token flow and requests the `https://www.googleapis.com/auth/calendar.events` scope. The scope lets it list and create events. The browser receives a short-lived access token, which stays in memory and is cleared when the page closes. Connect again after a reload or when the token expires.
 
-### 2. Enable Google Calendar API
-1. Go to "APIs & Services" → "Library"
-2. Search for "Google Calendar API"
-3. Click it and press "Enable"
+**Do not configure a client secret or redirect URI.** This static browser app has no server to protect a client secret, and the popup flow does not use an authorization-code callback. If an older version of the app exposed a client secret, rotate it in Google Cloud Console. Legacy access and refresh tokens saved by older versions are cleared when the Calendar integration initializes.
 
-### 3. Create OAuth 2.0 Credentials
-1. Go to "APIs & Services" → "Credentials"
-2. Click "Create Credentials" → "OAuth client ID"
-3. Choose "Web application"
-4. Add authorized redirect URIs:
-   - `http://localhost:5173/auth-callback` (dev)
-   - `https://eaglepython.github.io/eagle/auth-callback` (production)
-5. Copy the Client ID and Client Secret
+## Use the integration
 
-### 4. Add Credentials to .env
-Create `.env.local` in the project root:
+Open the app's **Reminders** section and select **Connect Google Calendar**. Google opens a consent popup. After granting access, select **Sync to Calendar** to create events from tracker data.
 
-```
-REACT_APP_GOOGLE_CLIENT_ID=your_client_id_here
-REACT_APP_GOOGLE_CALENDAR_API_KEY=your_api_key_here
-```
-
-### 5. Create Auth Callback Handler
-Add this route to handle OAuth redirect:
-
-```javascript
-// pages/auth-callback.js or similar
-const getTokenFromCode = async (code) => {
-  const response = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      code,
-      client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-      client_secret: process.env.REACT_APP_GOOGLE_CLIENT_SECRET,
-      redirect_uri: window.location.origin + '/auth-callback',
-      grant_type: 'authorization_code'
-    })
-  });
-  
-  const data = await response.json();
-  return data.access_token;
-};
-```
-
----
-
-## Phone Reminders
-
-### iOS (Safari)
-1. Open the app in Safari
-2. Share → Add to Home Screen
-3. Grant notification permissions
-4. Reminders will arrive as notifications
-
-### Android (Chrome)
-1. Open the app in Chrome
-2. Menu → Install app
-3. Grant notification permissions
-4. Reminders will arrive as push notifications
-
----
-
-## Usage
-
-### Enable Phone Notifications
-```javascript
-import ReminderSystem from './utils/ReminderSystem';
-
-const reminders = new ReminderSystem(userData);
-await reminders.initializeNotifications();
-reminders.scheduleDailyReminders();
-```
-
-### Sync to Google Calendar
-```javascript
-import GoogleCalendarIntegration from './utils/GoogleCalendarIntegration';
-
-const calendar = new GoogleCalendarIntegration();
-await calendar.syncTrackerEventsToCalendar(userData);
-```
-
-### Custom Reminders
-```javascript
-reminders.scheduleReminder(
-  new Date('2025-11-28T14:00:00'),
-  'Trading Session',
-  { body: 'Time to review your trades' }
-);
-```
-
----
-
-## Daily Reminder Schedule
-
-- **5:00 AM** - Morning Routine
-- **8:00 AM** - Deep Work Session
-- **12:00 PM** - Midday Check
-- **2:00 PM** - Trading Session
-- **6:00 PM** - Workout Time
-- **8:00 PM** - Evening Reflection
-- **10:00 PM** - Sleep Prep
-
----
+Local notifications work independently of Google Calendar. The browser must grant notification permission, and support varies by browser and device. On mobile, install the app from the browser menu or add it to the home screen for the best notification support.
 
 ## Troubleshooting
 
-### Notifications not working
-- Check browser notification settings
-- Grant permission when prompted
-- Ensure app is installed (iOS) or pinned (Android)
+- **Google sign-in is not configured:** check that `.env.local` contains `VITE_GOOGLE_CLIENT_ID`, then restart the Vite development server.
+- **`origin_mismatch`:** add the current site origin under **Authorized JavaScript origins**. Include scheme and host only, with no path or trailing slash.
+- **Access blocked:** check the OAuth consent screen's publishing status and add your Google account as a test user if the app is in testing.
+- **Calendar API errors:** verify that the Google Calendar API is enabled for the same Cloud project as the OAuth client.
+- **Token expired:** connect Google Calendar again from the Reminders section.
 
-### Google Calendar sync fails
-- Verify Google credentials are correct
-- Check API rate limits
-- Ensure authorization token is valid
-- Check browser console for errors
-
-### Events not appearing
-- Wait 30 seconds for calendar refresh
-- Check calendar visibility settings
-- Verify calendar ID is correct
-
----
-
-## Security Notes
-⚠️ Never commit `.env` files to GitHub
-⚠️ Rotate API keys periodically
-⚠️ Use HTTPS only in production
-⚠️ Tokens stored in localStorage (consider using secure cookies)
-
----
-
-## Support
-For issues or questions:
-1. Check browser console for errors
-2. Verify all environment variables are set
-3. Test with demo data first
-4. Check Google Cloud project permissions
+Never commit `.env.local`, client secrets, access tokens, or refresh tokens.

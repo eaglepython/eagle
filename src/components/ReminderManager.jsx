@@ -11,6 +11,7 @@ function ReminderManager({ userData, addNotification }) {
   const [calendarIntegration, setCalendarIntegration] = useState(null);
   const [audioNotifications, setAudioNotifications] = useState(null);
   const [isGoogleConnected, setIsGoogleConnected] = useState(false);
+  const [isGoogleReady, setIsGoogleReady] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [customReminder, setCustomReminder] = useState({
     title: '',
@@ -26,19 +27,16 @@ function ReminderManager({ userData, addNotification }) {
     // Initialize Google Calendar
     const calendarInt = new GoogleCalendarIntegration();
     setCalendarIntegration(calendarInt);
+    calendarInt.loadGoogleIdentityServices()
+      .then(() => setIsGoogleReady(true))
+      .catch((error) => addNotification(error.message, 'error'));
 
     // Initialize Audio Notifications
     const audioNotifs = new AudioNotifications();
     setAudioNotifications(audioNotifs);
 
-    // Check if Google Calendar is connected
-    const isConnected = localStorage.getItem('googleAccessToken') !== null;
-    setIsGoogleConnected(isConnected);
-
-    // Initialize Google Calendar if connected
-    if (isConnected) {
-      calendarInt.initializeGoogleCalendar();
-    }
+    // OAuth access tokens stay in memory and must be requested again after reload.
+    calendarInt.initializeGoogleCalendar().then(setIsGoogleConnected);
 
     // Load saved reminders
     const savedReminders = JSON.parse(localStorage.getItem('customReminders') || '[]');
@@ -73,11 +71,16 @@ function ReminderManager({ userData, addNotification }) {
   /**
    * Connect to Google Calendar
    */
-  const connectGoogleCalendar = () => {
+  const connectGoogleCalendar = async () => {
     if (!calendarIntegration) return;
 
-    const authUrl = calendarIntegration.getAuthorizationUrl();
-    window.location.href = authUrl;
+    try {
+      await calendarIntegration.connectCalendar();
+      setIsGoogleConnected(true);
+      addNotification('Google Calendar connected!', 'success');
+    } catch (error) {
+      addNotification(error.message || 'Could not connect Google Calendar', 'error');
+    }
   };
 
   /**
@@ -106,6 +109,7 @@ function ReminderManager({ userData, addNotification }) {
     if (success) {
       addNotification('Events synced to Google Calendar!', 'success');
     } else {
+      if (!calendarIntegration.isAuthenticated) setIsGoogleConnected(false);
       addNotification('Failed to sync events', 'error');
     }
   };
@@ -226,9 +230,10 @@ function ReminderManager({ userData, addNotification }) {
               </p>
               <button
                 onClick={connectGoogleCalendar}
+                disabled={!isGoogleReady}
                 className="px-4 py-2 bg-red-600/20 border border-red-600/50 text-red-300 rounded-lg hover:bg-red-600/30 transition text-sm font-semibold"
               >
-                Connect Google Calendar
+                {isGoogleReady ? 'Connect Google Calendar' : 'Loading Google sign-in...'}
               </button>
             </div>
           ) : (
