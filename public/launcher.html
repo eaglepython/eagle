@@ -393,6 +393,7 @@
                         type="password"
                         class="form-input"
                         id="passwordInput"
+                        value="Excellence2026"
                         placeholder="Enter your code"
                         autocomplete="off"
                         required
@@ -507,7 +508,13 @@
 
         // Enter dashboard
         function enterDashboard() {
-            window.location.href = './index.html';
+            if (window.parent !== window) {
+                window.parent.postMessage('launcher-authenticated', window.location.origin);
+                return;
+            }
+
+            sessionStorage.setItem('authenticated', 'true');
+            window.location.href = './app.html';
         }
 
         // Allow Enter key to submit

@@ -19,7 +19,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
       setStats(liveAgent.getUpdateStats());
       // Play update sound notification
       audioNotifications.playUpdateSound();
-      addNotification(`📡 Live Updates Received - ${newUpdates.summary.totalUpdates} new insights!`, 'info');
+      addNotification(`📡 Sample insights refreshed - ${newUpdates.summary.totalUpdates} insights`, 'info');
     };
 
     // Start the 6-hour update cycle
@@ -47,11 +47,11 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
       const handleUpdate = (newUpdates) => {
         setUpdates(newUpdates);
         setStats(liveAgent.getUpdateStats());
-        addNotification(`📡 Live Updates Resumed - ${newUpdates.summary.totalUpdates} insights!`, 'info');
+      addNotification(`📡 Insight refresh resumed - ${newUpdates.summary.totalUpdates} insights`, 'info');
       };
       liveAgent.startLiveUpdates(userData, handleUpdate);
       setIsRunning(true);
-      addNotification('🔴 Live Updates Started - Updates every 2 hours', 'success');
+      addNotification('🔴 Insight auto-refresh started - Every 2 hours', 'success');
     }
   };
 
@@ -101,7 +101,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
                   <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                     Live Updates Intelligence
                   </h1>
-                  <p className="text-slate-300 mt-1">Real-time market & life insights • Updated every 2 hours</p>
+                  <p className="text-slate-300 mt-1">Sample market & life insights • Refreshed locally every 2 hours</p>
                 </div>
               </div>
             </div>
@@ -111,7 +111,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
                   ? 'bg-red-500/20 border border-red-500 text-red-300' 
                   : 'bg-green-500/20 border border-green-500 text-green-300'
               }`}>
-                {isRunning ? '🔴 LIVE' : '🟢 PAUSED'}
+                {isRunning ? '🔴 AUTO-REFRESH' : '🟢 PAUSED'}
               </div>
               <button
                 onClick={toggleLiveUpdates}
@@ -345,7 +345,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
       {!selectedCategory && (
         <div className="text-center py-8 md:py-12 bg-slate-800/30 rounded-lg border border-slate-700">
           <p className="text-slate-400 text-sm md:text-lg">👆 Select category</p>
-          <p className="text-slate-500 text-xs md:text-sm mt-2">Updates every 2 hours</p>
+          <p className="text-slate-500 text-xs md:text-sm mt-2">Sample insights refresh every 2 hours. External feeds are not connected.</p>
         </div>
       )}
 

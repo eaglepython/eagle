@@ -206,7 +206,9 @@ npm run dev
 3. Put the client ID in `.env.local` as `VITE_GOOGLE_CLIENT_ID=your_client_id.apps.googleusercontent.com`, then restart Vite.
 4. In the app, open **Reminders**, choose **Connect Google Calendar**, approve access, then choose **Sync to Calendar**.
 
-For GitHub Pages, add `VITE_GOOGLE_CLIENT_ID` as an Actions **repository variable** under **Settings → Secrets and variables → Actions → Variables**. The deploy workflow passes it to Vite at build time. The app uses Google's popup token flow and the `calendar.events` scope. It does not use a client secret, redirect URI, or API key. Access tokens stay in memory, so reconnect after reloading the page or when a token expires.
+For Netlify, add `VITE_GOOGLE_CLIENT_ID` under your site's **Environment variables** with the **Builds** scope. Netlify does not read `.env.local` from the repository. For GitHub Pages, add it as an Actions repository variable instead. The app uses Google's popup token flow and the `calendar.events` scope. It does not use a client secret, redirect URI, or API key. Access tokens stay in memory, so reconnect after reloading the page or when a token expires.
+
+The Live Updates screen refreshes bundled sample cards locally; it does not fetch live news, market, or job data. Netlify's automatic deploys update the published app after pushes, which is separate from live data feeds. See [Live Updates](LIVE_UPDATES_GUIDE.md).
 
 ---
 
@@ -316,7 +318,13 @@ For GitHub Pages, add `VITE_GOOGLE_CLIENT_ID` as an Actions **repository variabl
 
 ## 🚀 Deployment
 
-### Deploy to GitHub Pages (3 steps)
+### Deploy to Netlify
+
+Connect `eaglepython/eagle` in Netlify and choose `main` as the production branch. The included [`netlify.toml`](netlify.toml) builds with `npm run build`, publishes `docs/`, and keeps clean `/app` links working. After the first setup, pushes to `main` trigger a new build and deployment automatically.
+
+Set `VITE_GOOGLE_CLIENT_ID` in Netlify's environment variables with the **Builds** scope to enable Google Calendar. Add the assigned `https://YOUR-SITE.netlify.app` origin in the Google OAuth client settings. See [Deployment](DEPLOYMENT.md) for details.
+
+### GitHub Pages (optional)
 
 ```bash
 # 1. Build the app into docs/
@@ -326,16 +334,15 @@ npm run build
 npm run preview
 # Visit http://localhost:4173
 
-# 3. Push to main; GitHub Actions builds and deploys docs/ to Pages
+# 3. Push to main; the connected host builds and deploys docs/
 git push origin main
 ```
 
 Your app will be live at:
 ```
-Launcher:  https://eaglepython.github.io/eagle/
-           https://eaglepython.github.io/eagle/launcher.html
-App:       https://eaglepython.github.io/eagle/app
-Direct:    https://eaglepython.github.io/eagle/app.html
+GitHub Pages: https://eaglepython.github.io/eagle/
+Netlify:      Your assigned Netlify site URL
+App:          /app or /app.html
 
 Password: Excellence2026
 https://eaglepython.github.io/eagle/app (Direct app access)

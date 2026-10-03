@@ -61,14 +61,7 @@ const DEFAULT_USER_DATA = {
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    // Force show launcher - uncomment the line below to reset
-    localStorage.removeItem('launcherAuthenticated');
-    
-    const auth = localStorage.getItem('launcherAuthenticated');
-    console.log('🔐 Current launcher auth state:', auth);
-    
-    // Check if already authenticated
-    return auth === 'true';
+    return sessionStorage.getItem('authenticated') === 'true';
   });
   const [currentView, setCurrentView] = useState('dashboard');
   const [userData, setUserData] = useState(() => {
@@ -82,9 +75,9 @@ function App() {
   useEffect(() => {
     const handleMessage = (event) => {
       // Check for the authentication message from launcher.html
-      if (event.data === 'launcher-authenticated') {
+      if (event.origin === window.location.origin && event.data === 'launcher-authenticated') {
         console.log('✅ Launcher authenticated, showing app');
-        localStorage.setItem('launcherAuthenticated', 'true');
+        sessionStorage.setItem('authenticated', 'true');
         setIsAuthenticated(true);
       }
     };
@@ -93,7 +86,7 @@ function App() {
     const handleKeyPress = (e) => {
       if (e.ctrlKey && e.shiftKey && e.key === 'L') {
         console.log('🔄 Resetting launcher...');
-        localStorage.removeItem('launcherAuthenticated');
+        sessionStorage.removeItem('authenticated');
         setIsAuthenticated(false);
         window.location.reload();
       }
@@ -164,7 +157,7 @@ function App() {
       <div className="w-full h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 flex items-center justify-center">
         <div style={{ width: '100%', height: '100%' }}>
           <iframe
-            src="/launcher.html"
+            src={`${import.meta.env.BASE_URL}launcher.html`}
             style={{
               width: '100%',
               height: '100%',

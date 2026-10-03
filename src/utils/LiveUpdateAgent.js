@@ -1,7 +1,7 @@
 /**
  * LiveUpdateAgent.js
- * Real-time internet monitoring system that fetches updates every 2 hours
- * Provides live insights, news, and opportunities relevant to user goals
+ * Refreshes the bundled sample insights every 2 hours.
+ * External news or market feeds are not connected yet.
  */
 
 class LiveUpdateAgent {
@@ -20,12 +20,12 @@ class LiveUpdateAgent {
     if (this.isRunning) return;
 
     this.isRunning = true;
-    console.log('🔴 LIVE Update Agent Started - Monitoring every 2 hours');
+    console.log('🔴 Insight auto-refresh started - Refreshing every 2 hours');
 
     // Initial update immediately
     this.fetchAllUpdates(userData, onUpdateCallback);
 
-    // Set interval for every 6 hours
+    // Refresh the bundled insight set every 2 hours.
     const intervalId = setInterval(() => {
       this.fetchAllUpdates(userData, onUpdateCallback);
     }, this.updateInterval);

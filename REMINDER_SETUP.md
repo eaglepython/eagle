@@ -11,6 +11,7 @@ The app can sync tracker events with Google Calendar and send local browser noti
 5. Add these **Authorized JavaScript origins**:
    - `http://localhost:5173` for local development
    - `https://eaglepython.github.io` for the hosted app
+   - `https://YOUR-SITE.netlify.app` after creating the Netlify site
 6. Copy the client ID into `.env.local`:
 
    ```env

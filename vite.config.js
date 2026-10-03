@@ -3,7 +3,8 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/eagle/',
+  // GitHub Pages serves from /eagle/; Netlify serves from the domain root.
+  base: process.env.NETLIFY ? '/' : '/eagle/',
   build: {
     outDir: 'docs',
     rollupOptions: {
