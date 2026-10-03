@@ -100,7 +100,7 @@ export class AdaptivePerformanceOptimizer {
     }
 
     return {
-      title: '⏰ Your Optimal Schedule (Machine Learning Predicted)',
+      title: ' Your Optimal Schedule (Machine Learning Predicted)',
       recommendations,
       suggestedDailySchedule: this._buildSuggestedSchedule(schedule),
       confidence: 'High' // Will increase as more data is collected
@@ -130,7 +130,7 @@ export class AdaptivePerformanceOptimizer {
     if (peakHours.length > 0) {
       insights.push({
         type: 'peak',
-        title: '⚡ Your Peak Energy Hours',
+        title: ' Your Peak Energy Hours',
         hours: peakHours.map(h => this._hourToTime(h)).join(', '),
         message: 'Schedule your HARDEST goals during these times',
         impact: '+50% productivity potential'
@@ -145,7 +145,7 @@ export class AdaptivePerformanceOptimizer {
     if (dipHours.length > 0) {
       insights.push({
         type: 'dip',
-        title: '📉 Your Energy Dip Times',
+        title: ' Your Energy Dip Times',
         hours: dipHours.map(h => this._hourToTime(h)).join(', '),
         message: 'Use for admin, email, light work, or rest',
         impact: 'Protects willpower for peak times'
@@ -163,7 +163,7 @@ export class AdaptivePerformanceOptimizer {
     });
     
     return {
-      title: '🔋 Your Personal Energy Cycle',
+      title: ' Your Personal Energy Cycle',
       insights,
       energyLevels,
       dayPlanning: this._buildDayPlanByEnergy(energyLevels)
@@ -183,7 +183,7 @@ export class AdaptivePerformanceOptimizer {
     if (analysis.primaryTrigger) {
       insights.push({
         type: 'trigger',
-        title: '🚨 Your #1 Stress Trigger',
+        title: ' Your #1 Stress Trigger',
         trigger: analysis.primaryTrigger,
         frequency: `Occurs ${analysis.triggerFrequency}% of high-stress days`,
         pattern: analysis.triggerPattern,
@@ -194,7 +194,7 @@ export class AdaptivePerformanceOptimizer {
     if (analysis.stressTime) {
       insights.push({
         type: 'timing',
-        title: '⏰ Your Peak Stress Time',
+        title: ' Your Peak Stress Time',
         time: this._hourToTime(analysis.stressTime),
         reason: 'Highest stress levels reported at this hour',
         prevention: 'Implement stress protocol before this time'
@@ -204,7 +204,7 @@ export class AdaptivePerformanceOptimizer {
     if (analysis.stressPrecursors.length > 0) {
       insights.push({
         type: 'warning',
-        title: '⚠️ Stress Precursors (Early Warning Signs)',
+        title: ' Stress Precursors (Early Warning Signs)',
         signs: analysis.stressPrecursors,
         timeToStress: '2-4 hours before major stress',
         action: 'When you notice these, activate stress prevention immediately'
@@ -212,7 +212,7 @@ export class AdaptivePerformanceOptimizer {
     }
 
     return {
-      title: '🧠 Stress Pattern Learning',
+      title: ' Stress Pattern Learning',
       insights,
       stressModel: analysis,
       protocolRecommendation: this._getStressProtocol(analysis)
@@ -241,17 +241,17 @@ export class AdaptivePerformanceOptimizer {
     
     insights.push({
       type: 'capacity',
-      title: '💪 Your Deep Work Capacity Today',
+      title: ' Your Deep Work Capacity Today',
       hours: adjustedCapacity.toFixed(1),
       target: 4.5,
-      status: adjustedCapacity >= 4 ? '✅ Good' : adjustedCapacity >= 3 ? '🟡 Moderate' : '⚠️ Low',
+      status: adjustedCapacity >= 4 ? ' Good' : adjustedCapacity >= 3 ? ' Moderate' : ' Low',
       recommendation: this._getCapacityRecommendation(adjustedCapacity)
     });
     
     if (fatigueAdjustment > 0) {
       insights.push({
         type: 'fatigue',
-        title: '😴 Fatigue Detected',
+        title: ' Fatigue Detected',
         accumulated: fatigueAdjustment.toFixed(1) + ' hours',
         reason: 'Recent high-intensity days detected',
         recovery: 'Rest day recommended soon'
@@ -270,7 +270,7 @@ export class AdaptivePerformanceOptimizer {
     });
     
     return {
-      title: '⚡ Focus Capacity Prediction',
+      title: ' Focus Capacity Prediction',
       insights,
       capacityScore: adjustedCapacity,
       maxCapacity: todayCapacity
@@ -338,7 +338,7 @@ export class AdaptivePerformanceOptimizer {
     }
     
     return {
-      title: '🚨 Failure Risk Prediction',
+      title: ' Failure Risk Prediction',
       risks: risks.sort((a, b) => 
         ({ HIGH: 0, MEDIUM: 1, LOW: 2 }[a.riskLevel] || 3) - 
         ({ HIGH: 0, MEDIUM: 1, LOW: 2 }[b.riskLevel] || 3)
@@ -368,7 +368,7 @@ export class AdaptivePerformanceOptimizer {
       type: 'weekly',
       title: 'Next 7 Days Performance Forecast',
       dailyScorePrediction: forecast.week.avgDailyScore.toFixed(1) + '/10',
-      trend: forecast.week.trend > 0 ? '📈 Upward' : forecast.week.trend < 0 ? '📉 Downward' : '➡️ Stable',
+      trend: forecast.week.trend > 0 ? ' Upward' : forecast.week.trend < 0 ? ' Downward' : ' Stable',
       bestDay: forecast.week.bestDay,
       recoveryNeeded: forecast.week.recoveryNeeded
     });
@@ -385,7 +385,7 @@ export class AdaptivePerformanceOptimizer {
     });
     
     return {
-      title: '🔮 Performance Forecast',
+      title: ' Performance Forecast',
       insights,
       forecast,
       accuracy: 'This model becomes more accurate as it learns your patterns'
@@ -411,7 +411,7 @@ export class AdaptivePerformanceOptimizer {
       recommendations.push({
         priority: 'CRITICAL',
         type: 'timing',
-        title: '⚡ Peak Energy Window NOW',
+        title: ' Peak Energy Window NOW',
         message: 'You have peak energy right now - do your HARDEST work',
         action: 'Deep work on career or trading (next 2 hours)',
         impact: 'Maximum productivity potential'
@@ -424,7 +424,7 @@ export class AdaptivePerformanceOptimizer {
       recommendations.push({
         priority: 'HIGH',
         type: 'health',
-        title: '🧘 Stress High - Activate Protocol',
+        title: ' Stress High - Activate Protocol',
         message: 'You\'re approaching high stress',
         action: '4-7-8 breathing (1 min) + 10 min walk',
         impact: 'Restore calm, preserve focus capacity'
@@ -437,7 +437,7 @@ export class AdaptivePerformanceOptimizer {
       recommendations.push({
         priority: 'HIGH',
         type: 'recovery',
-        title: '😴 Recovery Needed',
+        title: ' Recovery Needed',
         message: 'Accumulated fatigue detected',
         action: 'Rest day: light workouts, no deep work',
         impact: 'Prevent burnout, maintain performance'
@@ -450,7 +450,7 @@ export class AdaptivePerformanceOptimizer {
       recommendations.push({
         priority: 'MEDIUM',
         type: 'opportunity',
-        title: '🚀 Momentum High - Capitalize',
+        title: ' Momentum High - Capitalize',
         message: 'You\'re in a winning streak',
         action: 'Push slightly harder, add one more workout/application',
         impact: 'Compound your advantage'
@@ -458,7 +458,7 @@ export class AdaptivePerformanceOptimizer {
     }
     
     return {
-      title: '🎯 Real-Time Adaptive Recommendations',
+      title: ' Real-Time Adaptive Recommendations',
       timestamp: now.toISOString(),
       recommendations: recommendations.sort((a, b) => {
         const order = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };

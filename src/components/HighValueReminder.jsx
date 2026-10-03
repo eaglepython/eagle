@@ -14,7 +14,6 @@ export default function HighValueReminder({ userData, addNotification }) {
         itemsOver500.push({
           type: 'Net Worth',
           value: userData.financialData.netWorth,
-          emoji: '💰',
           icon: '$'
         });
       }
@@ -22,7 +21,6 @@ export default function HighValueReminder({ userData, addNotification }) {
         itemsOver500.push({
           type: 'Monthly Income',
           value: userData.financialData.monthlyIncome,
-          emoji: '💵',
           icon: '$'
         });
       }
@@ -30,7 +28,6 @@ export default function HighValueReminder({ userData, addNotification }) {
         itemsOver500.push({
           type: 'Savings Total',
           value: userData.financialData.savingsRate,
-          emoji: '🏦',
           icon: '$'
         });
       }
@@ -41,7 +38,6 @@ export default function HighValueReminder({ userData, addNotification }) {
       itemsOver500.push({
         type: 'Total Applications',
         value: userData.careerData.applications.length,
-        emoji: '📝',
         icon: '#'
       });
     }
@@ -53,7 +49,6 @@ export default function HighValueReminder({ userData, addNotification }) {
           itemsOver500.push({
             type: goal.name,
             value: goal.target,
-            emoji: '🎯',
             icon: '#'
           });
         }
@@ -67,7 +62,7 @@ export default function HighValueReminder({ userData, addNotification }) {
       const interval = setInterval(() => {
         const randomItem = itemsOver500[Math.floor(Math.random() * itemsOver500.length)];
         addNotification(
-          `🔴 HIGH VALUE: ${randomItem.type} → ${randomItem.value.toLocaleString()} ${randomItem.icon}`,
+          ` HIGH VALUE: ${randomItem.type} → ${randomItem.value.toLocaleString()} ${randomItem.icon}`,
           'warning'
         );
 

@@ -43,7 +43,7 @@ export function RealTimePerformanceDashboard({ userData }) {
   if (!metrics || !metrics.consistency) {
     return (
       <div className="bg-slate-900/50 rounded-lg p-8 text-center border border-red-500/30">
-        <div className="text-red-400">⚠️ Performance metrics temporarily unavailable</div>
+        <div className="text-red-400"> Performance metrics temporarily unavailable</div>
         <div className="text-sm text-slate-400 mt-2">Please log today's score to initialize metrics</div>
       </div>
     );
@@ -54,7 +54,7 @@ export function RealTimePerformanceDashboard({ userData }) {
       {/* OVERVIEW TAB */}
       <div className="bg-gradient-to-br from-green-900/30 to-emerald-900/30 rounded-lg p-6 border-2 border-green-500/50">
         <h2 className="text-2xl font-bold text-green-400 mb-4 flex items-center gap-2">
-          📊 REAL-TIME PERFORMANCE MONITOR
+           REAL-TIME PERFORMANCE MONITOR
         </h2>
 
         {/* Overall Score - BIG METRIC */}
@@ -63,10 +63,10 @@ export function RealTimePerformanceDashboard({ userData }) {
           <div className="text-5xl font-bold mt-2">{metrics.overallScore.overall}/100</div>
           <div className="text-lg mt-2">{metrics.overallScore.status}</div>
           <div className="text-sm mt-3 opacity-90">
-            {metrics.overallScore.status === 'Excellent' && '🎉 Peak performance - maintain systems'}
-            {metrics.overallScore.status === 'Good' && '✅ On track - minor optimizations needed'}
-            {metrics.overallScore.status === 'Fair' && '⚠️ Room for improvement - implement changes'}
-            {metrics.overallScore.status === 'Poor' && '🚨 Critical - urgent action needed'}
+            {metrics.overallScore.status === 'Excellent' && ' Peak performance - maintain systems'}
+            {metrics.overallScore.status === 'Good' && ' On track - minor optimizations needed'}
+            {metrics.overallScore.status === 'Fair' && ' Room for improvement - implement changes'}
+            {metrics.overallScore.status === 'Poor' && ' Critical - urgent action needed'}
           </div>
         </div>
 
@@ -98,11 +98,11 @@ export function RealTimePerformanceDashboard({ userData }) {
             </div>
             <div className="text-xs text-slate-300 mt-2">{metrics.productivity?.trend || 'Stable'}</div>
             <div className="mt-3 text-xs text-slate-300">
-              {metrics.productivity?.status === 'excellent' && '🎯 Peak performance'}
-              {metrics.productivity?.status === 'good' && '✅ On track'}
-              {metrics.productivity?.status === 'fair' && '⚠️ Below target'}
-              {metrics.productivity?.status === 'needs-work' && '🚨 Critical'}
-              {!metrics.productivity?.status && '📊 Data loading'}
+              {metrics.productivity?.status === 'excellent' && ' Peak performance'}
+              {metrics.productivity?.status === 'good' && ' On track'}
+              {metrics.productivity?.status === 'fair' && ' Below target'}
+              {metrics.productivity?.status === 'needs-work' && ' Critical'}
+              {!metrics.productivity?.status && ' Data loading'}
             </div>
           </div>
 
@@ -113,10 +113,10 @@ export function RealTimePerformanceDashboard({ userData }) {
               {(Number(metrics.focus?.focusQuality) || 0).toFixed(0)}%
             </div>
             <div className="text-xs text-slate-300 mt-2">
-              {metrics.focus?.status === 'excellent' && '✅ Excellent'}
-              {metrics.focus?.status === 'good' && '✅ Good'}
-              {metrics.focus?.status === 'needs-improvement' && '⚠️ Needs work'}
-              {!metrics.focus?.status && '📊 Data loading'}
+              {metrics.focus?.status === 'excellent' && ' Excellent'}
+              {metrics.focus?.status === 'good' && ' Good'}
+              {metrics.focus?.status === 'needs-improvement' && ' Needs work'}
+              {!metrics.focus?.status && ' Data loading'}
             </div>
             {metrics.focus?.timeWastedToDistraction && (
               <div className="mt-2 text-xs text-red-400">
@@ -141,7 +141,7 @@ export function RealTimePerformanceDashboard({ userData }) {
               Burnout: {metrics.energy?.burnoutRisk || 'LOW'}
             </div>
             {metrics.energy?.burnoutRisk !== 'LOW' && (
-              <div className="mt-2 text-xs text-red-400">⚠️ Recovery needed</div>
+              <div className="mt-2 text-xs text-red-400"> Recovery needed</div>
             )}
           </div>
         </div>
@@ -149,11 +149,11 @@ export function RealTimePerformanceDashboard({ userData }) {
         {/* Tabs */}
         <div className="mt-6 flex gap-2 flex-wrap">
           {[
-            { id: 'overview', label: '📊 Overview', icon: '📊' },
-            { id: 'velocity', label: '🚀 Velocity', icon: '🚀' },
-            { id: 'habits', label: '🔗 Habits', icon: '🔗' },
-            { id: 'sleep', label: '😴 Sleep', icon: '😴' },
-            { id: 'stress', label: '💪 Resilience', icon: '💪' }
+            { id: 'overview', label: ' Overview', },
+            { id: 'velocity', label: ' Velocity', },
+            { id: 'habits', label: ' Habits', },
+            { id: 'sleep', label: ' Sleep', },
+            { id: 'stress', label: ' Resilience', }
           ].map(tab => (
             <button
               key={tab.id}
@@ -173,7 +173,7 @@ export function RealTimePerformanceDashboard({ userData }) {
       {/* DETAILED VIEWS */}
       {activeTab === 'velocity' && (
         <div className="space-y-4">
-          <h3 className="text-xl font-bold text-blue-400 mb-4">🚀 Goal Progress Velocity</h3>
+          <h3 className="text-xl font-bold text-blue-400 mb-4"> Goal Progress Velocity</h3>
           
           {/* Daily Score */}
           <div className="bg-slate-900/50 p-4 rounded-lg border border-blue-500/30">
@@ -195,7 +195,7 @@ export function RealTimePerformanceDashboard({ userData }) {
                 <div className="text-sm text-slate-400">Weeks to Target</div>
                 <div className="text-lg font-bold">
                   {metrics.goalVelocity.dailyScore.weeksToTarget === 0 
-                    ? '✅ Target reached!' 
+                    ? ' Target reached!' 
                     : `${metrics.goalVelocity.dailyScore.weeksToTarget} weeks`
                   }
                 </div>
@@ -219,7 +219,7 @@ export function RealTimePerformanceDashboard({ userData }) {
                 <div className="text-sm text-slate-400">Weeks to Target</div>
                 <div className="text-lg font-bold">
                   {metrics.goalVelocity.careerApps.weeksToTarget === 0 
-                    ? '✅ On pace!' 
+                    ? ' On pace!' 
                     : `${metrics.goalVelocity.careerApps.weeksToTarget} weeks`
                   }
                 </div>
@@ -240,7 +240,7 @@ export function RealTimePerformanceDashboard({ userData }) {
 
       {activeTab === 'habits' && (
         <div className="bg-slate-900/50 p-4 rounded-lg border border-pink-500/30">
-          <h3 className="text-xl font-bold text-pink-400 mb-4">🔗 Habit Automation</h3>
+          <h3 className="text-xl font-bold text-pink-400 mb-4"> Habit Automation</h3>
           
           <div className="space-y-4">
             <div>
@@ -270,7 +270,7 @@ export function RealTimePerformanceDashboard({ userData }) {
               <div className="text-sm text-slate-300 mb-2 font-semibold">Automated Habits</div>
               <ul className="space-y-1">
                 {metrics.habitAutomation.habitsAutomated.map((habit, idx) => (
-                  <li key={idx} className="text-sm text-slate-300">✅ {habit}</li>
+                  <li key={idx} className="text-sm text-slate-300"> {habit}</li>
                 ))}
               </ul>
             </div>
@@ -287,7 +287,7 @@ export function RealTimePerformanceDashboard({ userData }) {
 
       {activeTab === 'sleep' && (
         <div className="bg-slate-900/50 p-4 rounded-lg border border-indigo-500/30">
-          <h3 className="text-xl font-bold text-indigo-400 mb-4">😴 Sleep Impact Analysis</h3>
+          <h3 className="text-xl font-bold text-indigo-400 mb-4"> Sleep Impact Analysis</h3>
           
           <div className="space-y-4">
             <div className="bg-indigo-900/30 p-4 rounded">
@@ -316,7 +316,7 @@ export function RealTimePerformanceDashboard({ userData }) {
             </div>
 
             <div className="bg-yellow-900/20 border border-yellow-500/30 p-4 rounded">
-              <div className="text-sm text-yellow-300 font-semibold mb-2">💡 Recommendation</div>
+              <div className="text-sm text-yellow-300 font-semibold mb-2"> Recommendation</div>
               <div className="text-sm text-slate-300">{metrics.sleepImpact.recommendation}</div>
             </div>
 
@@ -334,7 +334,7 @@ export function RealTimePerformanceDashboard({ userData }) {
 
       {activeTab === 'stress' && (
         <div className="bg-slate-900/50 p-4 rounded-lg border border-red-500/30">
-          <h3 className="text-xl font-bold text-red-400 mb-4">💪 Stress Resilience</h3>
+          <h3 className="text-xl font-bold text-red-400 mb-4"> Stress Resilience</h3>
           
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -381,7 +381,7 @@ export function RealTimePerformanceDashboard({ userData }) {
 
       {/* Weekly Trend */}
       <div className="bg-slate-900/50 p-4 rounded-lg border border-slate-600">
-        <h3 className="text-lg font-bold text-slate-300 mb-3">📈 Weekly Trend</h3>
+        <h3 className="text-lg font-bold text-slate-300 mb-3"> Weekly Trend</h3>
         <div className="grid grid-cols-4 gap-3">
           <div className="bg-slate-800/50 p-3 rounded text-center">
             <div className="text-sm text-slate-400">Week 1</div>
@@ -401,7 +401,7 @@ export function RealTimePerformanceDashboard({ userData }) {
       {/* Monthly Projection */}
       {metrics.predictedMonthlyScore !== 'Insufficient data' && (
         <div className="bg-slate-900/50 p-4 rounded-lg border border-purple-500/30">
-          <h3 className="text-lg font-bold text-purple-400 mb-3">🔮 Monthly Projection</h3>
+          <h3 className="text-lg font-bold text-purple-400 mb-3"> Monthly Projection</h3>
           <div className="grid grid-cols-4 gap-3">
             <div className="bg-purple-900/30 p-3 rounded text-center">
               <div className="text-sm text-slate-400">Conservative</div>

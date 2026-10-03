@@ -17,7 +17,7 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
       const agent = new OnlineResourceAgent();
       const recs = await agent.getAllRecommendations(userData);
       setRecommendations(recs);
-      addNotification('✅ Recommendations loaded for all goals', 'success');
+      addNotification(' Recommendations loaded for all goals', 'success');
     } catch (error) {
       console.error('Error loading recommendations:', error);
       addNotification('Failed to load recommendations', 'error');
@@ -48,18 +48,18 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
 
   const getPriorityIcon = (priority) => {
     const icons = {
-      CRITICAL: '🔴',
-      HIGH: '🟠',
-      MEDIUM: '🟡'
+      CRITICAL: '',
+      HIGH: '',
+      MEDIUM: ''
     };
-    return icons[priority] || '⚪';
+    return icons[priority] || '';
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="animate-spin mb-4">🔄</div>
+          <div className="animate-spin mb-4"></div>
           <p className="text-slate-300">Loading recommendations...</p>
         </div>
       </div>
@@ -73,13 +73,13 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
     <div className="space-y-6">
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-lg p-6 border border-slate-700">
-        <h1 className="text-3xl font-bold text-white mb-2">🎯 Goal-Based Resource Recommendations</h1>
+        <h1 className="text-3xl font-bold text-white mb-2"> Goal-Based Resource Recommendations</h1>
         <p className="text-slate-400">Online resources, strategies, and actionable steps for each goal</p>
         <button
           onClick={loadRecommendations}
           className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm font-medium transition"
         >
-          🔄 Refresh Recommendations
+           Refresh Recommendations
         </button>
       </div>
 
@@ -135,7 +135,7 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
 
             {/* Key Success Factors */}
             <div className="bg-slate-900/50 rounded p-4 border border-slate-700">
-              <h3 className="font-semibold text-white mb-3">🎯 Key Success Factors</h3>
+              <h3 className="font-semibold text-white mb-3"> Key Success Factors</h3>
               <ul className="grid grid-cols-2 gap-2">
                 {goalRecommendations.estimatedImpact.keySuccessFactors.map((factor, idx) => (
                   <li key={idx} className="text-sm text-slate-300 flex items-center">
@@ -149,7 +149,7 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
           {/* Strategies */}
           {goalRecommendations.strategies.length > 0 && (
             <div className="bg-slate-800/50 rounded-lg p-6 border border-slate-700">
-              <h3 className="text-xl font-bold text-white mb-4">📋 Top Strategies</h3>
+              <h3 className="text-xl font-bold text-white mb-4"> Top Strategies</h3>
               <div className="space-y-4">
                 {goalRecommendations.strategies.map((strategy, idx) => (
                   <div key={idx} className="bg-slate-900 rounded p-4 border border-slate-700">
@@ -177,7 +177,7 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
           {/* Action Items */}
           {goalRecommendations.actionItems.length > 0 && (
             <div className="bg-slate-800/50 rounded-lg p-6 border border-slate-700">
-              <h3 className="text-xl font-bold text-white mb-4">✅ Immediate Actions</h3>
+              <h3 className="text-xl font-bold text-white mb-4"> Immediate Actions</h3>
               <div className="space-y-3">
                 {goalRecommendations.actionItems.map((item, idx) => (
                   <div key={idx} className="bg-slate-900 rounded p-4 border border-slate-700">
@@ -205,7 +205,7 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
 
           {/* Online Resources */}
           <div className="bg-slate-800/50 rounded-lg p-6 border border-slate-700">
-            <h3 className="text-xl font-bold text-white mb-4">📚 Online Resources</h3>
+            <h3 className="text-xl font-bold text-white mb-4"> Online Resources</h3>
             <div className="space-y-3">
               {goalRecommendations.resources.map((resource, idx) => (
                 <div
@@ -223,7 +223,7 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
                       </div>
                       <p className="text-xs text-slate-400">{resource.source}</p>
                     </div>
-                    <span className="text-xl">{expandedResource === idx ? '▼' : '▶'}</span>
+                    <span className="text-xl">{expandedResource === idx ? '▼' : ''}</span>
                   </div>
 
                   {expandedResource === idx && (
@@ -242,7 +242,7 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
                         rel="noopener noreferrer"
                         className="inline-block mt-3 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded transition"
                       >
-                        🔗 Visit Resource
+                         Visit Resource
                       </a>
                     </div>
                   )}
@@ -261,7 +261,7 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
       {/* No Goal Selected */}
       {!selectedGoal && (
         <div className="text-center py-12 bg-slate-800/30 rounded-lg border border-slate-700">
-          <p className="text-slate-400">👆 Select a goal to see personalized recommendations</p>
+          <p className="text-slate-400"> Select a goal to see personalized recommendations</p>
         </div>
       )}
     </div>

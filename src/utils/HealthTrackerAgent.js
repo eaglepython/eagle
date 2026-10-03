@@ -168,7 +168,7 @@ export class HealthTrackerAgent {
       target: 6,
       remaining: Math.max(0, 6 - thisWeek.length),
       breakdown,
-      status: thisWeek.length >= 6 ? '✅ TARGET MET' : `⚠️ NEED ${6 - thisWeek.length} MORE`
+      status: thisWeek.length >= 6 ? ' TARGET MET' : ` NEED ${6 - thisWeek.length} MORE`
     };
   }
 
@@ -186,7 +186,7 @@ export class HealthTrackerAgent {
     if (analysis.strength?.thisWeek < 2) {
       recs.push({
         type: 'urgent',
-        title: '💪 Strength Training Gap',
+        title: ' Strength Training Gap',
         current: `${analysis.strength?.thisWeek || 0} workouts this week`,
         target: '2 per week (Monday/Wednesday or similar)',
         problem: 'Muscle building requires CONSISTENT 2x/week minimum. Gaps cause muscle loss.',
@@ -207,7 +207,7 @@ export class HealthTrackerAgent {
     if (analysis.cardio?.thisWeek < 2) {
       recs.push({
         type: 'warning',
-        title: '🏃 Cardio Consistency Missing',
+        title: ' Cardio Consistency Missing',
         current: `${analysis.cardio?.thisWeek || 0} workouts this week`,
         target: '2 per week (Tuesday/Saturday)',
         problem: 'No cardio = energy issues + body fat doesn\'t drop + trading performance suffers',
@@ -228,7 +228,7 @@ export class HealthTrackerAgent {
     if (analysis.hiit?.thisWeek === 0 && (analysis.strength?.thisWeek || 0) >= 2) {
       recs.push({
         type: 'insight',
-        title: '⚡ HIIT For Fat Loss Acceleration',
+        title: ' HIIT For Fat Loss Acceleration',
         current: 'No HIIT workouts this month',
         target: '1 per week (optional but recommended)',
         benefit: 'HIIT = Maximum fat loss in minimum time (20 min = equivalent to 45 min cardio)',
@@ -244,7 +244,7 @@ export class HealthTrackerAgent {
     if (analysis.flexibility?.thisWeek === 0) {
       recs.push({
         type: 'warning',
-        title: '🧘 Mobility: Injury Prevention Missing',
+        title: ' Mobility: Injury Prevention Missing',
         current: 'No flexibility/mobility work this week',
         target: '1-2 per week',
         problem: 'Tight muscles from training = injury risk + reduced performance',
@@ -263,7 +263,7 @@ export class HealthTrackerAgent {
     if (thisWeekTotal < 4) {
       recs.push({
         type: 'urgent',
-        title: '🔴 Weekly Volume Too Low',
+        title: ' Weekly Volume Too Low',
         current: `${thisWeekTotal} workouts this week`,
         target: '6 workouts per week',
         missing: `Need ${6 - thisWeekTotal} more`,
@@ -287,7 +287,7 @@ export class HealthTrackerAgent {
     } else if (thisWeekTotal >= 6) {
       recs.push({
         type: 'insight',
-        title: '✅ Weekly Volume On Track',
+        title: ' Weekly Volume On Track',
         current: `${thisWeekTotal} workouts this week`,
         achievement: 'This is the discipline level needed for 12% body fat + peak performance',
         maintain: 'Keep this pace: consistency matters more than intensity',
@@ -300,7 +300,7 @@ export class HealthTrackerAgent {
     if (avgDurationOverall > 90) {
       recs.push({
         type: 'insight',
-        title: '⏱️ Workout Duration Check',
+        title: ' Workout Duration Check',
         current: `Average: ${avgDurationOverall} minutes`,
         recommendation: 'Consider: Are workouts efficient or too long? Rule: 45-60 min is ideal',
         efficient: 'Longer ≠ Better. Focus > Time.',
@@ -311,7 +311,7 @@ export class HealthTrackerAgent {
     // Recovery pattern
     recs.push({
       type: 'insight',
-      title: '🛌 Recovery Protocol',
+      title: ' Recovery Protocol',
       importance: 'Recovery = Where muscles grow, not in gym',
       protocols: {
         sleep: '7-8 hours per night (non-negotiable)',
@@ -325,7 +325,7 @@ export class HealthTrackerAgent {
     // Body fat goal progress
     recs.push({
       type: 'insight',
-      title: '🎯 12% Body Fat Goal (2026)',
+      title: ' 12% Body Fat Goal (2026)',
       roadmap: patterns.bodyFatProgress,
       current_status: 'Assuming ~15-17% starting point',
       path: [

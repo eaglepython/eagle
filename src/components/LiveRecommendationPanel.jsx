@@ -32,7 +32,6 @@ export function LiveRecommendationPanel({ userData, actionType, compact = false 
       <div className="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
         <div className="flex items-center justify-between gap-2 mb-2">
           <div className="flex items-center gap-2">
-            <span className="text-lg">{recommendations.icon}</span>
             <h3 className="text-sm font-bold text-slate-200">Smart Recommendations</h3>
           </div>
           <span className="text-xs px-2 py-0.5 rounded bg-green-900/30 text-green-300">LIVE</span>
@@ -53,7 +52,7 @@ export function LiveRecommendationPanel({ userData, actionType, compact = false 
         {recommendations.actionItems && recommendations.actionItems.length > 0 && (
           <div className="mt-2 pt-2 border-t border-slate-700">
             <div className={`text-xs font-semibold ${getActionColor(recommendations.actionItems[0].priority)}`}>
-              ▶ Next: {recommendations.actionItems[0].action}
+               Next: {recommendations.actionItems[0].action}
             </div>
           </div>
         )}
@@ -66,7 +65,6 @@ export function LiveRecommendationPanel({ userData, actionType, compact = false 
     <div className="framework-card">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <span className="text-3xl">{recommendations.icon}</span>
           <div>
             <h2 className="text-xl font-bold text-white">{recommendations.title}</h2>
             <p className="text-xs text-slate-400">Live analysis & intelligent suggestions</p>
@@ -85,8 +83,8 @@ export function LiveRecommendationPanel({ userData, actionType, compact = false 
             onClick={() => setExpandedSection(expandedSection === 'insights' ? null : 'insights')}
             className="w-full flex items-center justify-between p-3 bg-slate-800/50 hover:bg-slate-800 rounded-lg border border-slate-700 transition"
           >
-            <span className="font-semibold text-slate-200">💡 Key Insights</span>
-            <span className="text-slate-400">{expandedSection === 'insights' ? '▼' : '▶'}</span>
+            <span className="font-semibold text-slate-200"> Key Insights</span>
+            <span className="text-slate-400">{expandedSection === 'insights' ? '▼' : ''}</span>
           </button>
           {expandedSection === 'insights' && (
             <div className="space-y-2 pl-3">
@@ -112,8 +110,8 @@ export function LiveRecommendationPanel({ userData, actionType, compact = false 
             onClick={() => setExpandedSection(expandedSection === 'actions' ? null : 'actions')}
             className="w-full flex items-center justify-between p-3 bg-slate-800/50 hover:bg-slate-800 rounded-lg border border-slate-700 transition"
           >
-            <span className="font-semibold text-slate-200">✅ Action Items ({recommendations.actionItems.length})</span>
-            <span className="text-slate-400">{expandedSection === 'actions' ? '▼' : '▶'}</span>
+            <span className="font-semibold text-slate-200"> Action Items ({recommendations.actionItems.length})</span>
+            <span className="text-slate-400">{expandedSection === 'actions' ? '▼' : ''}</span>
           </button>
           {expandedSection === 'actions' && (
             <div className="space-y-2 pl-3">
@@ -134,7 +132,7 @@ export function LiveRecommendationPanel({ userData, actionType, compact = false 
       {/* Current Status for relevant recs */}
       {(recommendations.currentScore !== undefined || recommendations.currentWeek !== undefined) && (
         <div className="p-3 bg-gradient-to-r from-red-900/20 to-orange-900/20 rounded-lg border border-red-600/30 text-sm">
-          <div className="font-semibold text-slate-200 mb-2">📊 Progress</div>
+          <div className="font-semibold text-slate-200 mb-2"> Progress</div>
           <div className="grid grid-cols-3 gap-2 text-center">
             {recommendations.currentScore !== null && (
               <div>
@@ -163,7 +161,7 @@ export function LiveRecommendationPanel({ userData, actionType, compact = false 
       {/* Focus Areas */}
       {recommendations.focusAreas && recommendations.focusAreas.length > 0 && (
         <div className="mt-4 p-3 bg-orange-900/10 rounded-lg border border-orange-600/30">
-          <h3 className="font-semibold text-orange-300 text-sm mb-2">🎯 Focus Areas</h3>
+          <h3 className="font-semibold text-orange-300 text-sm mb-2"> Focus Areas</h3>
           <div className="space-y-1">
             {recommendations.focusAreas.slice(0, 3).map((area, idx) => (
               <div key={idx} className="text-xs text-orange-200">

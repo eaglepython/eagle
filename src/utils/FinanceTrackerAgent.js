@@ -116,7 +116,7 @@ export class FinanceTrackerAgent {
     if (savingsRate < 10) {
       recs.push({
         type: 'urgent',
-        title: '💰 Critical Savings Rate',
+        title: ' Critical Savings Rate',
         current: `${analysis.savingsRatePercent}% savings rate`,
         target: 'Target: 30% for wealth building',
         problem: `At ${analysis.savingsRatePercent}% savings, you can't reach $2M by 2030.`,
@@ -133,7 +133,7 @@ export class FinanceTrackerAgent {
     } else if (savingsRate < 20) {
       recs.push({
         type: 'warning',
-        title: '⚠️ Below Optimal Savings Rate',
+        title: ' Below Optimal Savings Rate',
         current: `${analysis.savingsRatePercent}% savings rate`,
         target: '25-30% for accelerated wealth building',
         gap: `Gap: ${(25 - savingsRate).toFixed(1)}%`,
@@ -149,7 +149,7 @@ export class FinanceTrackerAgent {
     } else if (savingsRate >= 30) {
       recs.push({
         type: 'insight',
-        title: '✅ Excellent Savings Rate',
+        title: ' Excellent Savings Rate',
         current: `${analysis.savingsRatePercent}% savings rate`,
         achievement: `$${analysis.monthlySavings}/month = $${(analysis.monthlySavings * 12).toFixed(0)}/year saved`,
         trajectory: `At this rate: $${(analysis.monthlySavings * 120).toFixed(0)} in 10 years (pre-investing returns)`,
@@ -162,7 +162,7 @@ export class FinanceTrackerAgent {
     if (analysis.expenseRatioOfIncome > 85) {
       recs.push({
         type: 'warning',
-        title: '🚨 High Expense-to-Income Ratio',
+        title: ' High Expense-to-Income Ratio',
         current: `Expenses: ${analysis.expenseRatioOfIncome}% of income`,
         problem: 'Spending nearly all you earn. Zero margin for error.',
         solution: [
@@ -177,7 +177,7 @@ export class FinanceTrackerAgent {
     if (analysis.monthlyIncome < 5000) {
       recs.push({
         type: 'insight',
-        title: '💵 Income Growth Opportunity',
+        title: ' Income Growth Opportunity',
         current: `Monthly income: $${analysis.monthlyIncome}`,
         target_2026: '$10-15K/month (from trading + career)',
         path: [
@@ -192,7 +192,7 @@ export class FinanceTrackerAgent {
     // Net worth goal
     recs.push({
       type: 'insight',
-      title: '🎯 Net Worth Goal: $2M by 2030',
+      title: ' Net Worth Goal: $2M by 2030',
       currentNetWorth: `$${analysis.netWorth}`,
       target: '$2,000,000',
       timeframe: '10 years (2030)',

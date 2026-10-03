@@ -52,7 +52,7 @@ function TradingJournal({ userData, setUserData, addNotification }) {
       return updatedData;
     });
 
-    addNotification(`Trade logged: ${trade.asset} 📊`, 'success');
+    addNotification(`Trade logged: ${trade.asset} `, 'success');
     setTrade({
       date: new Date().toISOString().split('T')[0],
       asset: '',
@@ -86,7 +86,7 @@ function TradingJournal({ userData, setUserData, addNotification }) {
       {agentInsights?.recommendations && agentInsights.recommendations.length > 0 && (
         <div className="glass rounded-2xl p-6 border border-green-900/50">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-2xl">🤖</span>
+            
             <h3 className="text-xl font-bold text-white">TRADE PATTERN ANALYSIS</h3>
           </div>
           
@@ -96,7 +96,7 @@ function TradingJournal({ userData, setUserData, addNotification }) {
                 <div className="flex items-start justify-between mb-2">
                   <div className="font-bold text-green-200">{rec.title}</div>
                   <span className="text-xs px-2 py-1 rounded bg-green-900/50 text-green-200">
-                    {rec.type === 'urgent' ? '🔴 CRITICAL' : rec.type === 'warning' ? '⚠️ WARNING' : '✅ STRENGTH'}
+                    {rec.type === 'urgent' ? ' CRITICAL' : rec.type === 'warning' ? ' WARNING' : ' STRENGTH'}
                   </span>
                 </div>
                 
@@ -171,7 +171,7 @@ function TradingJournal({ userData, setUserData, addNotification }) {
 
       {/* Add Trade Form */}
       <div className="framework-card">
-        <h3 className="text-xl font-bold text-white mb-4">➕ LOG NEW TRADE</h3>
+        <h3 className="text-xl font-bold text-white mb-4"> LOG NEW TRADE</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <input
             type="text"
@@ -185,8 +185,8 @@ function TradingJournal({ userData, setUserData, addNotification }) {
             onChange={(e) => setTrade(prev => ({ ...prev, type: e.target.value }))}
             className="input-field"
           >
-            <option value="Long">📈 Long</option>
-            <option value="Short">📉 Short</option>
+            <option value="Long"> Long</option>
+            <option value="Short"> Short</option>
           </select>
           <input
             type="number"
@@ -230,14 +230,14 @@ function TradingJournal({ userData, setUserData, addNotification }) {
           onClick={addTrade}
           className="btn-primary w-full py-3"
         >
-          ➕ LOG TRADE
+           LOG TRADE
         </button>
       </div>
 
       {/* Recent Trades */}
       {userData.tradingJournal.length > 0 && (
         <div className="framework-card">
-          <h3 className="section-title">📋 RECENT TRADES</h3>
+          <h3 className="section-title"> RECENT TRADES</h3>
           <div className="space-y-3">
             {userData.tradingJournal.slice(-12).reverse().map(t => (
               <div key={t.id} className="bg-slate-900/50 rounded-lg p-4 border border-red-900/30">
@@ -252,7 +252,7 @@ function TradingJournal({ userData, setUserData, addNotification }) {
                     {t.result ? `$${parseFloat(t.result).toFixed(2)}` : 'Open'}
                   </div>
                 </div>
-                {t.notes && <div className="text-slate-400 text-sm mb-2">📝 {t.notes.substring(0, 100)}</div>}
+                {t.notes && <div className="text-slate-400 text-sm mb-2"> {t.notes.substring(0, 100)}</div>}
                 <div className="text-slate-500 text-xs">{new Date(t.date).toLocaleDateString()}</div>
               </div>
             ))}
@@ -262,7 +262,7 @@ function TradingJournal({ userData, setUserData, addNotification }) {
 
       {/* Framework Notes */}
       <div className="glass rounded-2xl p-4 border border-slate-700 text-sm text-slate-300">
-        <div className="font-semibold text-white mb-2">📌 TRADING PROTOCOL:</div>
+        <div className="font-semibold text-white mb-2"> TRADING PROTOCOL:</div>
         <p>Execute your strategy daily. Journal all trades immediately. Target: $500K AUM with 20%+ annual returns by end 2026. Document decision-making, risk management, and lessons for continuous improvement.</p>
       </div>
     </div>

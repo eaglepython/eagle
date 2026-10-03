@@ -135,7 +135,7 @@ function WeeklyChart({ data }) {
     return (
       <div className="flex items-center justify-center h-40 md:h-80 bg-slate-900/50 rounded-lg border border-red-900/30">
         <div className="text-center text-slate-400">
-          <div className="text-2xl md:text-3xl mb-2">📊</div>
+          
           <div className="text-xs md:text-base">Log your daily scores to see trends</div>
           <div className="text-xs text-slate-500 mt-1">Need 2+ days to display chart</div>
         </div>
@@ -240,7 +240,7 @@ function CareerPipelineChart({ applications }) {
     return (
       <div className="flex items-center justify-center h-32 md:h-48 bg-slate-900/50 rounded-lg border border-red-900/30">
         <div className="text-center text-slate-400">
-          <div className="text-2xl md:text-3xl mb-2">💼</div>
+          
           <div className="text-xs md:text-base">Log your job applications to see pipeline</div>
         </div>
       </div>
@@ -361,7 +361,7 @@ function TradingPnLChart({ trades }) {
     return (
       <div className="flex items-center justify-center h-32 md:h-60 bg-slate-900/50 rounded-lg border border-red-900/30">
         <div className="text-center text-slate-400">
-          <div className="text-2xl md:text-3xl mb-2">💹</div>
+          
           <div className="text-xs md:text-base">Log your trades to see P&L chart</div>
         </div>
       </div>
@@ -455,7 +455,7 @@ function WorkoutTypeChart({ workouts }) {
     return (
       <div className="flex items-center justify-center h-56 bg-slate-900/50 rounded-lg border border-red-900/30">
         <div className="text-center text-slate-400">
-          <div className="text-2xl mb-2">💪</div>
+          
           <div>Log your workouts to see type distribution</div>
         </div>
       </div>
@@ -559,7 +559,7 @@ function DailyCategoryChart({ dailyScores }) {
     return (
       <div className="flex items-center justify-center h-32 md:h-64 bg-slate-900/50 rounded-lg border border-red-900/30">
         <div className="text-center text-slate-400">
-          <div className="text-2xl md:text-3xl mb-2">🎯</div>
+          
           <div className="text-xs md:text-base">Log your daily categories to see breakdown</div>
         </div>
       </div>
@@ -603,7 +603,7 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
       // Show recommendations first, then navigate after a short delay
       setTimeout(() => {
         actionMap[action]();
-        addNotification(`📍 Smart recommendations shown for ${action}`, 'success');
+        addNotification(` Smart recommendations shown for ${action}`, 'success');
       }, 500);
     }
   };
@@ -724,7 +724,7 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
           <div className={`text-xl md:text-3xl font-bold ${todayScore && todayScore.totalScore >= 8 ? 'text-green-400' : 'text-orange-400'}`}>
             {todayScore ? todayScore.totalScore.toFixed(1) : '0.0'}/10
           </div>
-          <div className="text-xs text-slate-400 mt-1">{todayScore ? '✅' : '⏳'}</div>
+          <div className="text-xs text-slate-400 mt-1">{todayScore ? '' : ''}</div>
         </div>
 
         {/* Weekly Average */}
@@ -855,7 +855,7 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
 
       {/* 5-Year Vision */}
       <div className="framework-card">
-        <h2 className="section-title text-lg md:text-xl">🎯 5-YEAR VISION (2030)</h2>
+        <h2 className="section-title text-lg md:text-xl"> 5-YEAR VISION (2030)</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
           <div className="bg-slate-900/50 p-2 md:p-3 rounded-lg border border-red-900/30">
             <div className="text-red-400 font-semibold text-sm md:text-base">Financial</div>
@@ -878,18 +878,17 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
 
       {/* 2026 Immediate Objectives */}
       <div className="framework-card">
-        <h2 className="section-title text-lg md:text-xl">🚀 2026 IMMEDIATE OBJECTIVES</h2>
+        <h2 className="section-title text-lg md:text-xl"> 2026 IMMEDIATE OBJECTIVES</h2>
         <div className="space-y-2 md:space-y-3">
           {[
-            { emoji: '💼', title: 'Career', desc: 'Quant researcher role at target firm (Q2 2026)' },
-            { emoji: '📈', title: 'Trading', desc: 'Scale to $500K AUM with 20%+ annual returns' },
-            { emoji: '🎓', title: 'Education', desc: 'MS Financial Engineering completion (4.0 GPA)' },
-            { emoji: '💰', title: 'Wealth', desc: 'Increase net worth by 40% via trading + employment' },
-            { emoji: '💪', title: 'Health', desc: '12% body fat, half-marathon sub-1:45' },
-            { emoji: '🤝', title: 'Network', desc: 'Build relationships with 50+ industry pros' }
+            { title: 'Career', desc: 'Quant researcher role at target firm (Q2 2026)' },
+            { title: 'Trading', desc: 'Scale to $500K AUM with 20%+ annual returns' },
+            { title: 'Education', desc: 'MS Financial Engineering completion (4.0 GPA)' },
+            { title: 'Wealth', desc: 'Increase net worth by 40% via trading + employment' },
+            { title: 'Health', desc: '12% body fat, half-marathon sub-1:45' },
+            { title: 'Network', desc: 'Build relationships with 50+ industry pros' }
           ].map((obj, idx) => (
             <div key={idx} className="flex items-start gap-2 md:gap-3 bg-slate-900/50 p-2 md:p-3 rounded-lg border border-red-900/30">
-              <span className="text-xl md:text-2xl flex-shrink-0">{obj.emoji}</span>
               <div className="min-w-0">
                 <div className="text-red-400 font-semibold text-xs md:text-sm">{obj.title}</div>
                 <div className="text-slate-300 text-xs md:text-sm line-clamp-2">{obj.desc}</div>
@@ -903,14 +902,14 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-4">
         {/* Weekly Trend */}
         <div className="framework-card">
-          <h2 className="section-title text-lg md:text-xl">📊 7-DAY TREND</h2>
+          <h2 className="section-title text-lg md:text-xl"> 7-DAY TREND</h2>
           <WeeklyChart data={thisWeek} />
         </div>
 
         {/* Daily Category Breakdown */}
         {userData.dailyScores.length > 0 && (
           <div className="framework-card">
-            <h2 className="section-title text-lg md:text-xl">🎯 TODAY'S BREAKDOWN</h2>
+            <h2 className="section-title text-lg md:text-xl"> TODAY'S BREAKDOWN</h2>
             <DailyCategoryChart dailyScores={userData.dailyScores} />
           </div>
         )}
@@ -921,7 +920,7 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
         {/* Career Pipeline */}
         {userData.jobApplications.length > 0 && (
           <div className="framework-card">
-            <h2 className="section-title">💼 CAREER PIPELINE STATUS</h2>
+            <h2 className="section-title"> CAREER PIPELINE STATUS</h2>
             <CareerPipelineChart applications={userData.jobApplications} />
           </div>
         )}
@@ -929,7 +928,7 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
         {/* Trading P&L Trend */}
         {userData.tradingJournal.length > 0 && (
           <div className="framework-card">
-            <h2 className="section-title">📈 CUMULATIVE P&L TREND</h2>
+            <h2 className="section-title"> CUMULATIVE P&L TREND</h2>
             <TradingPnLChart trades={userData.tradingJournal} />
           </div>
         )}
@@ -938,7 +937,7 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
       {/* Charts Section - Row 3: Health & Fitness */}
       {userData.workouts.length > 0 && (
         <div className="framework-card">
-          <h2 className="section-title">💪 WORKOUT TYPE DISTRIBUTION</h2>
+          <h2 className="section-title"> WORKOUT TYPE DISTRIBUTION</h2>
           <div style={{ height: '250px' }}>
             <WorkoutTypeChart workouts={userData.workouts} />
           </div>
@@ -957,22 +956,21 @@ function Dashboard({ userData, setUserData, addNotification, setCurrentView }) {
 
       {/* Quick Actions */}
       <div className="framework-card">
-        <h2 className="section-title">⚡ QUICK ACTIONS</h2>
+        <h2 className="section-title"> QUICK ACTIONS</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {[
-            { emoji: '📝', label: 'Daily Score', action: 'Log today' },
-            { emoji: '💼', label: 'Job Application', action: 'Add app' },
-            { emoji: '📊', label: 'Trading Log', action: 'Log trade' },
-            { emoji: '💪', label: 'Workout', action: 'Log workout' },
-            { emoji: '📚', label: 'Learning', action: 'Track hours' },
-            { emoji: '📋', label: 'Weekly Review', action: 'Reflect' }
+            { label: 'Daily Score', action: 'Log today' },
+            { label: 'Job Application', action: 'Add app' },
+            { label: 'Trading Log', action: 'Log trade' },
+            { label: 'Workout', action: 'Log workout' },
+            { label: 'Learning', action: 'Track hours' },
+            { label: 'Weekly Review', action: 'Reflect' }
           ].map((action, idx) => (
             <button
               key={idx}
               onClick={() => handleQuickAction(action.action)}
               className="bg-red-900 hover:bg-red-800 text-white font-semibold py-3 px-2 rounded-lg transition-all text-center transform hover:scale-105"
             >
-              <div className="text-2xl mb-1">{action.emoji}</div>
               <div className="text-xs">{action.action}</div>
             </button>
           ))}

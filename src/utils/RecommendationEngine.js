@@ -406,22 +406,19 @@ export class RecommendationEngine {
     if (now === 5) {
       nudges.push({
         time: 'morning',
-        message: '🌅 Rise and shine! Time for your morning routine. You\'re about to own this day.',
-        emoji: '⏰',
+        message: ' Rise and shine! Time for your morning routine. You\'re about to own this day.',
         category: 'morning'
       });
     } else if (now === 8) {
       nudges.push({
         time: 'mid-morning',
-        message: '🎯 Deep work session starting? Silence notifications and lock in.',
-        emoji: '🔥',
+        message: ' Deep work session starting? Silence notifications and lock in.',
         category: 'focus'
       });
     } else if (now === 12) {
       nudges.push({
         time: 'noon',
-        message: '💪 Lunch time! Fuel your body with quality nutrition for afternoon grind.',
-        emoji: '🥗',
+        message: ' Lunch time! Fuel your body with quality nutrition for afternoon grind.',
         category: 'nutrition'
       });
     }
@@ -431,8 +428,7 @@ export class RecommendationEngine {
     if (dailyPattern && dailyPattern.average < 6) {
       nudges.push({
         time: 'afternoon',
-        message: '📊 Your score is low today. You still have time to recover. Pick 1 category and crush it.',
-        emoji: '💯',
+        message: ' Your score is low today. You still have time to recover. Pick 1 category and crush it.',
         category: 'motivation'
       });
     }
@@ -441,8 +437,7 @@ export class RecommendationEngine {
     if (careerMetrics.thisWeekCount < 10 && now > 14) {
       nudges.push({
         time: 'end-of-day',
-        message: '💼 You\'re at ' + careerMetrics.thisWeekCount + '/15 applications. Add 2-3 more before EOD?',
-        emoji: '📬',
+        message: ' You\'re at ' + careerMetrics.thisWeekCount + '/15 applications. Add 2-3 more before EOD?',
         category: 'career'
       });
     }

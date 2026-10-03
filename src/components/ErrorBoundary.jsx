@@ -46,7 +46,7 @@ export class ErrorBoundary extends React.Component {
       return (
         <div className="fixed inset-0 bg-slate-950 flex items-center justify-center p-4 z-50">
           <div className="glass rounded-2xl border border-slate-700 p-8 max-w-md text-center">
-            <div className="text-6xl mb-4">⚠️</div>
+            
             
             <h1 className="text-2xl font-bold text-white mb-2">
               Something Went Wrong
@@ -67,7 +67,7 @@ export class ErrorBoundary extends React.Component {
             {process.env.NODE_ENV === 'development' && this.state.errorInfo && (
               <details className="mb-4 text-left">
                 <summary className="cursor-pointer text-slate-400 hover:text-slate-300 text-sm">
-                  📋 Error Details (Dev Only)
+                   Error Details (Dev Only)
                 </summary>
                 <pre className="mt-2 bg-slate-900 p-3 rounded text-xs text-slate-300 overflow-auto max-h-40">
                   {this.state.errorInfo.componentStack}
@@ -102,13 +102,13 @@ export class ErrorBoundary extends React.Component {
             {/* Error Count Warning */}
             {this.state.errorCount > 3 && (
               <p className="text-xs text-orange-400 mt-4">
-                ⚠️ Multiple errors detected. Try clearing browser cache or contact support.
+                 Multiple errors detected. Try clearing browser cache or contact support.
               </p>
             )}
 
             {/* Tips */}
             <div className="mt-6 pt-4 border-t border-slate-700 text-left">
-              <p className="text-xs text-slate-400 font-semibold mb-2">💡 Troubleshooting:</p>
+              <p className="text-xs text-slate-400 font-semibold mb-2"> Troubleshooting:</p>
               <ul className="text-xs text-slate-500 space-y-1">
                 <li>• Clear your browser cache and cookies</li>
                 <li>• Try a different browser</li>

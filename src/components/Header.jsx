@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Activity, Atom, BrainCircuit, CalendarDays, ChartNoAxesCombined, ChevronLeft, ChevronRight, CircleDollarSign, Cpu, Dna } from 'lucide-react';
 import COMPREHENSIVE_FORMULAS from '../utils/formulasDatabase.js';
 
 export function Header({ currentTime }) {
@@ -14,17 +14,17 @@ export function Header({ currentTime }) {
 
     // Get upcoming events
     const events = [
-      { date: new Date(2025, 11, 25), name: 'Christmas Day', emoji: '🎄' },
-      { date: new Date(2025, 11, 31), name: 'New Year\'s Eve', emoji: '🎉' },
-      { date: new Date(2026, 0, 1), name: 'New Year 2026', emoji: '🎆' },
-      { date: new Date(2026, 0, 15), name: 'MLK Day', emoji: '🇺🇸' },
-      { date: new Date(2026, 1, 14), name: 'Valentine\'s Day', emoji: '💕' },
-      { date: new Date(2026, 2, 17), name: 'St. Patrick\'s Day', emoji: '🍀' },
-      { date: new Date(2026, 4, 25), name: 'Memorial Day', emoji: '🇺🇸' },
-      { date: new Date(2026, 6, 4), name: 'Independence Day', emoji: '🎆' },
-      { date: new Date(2026, 8, 7), name: 'Labor Day', emoji: '💼' },
-      { date: new Date(2026, 10, 26), name: 'Thanksgiving', emoji: '🦃' },
-      { date: new Date(2026, 11, 25), name: 'Christmas 2026', emoji: '🎄' }
+      { date: new Date(2025, 11, 25), name: 'Christmas Day' },
+      { date: new Date(2025, 11, 31), name: 'New Year\'s Eve' },
+      { date: new Date(2026, 0, 1), name: 'New Year 2026' },
+      { date: new Date(2026, 0, 15), name: 'MLK Day' },
+      { date: new Date(2026, 1, 14), name: 'Valentine\'s Day' },
+      { date: new Date(2026, 2, 17), name: 'St. Patrick\'s Day' },
+      { date: new Date(2026, 4, 25), name: 'Memorial Day' },
+      { date: new Date(2026, 6, 4), name: 'Independence Day' },
+      { date: new Date(2026, 8, 7), name: 'Labor Day' },
+      { date: new Date(2026, 10, 26), name: 'Thanksgiving' },
+      { date: new Date(2026, 11, 25), name: 'Christmas 2026' }
     ];
 
     const today = new Date();
@@ -59,14 +59,14 @@ export function Header({ currentTime }) {
     }
   };
 
-  const getCategoryEmoji = (category) => {
+  const getCategoryIcon = (category) => {
     switch(category) {
-      case 'finance': return '💰';
-      case 'dl': return '🧠';
-      case 'ml': return '🤖';
-      case 'quantum': return '⚛️';
-      case 'paths': return '📊';
-      default: return '📐';
+      case 'finance': return CircleDollarSign;
+      case 'dl': return BrainCircuit;
+      case 'ml': return Cpu;
+      case 'quantum': return Atom;
+      case 'paths': return ChartNoAxesCombined;
+      default: return Dna;
     }
   };
 
@@ -79,14 +79,15 @@ export function Header({ currentTime }) {
   };
 
   const currentFormula = COMPREHENSIVE_FORMULAS[formulaIndex];
+  const FormulaIcon = currentFormula ? getCategoryIcon(currentFormula.category) : null;
 
   const timeStr = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   const dateStr = currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
   // Debug logging
   useEffect(() => {
-    console.log('📐 Formulas loaded:', COMPREHENSIVE_FORMULAS.length);
-    console.log('📍 Current formula:', currentFormula);
+    console.log(' Formulas loaded:', COMPREHENSIVE_FORMULAS.length);
+    console.log(' Current formula:', currentFormula);
   }, [currentFormula]);
 
   return (
@@ -95,9 +96,9 @@ export function Header({ currentTime }) {
         {/* Top Row: Title and Time */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4">
           <div className="min-w-0">
-            <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-white mb-1 break-words">⚡ LIFE EXCELLENCE TRACKER</h1>
+            <h1 className="flex items-center gap-2 text-xl md:text-3xl lg:text-4xl font-bold text-white mb-1 break-words"><Activity aria-hidden="true" className="text-cyan-400" /> LIFE EXCELLENCE TRACKER</h1>
             <p className="text-xs md:text-sm lg:text-base text-slate-300 truncate">Joseph Bidias | Life Optimization</p>
-            <p className="text-red-400 text-xs md:text-sm font-semibold mt-1 line-clamp-2">📋 v1.0 | Discipline = Freedom</p>
+            <p className="text-red-400 text-xs md:text-sm font-semibold mt-1 line-clamp-2"> v1.0 | Discipline = Freedom</p>
           </div>
 
           {/* Time with Seconds & Date */}
@@ -119,7 +120,7 @@ export function Header({ currentTime }) {
                 className={`bg-gradient-to-br ${getFormulaColor(currentFormula.category)} rounded-lg p-3 border hover:border-opacity-100 transition cursor-pointer hover:scale-105 transform`}
               >
                 <div className="flex items-start gap-2">
-                  <span className="text-3xl flex-shrink-0">{getCategoryEmoji(currentFormula.category)}</span>
+                  <FormulaIcon aria-hidden="true" className="h-7 w-7 flex-shrink-0 text-cyan-300" />
                   <div className="min-w-0 flex-1">
                     <div className="text-sm text-slate-300">{currentFormula.name}</div>
                     <div className="text-sm font-mono text-white">{currentFormula.symbol}</div>
@@ -151,7 +152,7 @@ export function Header({ currentTime }) {
           {/* Upcoming Event 1 */}
           {upcomingEvents.length > 0 && (
             <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-lg p-2 md:p-3 border border-purple-600/30 flex items-center gap-2 hover:border-purple-500/50 transition">
-              <span className="text-2xl md:text-3xl flex-shrink-0">{upcomingEvents[0].emoji}</span>
+              <CalendarDays aria-hidden="true" className="h-6 w-6 flex-shrink-0 text-cyan-300" />
               <div className="min-w-0 flex-1">
                 <div className="text-xs md:text-sm text-slate-300 truncate">{upcomingEvents[0].name}</div>
                 <div className="text-base md:text-lg font-semibold text-white">{daysUntilEvent(upcomingEvents[0].date)}d</div>
@@ -163,7 +164,7 @@ export function Header({ currentTime }) {
           {/* Upcoming Event 2 */}
           {upcomingEvents.length > 1 && (
             <div className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 rounded-lg p-2 md:p-3 border border-blue-600/30 flex items-center gap-2 hover:border-blue-500/50 transition">
-              <span className="text-2xl md:text-3xl flex-shrink-0">{upcomingEvents[1].emoji}</span>
+              <CalendarDays aria-hidden="true" className="h-6 w-6 flex-shrink-0 text-cyan-300" />
               <div className="min-w-0 flex-1">
                 <div className="text-xs md:text-sm text-slate-300 truncate">{upcomingEvents[1].name}</div>
                 <div className="text-base md:text-lg font-semibold text-white">{daysUntilEvent(upcomingEvents[1].date)}d</div>
@@ -180,29 +181,29 @@ export function Header({ currentTime }) {
           <div className="bg-slate-900 border-2 border-slate-700 rounded-xl p-6 max-w-2xl w-full max-h-96 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                {getCategoryEmoji(currentFormula.category)} {currentFormula.name}
+                <FormulaIcon aria-hidden="true" className="h-6 w-6 text-cyan-300" /> {currentFormula.name}
               </h2>
               <button onClick={() => setShowFormulaDetails(false)} className="text-slate-400 hover:text-white text-2xl">×</button>
             </div>
 
             <div className="space-y-3">
               <div>
-                <p className="text-red-400 font-semibold text-sm">📍 Domain:</p>
+                <p className="text-red-400 font-semibold text-sm"> Domain:</p>
                 <p className="text-slate-300 text-sm">{currentFormula.domain}</p>
               </div>
 
               <div>
-                <p className="text-green-400 font-semibold text-sm">🔧 Usage:</p>
+                <p className="text-green-400 font-semibold text-sm"> Usage:</p>
                 <p className="text-slate-300 text-sm">{currentFormula.usage}</p>
               </div>
 
               <div>
-                <p className="text-blue-400 font-semibold text-sm">🎯 Applications:</p>
+                <p className="text-blue-400 font-semibold text-sm"> Applications:</p>
                 <p className="text-slate-300 text-sm">{currentFormula.applications}</p>
               </div>
 
               <div>
-                <p className="text-yellow-400 font-semibold text-sm">💻 Python Code:</p>
+                <p className="text-yellow-400 font-semibold text-sm"> Python Code:</p>
                 <pre className="bg-slate-800 p-3 rounded text-xs font-mono text-green-300 overflow-x-auto">
                   <code>{currentFormula.code}</code>
                 </pre>

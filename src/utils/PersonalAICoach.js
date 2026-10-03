@@ -31,7 +31,7 @@ export class PersonalAICoach {
     const topUrgency = urgencies[0];
 
     return {
-      title: '🎯 Your Next Action (Right Now)',
+      title: ' Your Next Action (Right Now)',
       action: topUrgency.action,
       urgency: topUrgency.urgency,
       duration: topUrgency.duration,
@@ -57,7 +57,7 @@ export class PersonalAICoach {
     const messages = this._generateMotivationalMessages(context);
     
     return {
-      title: '💪 Your Personal Coach',
+      title: ' Your Personal Coach',
       message: messages.primary,
       deepMessage: messages.deep,
       stats: messages.stats,
@@ -123,7 +123,7 @@ export class PersonalAICoach {
     }
 
     return {
-      title: '🏆 Accountability Check-In',
+      title: ' Accountability Check-In',
       challenges: challenges.slice(0, 3),
       tone: 'supportive',
       message: 'You know what to do. Let\'s go.'
@@ -138,31 +138,31 @@ export class PersonalAICoach {
     
     const tips = {
       focus: {
-        title: '🎯 Focus Hack For You',
+        title: ' Focus Hack For You',
         tip: 'Your mind wanders mid-morning. Use 2-min breathing ritual before 10 AM deep work.',
         why: 'Resets prefrontal cortex, increases focus duration by 40%',
         action: 'Try it this morning'
       },
       energy: {
-        title: '⚡ Energy Boost For You',
+        title: ' Energy Boost For You',
         tip: 'Your energy crashes at 2 PM. Take 10-min walk at 1:30 PM (before the crash).',
         why: 'Preventive > reactive. Maintains energy for afternoon tasks',
         action: 'Schedule it on your calendar'
       },
       motivation: {
-        title: '🚀 Motivation Boost For You',
+        title: ' Motivation Boost For You',
         tip: 'Your best week follows a trading win. Use that momentum - hit career harder next week.',
         why: 'Ride the psychological advantage while confidence is high',
         action: 'Apply to 5 companies tomorrow'
       },
       stress: {
-        title: '🧘 Stress Relief For You',
+        title: ' Stress Relief For You',
         tip: 'Your stress peaks after back-to-back meetings. Block 30 min alone time after.',
         why: 'Parasympathetic reset prevents cortisol accumulation',
         action: 'Protect solo work time'
       },
       sleep: {
-        title: '😴 Sleep Win For You',
+        title: ' Sleep Win For You',
         tip: 'No screens after 9 PM. Your data shows 8h sleep = +0.8 daily score.',
         why: 'ROI is massive - easiest way to boost everything',
         action: 'Phone away at 9 PM tonight'
@@ -211,7 +211,7 @@ export class PersonalAICoach {
     }
 
     return {
-      title: '🔮 Today\'s Day Prediction',
+      title: ' Today\'s Day Prediction',
       qualityScore: prediction.overallDayQuality,
       forecastedProblems: prediction.challengePredictions,
       goldOpportunities: prediction.opportunitiesInDay,
@@ -257,7 +257,7 @@ export class PersonalAICoach {
     });
 
     return {
-      title: '📈 Progress Report: 2026 Goals',
+      title: ' Progress Report: 2026 Goals',
       timeRemaining: report.timeToGoals,
       overallProgress: report.overallProgress,
       goodNews: report.goalsOnTrack.length + ' goals on track',
@@ -354,13 +354,13 @@ export class PersonalAICoach {
     const momentum = context.recentMomentum;
 
     if (momentum > 0.8) {
-      messages.primary = '🔥 You\'re on fire right now. Don\'t stop - push harder.';
+      messages.primary = ' You\'re on fire right now. Don\'t stop - push harder.';
       messages.deep = 'Your consistency is building neural pathways. Every day strengthens the system.';
     } else if (momentum > 0.5) {
-      messages.primary = '💪 You\'re in the zone. Keep the momentum.';
+      messages.primary = ' You\'re in the zone. Keep the momentum.';
       messages.deep = 'You\'re building habits that become automatic. Stick with it.';
     } else {
-      messages.primary = '🚀 Time to reset. One day at a time. You\'ve got this.';
+      messages.primary = ' Time to reset. One day at a time. You\'ve got this.';
       messages.deep = 'Every comeback is stronger than the start. Reset and go again.';
     }
 
@@ -379,7 +379,7 @@ export class PersonalAICoach {
   }
 
   _selectMotivationalEmoji(context) {
-    const emojis = ['🔥', '💪', '⚡', '🚀', '💎', '🎯'];
+    const emojis = ['', '', '', '', '', ''];
     return emojis[Math.floor(Math.random() * emojis.length)];
   }
 

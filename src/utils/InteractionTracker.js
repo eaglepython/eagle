@@ -190,7 +190,7 @@ export class InteractionTracker {
       const excellentDays = dailyScores.filter(s => s >= 8).length;
 
       evaluation.summary.dailyProtocol = {
-        status: avgScore >= 8 ? '✅ ON TRACK' : avgScore >= 7 ? '⚠️ CLOSE' : '🔴 NEEDS FOCUS',
+        status: avgScore >= 8 ? ' ON TRACK' : avgScore >= 7 ? ' CLOSE' : ' NEEDS FOCUS',
         average: parseFloat(avgScore.toFixed(2)),
         target: 8.0,
         gap: parseFloat((8.0 - avgScore).toFixed(2)),
@@ -215,7 +215,7 @@ export class InteractionTracker {
       evaluation.summary.careerProgress = {
         applicationsThisMonth: totalApps,
         target: 15,
-        status: totalApps >= 15 ? '✅ ON TRACK' : `⚠️ NEED ${15 - totalApps} MORE`,
+        status: totalApps >= 15 ? ' ON TRACK' : ` NEED ${15 - totalApps} MORE`,
         tier1Percentage: ((tier1Apps / totalApps) * 100).toFixed(0),
         expectedOffers: (totalApps * 0.02).toFixed(1), // 2% Tier 1 conversion
         pace: `At current pace: ${(totalApps * 12).toFixed(0)} applications/year`
@@ -239,7 +239,7 @@ export class InteractionTracker {
         tradesThisMonth: tradingInteractions.length,
         winRate: parseFloat(winRate.toFixed(1)),
         totalPnL: parseFloat(totalPnL.toFixed(2)),
-        status: winRate >= 50 ? '✅ PROFITABLE' : '⚠️ BELOW 50%',
+        status: winRate >= 50 ? ' PROFITABLE' : ' BELOW 50%',
         annualizedPnL: parseFloat((totalPnL * 12).toFixed(2)),
         pathTo500KAum: this._calculate500KProgress(totalPnL)
       };
@@ -259,7 +259,7 @@ export class InteractionTracker {
       evaluation.summary.fitnessProgress = {
         workoutsThisMonth: workoutInteractions.length,
         target: workoutsTarget,
-        status: workoutInteractions.length >= workoutsTarget ? '✅ ON TRACK' : `⚠️ NEED ${workoutsTarget - workoutInteractions.length}`,
+        status: workoutInteractions.length >= workoutsTarget ? ' ON TRACK' : ` NEED ${workoutsTarget - workoutInteractions.length}`,
         avgDuration: this._getAvgDuration(workoutInteractions),
         bodyFatTrajectory: '12% goal achievable with consistency'
       };
@@ -328,8 +328,8 @@ export class InteractionTracker {
     const recent = dailyInteractions.slice(-7);
     const trend = recent[recent.length - 1].data.totalScore - recent[0].data.totalScore;
 
-    if (trend > 1) return '📈 Upward trend - Momentum building';
-    if (trend < -1) return '📉 Downward trend - Reset needed';
+    if (trend > 1) return ' Upward trend - Momentum building';
+    if (trend < -1) return ' Downward trend - Reset needed';
     return '→ Stable - Maintain consistency';
   }
 

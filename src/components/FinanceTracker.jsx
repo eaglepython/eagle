@@ -37,7 +37,7 @@ function FinanceTracker({ userData, setUserData, addNotification }) {
 
       return updatedData;
     });
-    addNotification('Financial data updated! 💰', 'success');
+    addNotification('Financial data updated! ', 'success');
   };
 
   const savingsRate = finance.monthlyIncome > 0
@@ -45,11 +45,11 @@ function FinanceTracker({ userData, setUserData, addNotification }) {
     : 0;
 
   const milestones = [
-    { target: 100000, label: '$100K', date: 'Q2 2026', emoji: '🎯' },
-    { target: 250000, label: '$250K', date: 'Q4 2026', emoji: '🚀' },
-    { target: 500000, label: '$500K', date: 'Q4 2027', emoji: '💎' },
-    { target: 1000000, label: '$1M', date: 'Q4 2029', emoji: '👑' },
-    { target: 2000000, label: '$2M', date: 'Q4 2030', emoji: '🏆' }
+    { target: 100000, label: '$100K', date: 'Q2 2026', },
+    { target: 250000, label: '$250K', date: 'Q4 2026', },
+    { target: 500000, label: '$500K', date: 'Q4 2027', },
+    { target: 1000000, label: '$1M', date: 'Q4 2029', },
+    { target: 2000000, label: '$2M', date: 'Q4 2030', }
   ];
 
   return (
@@ -58,7 +58,7 @@ function FinanceTracker({ userData, setUserData, addNotification }) {
       {agentInsights?.recommendations && agentInsights.recommendations.length > 0 && (
         <div className="glass rounded-2xl p-6 border border-yellow-900/50">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-2xl">🤖</span>
+            
             <h3 className="text-xl font-bold text-white">SPENDING & WEALTH ANALYSIS</h3>
           </div>
           
@@ -68,7 +68,7 @@ function FinanceTracker({ userData, setUserData, addNotification }) {
                 <div className="flex items-start justify-between mb-2">
                   <div className="font-bold text-yellow-200">{rec.title}</div>
                   <span className="text-xs px-2 py-1 rounded bg-yellow-900/50 text-yellow-200">
-                    {rec.type === 'urgent' ? '🔴 URGENT' : rec.type === 'warning' ? '⚠️ WARNING' : '✅ TRACK'}
+                    {rec.type === 'urgent' ? ' URGENT' : rec.type === 'warning' ? ' WARNING' : ' TRACK'}
                   </span>
                 </div>
                 
@@ -120,7 +120,7 @@ function FinanceTracker({ userData, setUserData, addNotification }) {
 
       {/* Edit Finance Form */}
       <div className="framework-card">
-        <h3 className="text-xl font-bold text-white mb-4">📊 UPDATE FINANCIAL DATA</h3>
+        <h3 className="text-xl font-bold text-white mb-4"> UPDATE FINANCIAL DATA</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
             <label className="block text-red-400 font-semibold mb-2">Net Worth</label>
@@ -158,13 +158,13 @@ function FinanceTracker({ userData, setUserData, addNotification }) {
           onClick={saveFinance}
           className="btn-primary w-full py-3"
         >
-          💾 UPDATE FINANCIAL DATA
+           UPDATE FINANCIAL DATA
         </button>
       </div>
 
       {/* Net Worth Milestones */}
       <div className="framework-card">
-        <h2 className="section-title">🎯 NET WORTH MILESTONES</h2>
+        <h2 className="section-title"> NET WORTH MILESTONES</h2>
         <div className="space-y-3">
           {milestones.map(milestone => {
             const progress = (finance.netWorth / milestone.target) * 100;
@@ -174,14 +174,13 @@ function FinanceTracker({ userData, setUserData, addNotification }) {
               <div key={milestone.target} className="bg-slate-900/50 rounded-lg p-4 border border-red-900/30">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl">{milestone.emoji}</span>
                     <div>
                       <span className="text-white font-semibold">{milestone.label}</span>
                       <span className="text-slate-400 text-sm ml-3">by {milestone.date}</span>
                     </div>
                   </div>
                   <span className={`text-lg font-bold ${achieved ? 'text-green-400' : 'text-slate-400'}`}>
-                    {achieved ? '✅' : `${Math.min(progress, 100).toFixed(0)}%`}
+                    {achieved ? '' : `${Math.min(progress, 100).toFixed(0)}%`}
                   </span>
                 </div>
                 <div className="w-full bg-slate-800 rounded-full h-3 overflow-hidden border border-red-900/30">
@@ -201,7 +200,7 @@ function FinanceTracker({ userData, setUserData, addNotification }) {
 
       {/* Income Streams */}
       <div className="glass rounded-2xl p-4 border border-slate-700 text-sm text-slate-300">
-        <div className="font-semibold text-white mb-2">📌 WEALTH BUILDING STRATEGY:</div>
+        <div className="font-semibold text-white mb-2"> WEALTH BUILDING STRATEGY:</div>
         <p className="mb-2">Primary income: Quant researcher role (Q2 2026, $150K-250K). Secondary: Consulting ($2.5K-3K/week). Tertiary: Algorithmic trading ($500K AUM, 20%+ returns). Target savings rate: 50-60%. Auto-invest first day of month: 80% investments, 20% enjoyment.</p>
       </div>
     </div>

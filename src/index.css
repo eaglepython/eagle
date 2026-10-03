@@ -2,20 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-input, textarea, button, select {
-  -webkit-user-select: text;
-  user-select: text;
-}
+* { box-sizing: border-box; }
 
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #0f172a 0%, #1a2847 100%);
+  background: #0b1220;
   color: #e2e8f0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -50,21 +41,21 @@ html {
 }
 
 .glass {
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(139, 0, 0, 0.3);
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(148, 163, 184, 0.18);
 }
 
 .metric-card {
   transition: all 0.3s ease;
   background: rgba(30, 41, 59, 0.9);
-  border: 1px solid rgba(139, 0, 0, 0.4);
+  border: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 @media (min-width: 1024px) {
   .metric-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(139, 0, 0, 0.3);
+    box-shadow: 0 16px 36px rgba(2, 6, 23, 0.35);
   }
 }
 
@@ -76,8 +67,8 @@ html {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(139, 0, 0, 0.1));
-  border: 1px solid rgba(220, 38, 38, 0.3);
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.22);
   margin: 0 auto 10px;
   transition: all 0.3s ease;
   flex-shrink: 0;
@@ -93,8 +84,8 @@ html {
 
 @media (min-width: 1024px) {
   .icon-container:hover {
-    border-color: rgba(220, 38, 38, 0.6);
-    background: linear-gradient(135deg, rgba(220, 38, 38, 0.15), rgba(139, 0, 0, 0.15));
+    border-color: rgba(34, 211, 238, 0.55);
+    background: rgba(34, 211, 238, 0.12);
     transform: scale(1.05);
   }
 }
@@ -106,7 +97,7 @@ html {
 .icon-container svg {
   width: 24px;
   height: 24px;
-  stroke: rgb(220, 38, 38);
+  stroke: rgb(34, 211, 238);
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -134,7 +125,7 @@ html {
 
 /* Buttons - Mobile optimized */
 .btn-primary {
-  @apply bg-red-900 hover:bg-red-800 active:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-all min-h-[48px];
+  @apply bg-cyan-700 hover:bg-cyan-600 active:bg-cyan-500 text-white font-semibold py-3 px-6 rounded-lg transition-all min-h-[48px];
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -158,7 +149,7 @@ html {
 }
 
 .btn-accent {
-  @apply bg-red-800 hover:bg-red-700 active:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-all min-h-[48px];
+  @apply bg-sky-700 hover:bg-sky-600 active:bg-sky-500 text-white font-semibold py-2 px-4 rounded-lg transition-all min-h-[48px];
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -196,7 +187,7 @@ canvas {
 }
 
 .input-field {
-  @apply bg-slate-700 border border-red-900/30 text-white rounded-lg p-3 placeholder-slate-400 focus:border-red-700 focus:outline-none text-base;
+  @apply bg-slate-800 border border-slate-600 text-white rounded-lg p-3 placeholder-slate-400 focus:border-cyan-500 focus:outline-none text-base;
   min-height: 48px;
   -webkit-appearance: none;
   -webkit-border-radius: 8px;
@@ -211,7 +202,7 @@ canvas {
 }
 
 .textarea-field {
-  @apply bg-slate-700 border border-red-900/30 text-white rounded-lg p-3 placeholder-slate-400 focus:border-red-700 focus:outline-none h-24 text-base;
+  @apply bg-slate-800 border border-slate-600 text-white rounded-lg p-3 placeholder-slate-400 focus:border-cyan-500 focus:outline-none h-24 text-base;
   -webkit-appearance: none;
   -webkit-border-radius: 8px;
   resize: vertical;
@@ -226,7 +217,7 @@ canvas {
 }
 
 .section-title {
-  @apply text-2xl font-bold text-white mb-4 border-b border-red-900/50 pb-2;
+  @apply text-2xl font-semibold tracking-tight text-white mb-4 border-b border-slate-700 pb-2;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -269,7 +260,7 @@ canvas {
 }
 
 .framework-card {
-  @apply bg-gradient-to-br from-slate-800 to-slate-900 border border-red-900/40 rounded-xl p-6;
+  @apply bg-slate-900/80 border border-slate-700 rounded-xl p-6 shadow-lg shadow-black/10;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -281,7 +272,7 @@ canvas {
 }
 
 .stat-box {
-  @apply bg-slate-700/50 border border-red-900/30 rounded-lg p-4 text-center;
+  @apply bg-slate-800/70 border border-slate-700 rounded-lg p-4 text-center;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -314,7 +305,7 @@ canvas {
 }
 
 .tabs-container::-webkit-scrollbar-thumb {
-  background: rgba(139, 0, 0, 0.4);
+  background: rgba(148, 163, 184, 0.35);
   border-radius: 10px;
 }
 
@@ -382,8 +373,8 @@ canvas {
 
 /* Cards and containers */
 .card {
-  background: rgba(30, 41, 59, 0.9);
-  border: 1px solid rgba(139, 0, 0, 0.4);
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.18);
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 12px;

@@ -11,7 +11,7 @@ function IntelligentChatbox({ userData, setUserData }) {
     {
       id: 1,
       type: 'bot',
-      text: 'Hi! I\'m your intelligent life tracker assistant. I can help you with:\n\n📊 Analysis: Get insights on any tracker (daily, career, trading, health, finance)\n🎯 Recommendations: Receive personalized advice based on your goals\n📈 Progress: Track your progress toward 2026 targets\n🔍 Explanations: Understand your patterns and performance\n\nWhat would you like to know?',
+      text: 'Hi! I\'m your intelligent life tracker assistant. I can help you with:\n\n Analysis: Get insights on any tracker (daily, career, trading, health, finance)\n Recommendations: Receive personalized advice based on your goals\n Progress: Track your progress toward 2026 targets\n Explanations: Understand your patterns and performance\n\nWhat would you like to know?',
       timestamp: new Date(),
       sources: []
     }
@@ -51,7 +51,7 @@ function IntelligentChatbox({ userData, setUserData }) {
       ) {
         const analysis = dailyAgent.analyzeCategoryDetails();
         const recommendations = dailyAgent.generateCategoryRecommendations();
-        response = `📊 Daily Score Analysis\n\n`;
+        response = ` Daily Score Analysis\n\n`;
         response += `Current Performance:\n`;
         response += `• Categories Tracked: ${Object.keys(analysis).length}\n`;
         response += `• Top Performing: ${Object.entries(analysis).reduce((a, b) => a[1].current > b[1].current ? a : b)?.[0] || 'N/A'}\n\n`;
@@ -59,7 +59,7 @@ function IntelligentChatbox({ userData, setUserData }) {
         recommendations.slice(0, 3).forEach((rec, idx) => {
           response += `${idx + 1}. ${rec.category}: ${rec.actionable}\n`;
         });
-        response += `\n💡 Focus on maintaining consistency. Your discipline score is crucial for all other goals.`;
+        response += `\n Focus on maintaining consistency. Your discipline score is crucial for all other goals.`;
         sources = ['Daily Tracker Agent', 'RAG Evaluation'];
       }
 
@@ -71,7 +71,7 @@ function IntelligentChatbox({ userData, setUserData }) {
       ) {
         const analysis = careerAgent.analyzeTierPerformance();
         const recs = careerAgent.generateTierRecommendations();
-        response = `💼 Career Progress Analysis\n\n`;
+        response = ` Career Progress Analysis\n\n`;
         response += `Current Status:\n`;
         response += `• Tier 1 Apps: ${analysis.tier1.count || 0} (Target: 5/week)\n`;
         response += `• Tier 2 Apps: ${analysis.tier2.count || 0}\n`;
@@ -84,7 +84,7 @@ function IntelligentChatbox({ userData, setUserData }) {
         recs.slice(0, 3).forEach((rec, idx) => {
           response += `${idx + 1}. ${rec.recommendation}\n`;
         });
-        response += `\n🎯 Focus on Tier 1 firms. Quality over quantity is key for 2026 quant researcher role.`;
+        response += `\n Focus on Tier 1 firms. Quality over quantity is key for 2026 quant researcher role.`;
         sources = ['Career Tracker Agent', 'RAG Evaluation'];
       }
 
@@ -98,7 +98,7 @@ function IntelligentChatbox({ userData, setUserData }) {
         const patterns = tradingAgent.analyzeTradingPatterns();
         const recs = tradingAgent.generateTradingRecommendations();
         const monthlyStats = tradingAgent.getMonthlyStats();
-        response = `📈 Trading Performance Analysis\n\n`;
+        response = ` Trading Performance Analysis\n\n`;
         response += `Monthly Stats:\n`;
         response += `• Trades: ${monthlyStats.tradeCount || 0}\n`;
         response += `• Win Rate: ${monthlyStats.winRate || '0'}% (Target: 55%)\n`;
@@ -112,7 +112,7 @@ function IntelligentChatbox({ userData, setUserData }) {
         recs.slice(0, 3).forEach((rec, idx) => {
           response += `${idx + 1}. ${rec}\n`;
         });
-        response += `\n🚀 Path to $500K AUM: ${(patterns.aumProjection || '').substring(0, 50)}...`;
+        response += `\n Path to $500K AUM: ${(patterns.aumProjection || '').substring(0, 50)}...`;
         sources = ['Trading Journal Agent', 'RAG Evaluation'];
       }
 
@@ -125,7 +125,7 @@ function IntelligentChatbox({ userData, setUserData }) {
       ) {
         const patterns = healthAgent.analyzeWorkoutPatterns();
         const recs = healthAgent.generateFitnessRecommendations();
-        response = `💪 Fitness Progress Analysis\n\n`;
+        response = ` Fitness Progress Analysis\n\n`;
         response += `Current Status:\n`;
         response += `• Workouts This Month: ${patterns.monthlyWorkouts || 0} (Target: 24)\n`;
         response += `• Workout Types: ${Object.keys(patterns.typeBreakdown || {}).join(', ') || 'None tracked'}\n`;
@@ -137,7 +137,7 @@ function IntelligentChatbox({ userData, setUserData }) {
         recs.slice(0, 3).forEach((rec, idx) => {
           response += `${idx + 1}. ${rec}\n`;
         });
-        response += `\n✅ Consistency is key. 6 workouts per week will get you to 12% body fat by 2026.`;
+        response += `\n Consistency is key. 6 workouts per week will get you to 12% body fat by 2026.`;
         sources = ['Health Tracker Agent', 'RAG Evaluation'];
       }
 
@@ -150,7 +150,7 @@ function IntelligentChatbox({ userData, setUserData }) {
       ) {
         const analysis = financeAgent.analyzeFinancialHealth();
         const recs = financeAgent.generateFinancialRecommendations();
-        response = `💰 Financial Health Analysis\n\n`;
+        response = ` Financial Health Analysis\n\n`;
         response += `Current Status:\n`;
         response += `• Monthly Expenses: $${(userData.financeData?.monthlyExpenses || 0).toFixed(2)}\n`;
         response += `• Savings Rate: ${analysis.savingsRate || '0'}% (Target: 30%)\n`;
@@ -165,7 +165,7 @@ function IntelligentChatbox({ userData, setUserData }) {
         recs.slice(0, 3).forEach((rec, idx) => {
           response += `${idx + 1}. ${rec}\n`;
         });
-        response += `\n📊 Path to $2M net worth: Maintain 30% savings rate and invest strategically.`;
+        response += `\n Path to $2M net worth: Maintain 30% savings rate and invest strategically.`;
         sources = ['Finance Tracker Agent', 'RAG Evaluation'];
       }
 
@@ -178,31 +178,31 @@ function IntelligentChatbox({ userData, setUserData }) {
       ) {
         const evaluation = ragEngine.generateAdaptiveEvaluation();
         const insights = ragEngine.generateKeyInsights();
-        response = `🎯 2026 Goals Progress Report\n\n`;
+        response = ` 2026 Goals Progress Report\n\n`;
         response += `Overall Progress: ${evaluation.overallScore}%\n\n`;
         response += `Goal Status:\n`;
         Object.entries(evaluation.categories).forEach(([goal, data]) => {
-          const status = data.score >= 75 ? '✅' : data.score >= 50 ? '⚠️' : '❌';
+          const status = data.score >= 75 ? '' : data.score >= 50 ? '' : '';
           response += `${status} ${goal.replace(/_/g, ' ')}: ${data.score}% (${data.current}/${data.target})\n`;
         });
         response += `\nKey Insights:\n`;
         insights.slice(0, 3).forEach((insight, idx) => {
           response += `${idx + 1}. ${insight.message}\n`;
         });
-        response += `\n📈 You're making steady progress. Focus on the CRITICAL items first.`;
+        response += `\n You're making steady progress. Focus on the CRITICAL items first.`;
         sources = ['RAG Evaluation Engine', 'All Agents'];
       }
 
       // Default response with system overview
       else {
-        response = `🤖 System Overview\n\n`;
+        response = ` System Overview\n\n`;
         response += `I can help you with:\n\n`;
-        response += `📊 Daily Score: Ask about your discipline and daily metrics\n`;
-        response += `💼 Career: Discuss job applications and Tier 1 focus\n`;
-        response += `📈 Trading: Analyze trades, win rates, and $500K AUM path\n`;
-        response += `💪 Health: Review workouts and body fat progression\n`;
-        response += `💰 Finance: Examine expenses and $2M net worth path\n`;
-        response += `🎯 Progress: Check overall 2026 goals status\n\n`;
+        response += ` Daily Score: Ask about your discipline and daily metrics\n`;
+        response += ` Career: Discuss job applications and Tier 1 focus\n`;
+        response += ` Trading: Analyze trades, win rates, and $500K AUM path\n`;
+        response += ` Health: Review workouts and body fat progression\n`;
+        response += ` Finance: Examine expenses and $2M net worth path\n`;
+        response += ` Progress: Check overall 2026 goals status\n\n`;
         response += `Try asking: "How's my career progress?" or "What should I do for trading?"`;
         sources = ['System Overview'];
       }
@@ -276,7 +276,7 @@ function IntelligentChatbox({ userData, setUserData }) {
           <div className="bg-gradient-to-r from-blue-900/50 to-purple-900/50 p-4 border-b border-slate-700/50 flex items-center justify-between">
             <div>
               <h3 className="font-bold text-white flex items-center gap-2">
-                🤖 AI Assistant
+                 AI Assistant
               </h3>
               <p className="text-xs text-slate-400 mt-1">RAG-Powered Life Tracker AI</p>
             </div>
@@ -306,7 +306,7 @@ function IntelligentChatbox({ userData, setUserData }) {
                   {/* Sources for bot messages */}
                   {msg.type === 'bot' && msg.sources.length > 0 && (
                     <div className="mt-2 pt-2 border-t border-slate-700/30 text-xs text-slate-400">
-                      <span>📚 Sources: {msg.sources.join(', ')}</span>
+                      <span> Sources: {msg.sources.join(', ')}</span>
                     </div>
                   )}
                   
@@ -362,7 +362,7 @@ function IntelligentChatbox({ userData, setUserData }) {
           onClick={() => setShowChat(true)}
           className="glass rounded-full w-14 h-14 flex items-center justify-center border border-slate-700/50 hover:border-blue-600 transition shadow-lg hover:shadow-xl text-2xl hover:scale-110 transform"
         >
-          🤖
+          
         </button>
       )}
     </div>

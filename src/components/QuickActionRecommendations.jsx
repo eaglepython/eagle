@@ -32,7 +32,6 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
         {/* Header */}
         <div className="sticky top-0 bg-gradient-to-r from-slate-900/95 to-slate-800/95 border-b border-red-900/30 px-4 md:px-6 py-4 flex items-center justify-between rounded-t-2xl">
           <div className="flex items-center gap-3">
-            <span className="text-2xl md:text-3xl">{recommendations.icon}</span>
             <div>
               <h2 className="text-lg md:text-xl font-bold text-white">{recommendations.title}</h2>
               <p className="text-xs md:text-sm text-slate-400">Smart recommendations for better results</p>
@@ -52,7 +51,7 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
           {/* Current Metrics */}
           {(recommendations.currentScore !== undefined || recommendations.currentWeek !== undefined) && (
             <div className="bg-slate-800/50 rounded-lg p-3 md:p-4 border border-slate-700">
-              <h3 className="text-sm md:text-base font-bold text-slate-300 mb-2 md:mb-3">📊 Current Status</h3>
+              <h3 className="text-sm md:text-base font-bold text-slate-300 mb-2 md:mb-3"> Current Status</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3">
                 {recommendations.currentScore !== null && (
                   <div>
@@ -81,7 +80,7 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
           {/* Fitness Metrics */}
           {recommendations.fitnessMetrics && Object.keys(recommendations.fitnessMetrics).length > 0 && (
             <div className="bg-slate-800/50 rounded-lg p-3 md:p-4 border border-slate-700">
-              <h3 className="text-sm md:text-base font-bold text-slate-300 mb-2 md:mb-3">💪 Fitness Metrics</h3>
+              <h3 className="text-sm md:text-base font-bold text-slate-300 mb-2 md:mb-3"> Fitness Metrics</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3 text-xs md:text-sm">
                 {Object.entries(recommendations.fitnessMetrics).map(([key, value]) => (
                   <div key={key}>
@@ -96,7 +95,7 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
           {/* Week Metrics */}
           {recommendations.weekMetrics && Object.keys(recommendations.weekMetrics).length > 0 && (
             <div className="bg-slate-800/50 rounded-lg p-3 md:p-4 border border-slate-700">
-              <h3 className="text-sm md:text-base font-bold text-slate-300 mb-2 md:mb-3">📈 Week Summary</h3>
+              <h3 className="text-sm md:text-base font-bold text-slate-300 mb-2 md:mb-3"> Week Summary</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3 text-xs md:text-sm">
                 {Object.entries(recommendations.weekMetrics).map(([key, value]) => (
                   <div key={key}>
@@ -111,13 +110,13 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
           {/* Insights */}
           {recommendations.insights && recommendations.insights.length > 0 && (
             <div className="space-y-2 md:space-y-3">
-              <h3 className="text-sm md:text-base font-bold text-slate-300">💡 Key Insights</h3>
+              <h3 className="text-sm md:text-base font-bold text-slate-300"> Key Insights</h3>
               {recommendations.insights.map((insight, idx) => (
                 <div
                   key={idx}
                   className={`rounded-lg p-3 md:p-4 border flex items-start gap-2 md:gap-3 ${getInsightColor(insight.type)}`}
                 >
-                  <span className="text-base md:text-lg flex-shrink-0 mt-0.5">{insight.type === 'success' ? '✅' : insight.type === 'critical' ? '🚨' : insight.type === 'warning' ? '⚠️' : '📈'}</span>
+                  <span className="text-base md:text-lg flex-shrink-0 mt-0.5">{insight.type === 'success' ? '' : insight.type === 'critical' ? '' : insight.type === 'warning' ? '' : ''}</span>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs md:text-sm font-medium">{insight.message}</p>
                     <div className="mt-1 text-xs opacity-75">{insight.action}</div>
@@ -130,7 +129,7 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
           {/* Focus Areas */}
           {recommendations.focusAreas && recommendations.focusAreas.length > 0 && (
             <div className="space-y-2 md:space-y-3">
-              <h3 className="text-sm md:text-base font-bold text-slate-300">🎯 Focus Areas</h3>
+              <h3 className="text-sm md:text-base font-bold text-slate-300"> Focus Areas</h3>
               {recommendations.focusAreas.map((area, idx) => (
                 <div key={idx} className="bg-orange-900/20 border border-orange-600/30 rounded-lg p-3 md:p-4">
                   {typeof area === 'object' ? (
@@ -149,7 +148,7 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
           {/* Action Items */}
           {recommendations.actionItems && recommendations.actionItems.length > 0 && (
             <div className="space-y-2 md:space-y-3">
-              <h3 className="text-sm md:text-base font-bold text-slate-300">✅ Action Items</h3>
+              <h3 className="text-sm md:text-base font-bold text-slate-300"> Action Items</h3>
               {recommendations.actionItems.slice(0, 5).map((item, idx) => (
                 <div key={idx} className={`rounded-lg p-3 md:p-4 border ${getPriorityColor(item.priority)}`}>
                   <div className="flex items-start justify-between gap-2 md:gap-3 mb-1 md:mb-2">
@@ -169,7 +168,7 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
           {/* Quality Metrics */}
           {recommendations.qualityMetrics && Object.keys(recommendations.qualityMetrics).length > 0 && (
             <div className="bg-slate-800/50 rounded-lg p-3 md:p-4 border border-slate-700">
-              <h3 className="text-sm md:text-base font-bold text-slate-300 mb-2 md:mb-3">📊 Quality Metrics</h3>
+              <h3 className="text-sm md:text-base font-bold text-slate-300 mb-2 md:mb-3"> Quality Metrics</h3>
               <div className="grid grid-cols-2 gap-2 md:gap-3 text-xs md:text-sm">
                 {Object.entries(recommendations.qualityMetrics).map(([key, value]) => (
                   <div key={key}>
@@ -184,7 +183,7 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
           {/* Risk Metrics */}
           {recommendations.riskMetrics && Object.keys(recommendations.riskMetrics).length > 0 && (
             <div className="bg-slate-800/50 rounded-lg p-3 md:p-4 border border-slate-700">
-              <h3 className="text-sm md:text-base font-bold text-slate-300 mb-2 md:mb-3">⚖️ Risk Management</h3>
+              <h3 className="text-sm md:text-base font-bold text-slate-300 mb-2 md:mb-3"> Risk Management</h3>
               <div className="grid grid-cols-2 gap-2 md:gap-3 text-xs md:text-sm">
                 {Object.entries(recommendations.riskMetrics).map(([key, value]) => (
                   <div key={key}>
@@ -199,7 +198,7 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
           {/* Workout Plan */}
           {recommendations.workoutPlan && recommendations.workoutPlan.length > 0 && (
             <div className="space-y-2 md:space-y-3">
-              <h3 className="text-sm md:text-base font-bold text-slate-300">📅 Recommended Workout Plan</h3>
+              <h3 className="text-sm md:text-base font-bold text-slate-300"> Recommended Workout Plan</h3>
               {recommendations.workoutPlan.map((day, idx) => (
                 <div key={idx} className="bg-slate-800/50 rounded-lg p-3 md:p-4 border border-slate-700 flex items-start justify-between">
                   <div className="min-w-0">
@@ -221,7 +220,7 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
           {/* Next Week Plan */}
           {recommendations.nextWeekPlan && recommendations.nextWeekPlan.length > 0 && (
             <div className="space-y-2 md:space-y-3">
-              <h3 className="text-sm md:text-base font-bold text-slate-300">📋 Next Week Plan</h3>
+              <h3 className="text-sm md:text-base font-bold text-slate-300"> Next Week Plan</h3>
               {recommendations.nextWeekPlan.map((plan, idx) => (
                 <div key={idx} className="bg-slate-800/50 rounded-lg p-3 md:p-4 border border-slate-700">
                   <div className="font-semibold text-xs md:text-sm text-white mb-1 md:mb-2">{plan.goal}</div>
@@ -241,7 +240,7 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
           {/* Top Resources */}
           {recommendations.topResources && recommendations.topResources.length > 0 && (
             <div className="space-y-2 md:space-y-3">
-              <h3 className="text-sm md:text-base font-bold text-slate-300">📚 Top Resources</h3>
+              <h3 className="text-sm md:text-base font-bold text-slate-300"> Top Resources</h3>
               {recommendations.topResources.map((res, idx) => (
                 <div key={idx} className={`rounded-lg p-3 md:p-4 border ${
                   res.relevance === 'CRITICAL' ? 'bg-red-900/20 border-red-600/30' :
@@ -264,7 +263,7 @@ export function QuickActionRecommendations({ recommendations, onDismiss }) {
           {/* Predicted Score */}
           {recommendations.predictedScore && (
             <div className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-lg p-3 md:p-4 border border-purple-600/30">
-              <h3 className="text-sm md:text-base font-bold text-slate-300 mb-2">🔮 Predicted Score</h3>
+              <h3 className="text-sm md:text-base font-bold text-slate-300 mb-2"> Predicted Score</h3>
               <div className="text-2xl md:text-3xl font-bold text-purple-300">
                 {recommendations.predictedScore.toFixed(1)}/10
               </div>

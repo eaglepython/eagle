@@ -23,28 +23,13 @@ export function IntelligentAgent({ recommendations, predictions, nudges, current
     return colors[type] || colors.insight;
   };
 
-  const getTypeIcon = (type) => {
-    if (type === 'urgent') return '🚨';
-    if (type === 'warning') return '⚠️';
-    return 'ℹ️';
-  };
-
-  const getPriorityLevel = (priority) => {
-    const levels = {
-      high: '🔴',
-      medium: '🟡',
-      low: '🟢'
-    };
-    return levels[priority] || '🟢';
-  };
-
   return (
     <div className="space-y-4">
       {/* Urgent Recommendations Section */}
       {recommendations.filter(r => r.type === 'urgent').length > 0 && (
         <div className="bg-red-900/10 border-2 border-red-600/50 rounded-xl p-4 animate-pulse">
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-2xl">🚨</span>
+            
             <h3 className="text-lg font-bold text-red-300">Priority Actions Required</h3>
           </div>
           <div className="space-y-2">
@@ -88,7 +73,6 @@ export function IntelligentAgent({ recommendations, predictions, nudges, current
               onClick={() => setExpandedRec(expandedRec === `warn-${idx}` ? null : `warn-${idx}`)}
             >
               <div className="flex items-start gap-3">
-                <span className="text-lg">{getTypeIcon(rec.type)}</span>
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold truncate">{rec.title}</div>
                   <div className="text-xs opacity-80 mt-1 line-clamp-2">{rec.message}</div>
@@ -96,7 +80,7 @@ export function IntelligentAgent({ recommendations, predictions, nudges, current
                     <span className="text-xs px-2 py-1 bg-black/20 rounded">
                       {rec.category.toUpperCase()}
                     </span>
-                    <span>{getPriorityLevel(rec.priority)}</span>
+                    <span className="text-xs font-medium uppercase tracking-wide">{rec.priority} priority</span>
                   </div>
                 </div>
               </div>
@@ -115,7 +99,6 @@ export function IntelligentAgent({ recommendations, predictions, nudges, current
       {nudges.length > 0 && (
         <div className="bg-gradient-to-r from-purple-900/20 to-blue-900/20 border border-purple-500/50 rounded-lg p-4">
           <div className="flex items-center gap-3">
-            <span className="text-3xl">{nudges[0].emoji}</span>
             <div>
               <div className="font-semibold text-purple-300">Time to act!</div>
               <div className="text-sm text-purple-200/80 mt-1">{nudges[0].message}</div>
@@ -127,7 +110,7 @@ export function IntelligentAgent({ recommendations, predictions, nudges, current
       {/* Performance Predictions */}
       {predictions && Object.keys(predictions).length > 0 && (
         <div className="bg-green-900/10 border border-green-600/50 rounded-lg p-4">
-          <h4 className="font-bold text-green-300 mb-3">📈 Achievement Forecast</h4>
+          <h4 className="font-bold text-green-300 mb-3"> Achievement Forecast</h4>
           <div className="space-y-2 text-sm">
             {predictions.daily && (
               <div className="flex items-center justify-between">
@@ -175,12 +158,12 @@ export function AdaptiveCoach({ userData, metrics }) {
 
   const generateCoachingTip = () => {
     const tips = [
-      { text: '🎯 Master one habit at a time. Small wins compound.', type: 'tip' },
-      { text: '📊 Review your data weekly. What gets measured gets managed.', type: 'insight' },
-      { text: '💪 Consistency beats intensity. Show up daily.', type: 'motivational' },
-      { text: '⚡ Your biggest leverage point is usually your weakest category.', type: 'strategic' },
-      { text: '🔄 Adapt your strategy based on patterns, not moods.', type: 'strategic' },
-      { text: '🧠 Track: Decision → Result → Learning. This is your feedback loop.', type: 'educational' }
+      { text: ' Master one habit at a time. Small wins compound.', type: 'tip' },
+      { text: ' Review your data weekly. What gets measured gets managed.', type: 'insight' },
+      { text: ' Consistency beats intensity. Show up daily.', type: 'motivational' },
+      { text: ' Your biggest leverage point is usually your weakest category.', type: 'strategic' },
+      { text: ' Adapt your strategy based on patterns, not moods.', type: 'strategic' },
+      { text: ' Track: Decision → Result → Learning. This is your feedback loop.', type: 'educational' }
     ];
 
     const randomTip = tips[Math.floor(Math.random() * tips.length)];
@@ -190,7 +173,7 @@ export function AdaptiveCoach({ userData, metrics }) {
   return (
     <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-blue-600/30 rounded-lg p-4">
       <div className="flex items-start gap-3">
-        <span className="text-3xl">🧠</span>
+        
         <div>
           <h4 className="font-bold text-blue-300 mb-2">Coach's Insight</h4>
           {coachingTip && (
@@ -213,7 +196,7 @@ export function PerformanceInsights({ metrics, recommendations }) {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
       {/* Quick Wins */}
       <div className="bg-green-900/10 border border-green-600/30 rounded-lg p-3">
-        <div className="text-sm font-bold text-green-400 mb-2">💚 Quick Wins</div>
+        <div className="text-sm font-bold text-green-400 mb-2"> Quick Wins</div>
         <ul className="text-xs space-y-1 text-green-200/80">
           <li>✓ Log 3 more workouts for perfect week</li>
           <li>✓ Submit 5 more applications today</li>
@@ -223,7 +206,7 @@ export function PerformanceInsights({ metrics, recommendations }) {
 
       {/* Risk Areas */}
       <div className="bg-red-900/10 border border-red-600/30 rounded-lg p-3">
-        <div className="text-sm font-bold text-red-400 mb-2">⚠️ Risk Areas</div>
+        <div className="text-sm font-bold text-red-400 mb-2"> Risk Areas</div>
         <ul className="text-xs space-y-1 text-red-200/80">
           <li>✗ Consistency below 70%</li>
           <li>✗ Trading win rate declining</li>

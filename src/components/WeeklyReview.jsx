@@ -25,7 +25,7 @@ function WeeklyReview({ userData, setUserData, addNotification }) {
       ...prev,
       weeklyReviews: [...prev.weeklyReviews, { ...review, timestamp: new Date().toISOString() }]
     }));
-    addNotification('Weekly review saved! 📝', 'success');
+    addNotification('Weekly review saved! ', 'success');
     setReview({
       date: new Date().toISOString().split('T')[0],
       wins: '',
@@ -40,12 +40,12 @@ function WeeklyReview({ userData, setUserData, addNotification }) {
       {/* AI Weekly Insights */}
       {aiInsights && (
         <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-blue-600/30 rounded-lg p-4">
-          <h3 className="text-lg font-bold text-blue-300 mb-3">🤖 AI Weekly Analysis</h3>
+          <h3 className="text-lg font-bold text-blue-300 mb-3"> AI Weekly Analysis</h3>
           <div className="space-y-3 text-sm">
             {/* Performance Summary */}
             {aiInsights.predictions && (
               <div className="bg-blue-900/10 border border-blue-500/30 rounded p-2">
-                <div className="font-semibold text-blue-300 mb-2">📊 This Week's Performance:</div>
+                <div className="font-semibold text-blue-300 mb-2"> This Week's Performance:</div>
                 <div className="space-y-1 text-blue-200/80">
                   {aiInsights.predictions.daily && (
                     <div>• Daily Score: {aiInsights.predictions.daily.current}/10 ({aiInsights.predictions.daily.confidence.toFixed(0)}% confidence to reach 8/10)</div>
@@ -62,7 +62,7 @@ function WeeklyReview({ userData, setUserData, addNotification }) {
 
             {/* Key Recommendations */}
             <div className="bg-yellow-900/10 border border-yellow-500/30 rounded p-2">
-              <div className="font-semibold text-yellow-300 mb-2">🎯 Focus Areas for Next Week:</div>
+              <div className="font-semibold text-yellow-300 mb-2"> Focus Areas for Next Week:</div>
               <ul className="space-y-1 text-yellow-200/80">
                 {aiInsights.recommendations
                   .filter(r => r.type !== 'insight')
@@ -87,7 +87,7 @@ function WeeklyReview({ userData, setUserData, addNotification }) {
 
         <div className="space-y-6">
           <div>
-            <label className="block text-red-400 font-semibold mb-2">🏆 Top 3 Wins This Week</label>
+            <label className="block text-red-400 font-semibold mb-2"> Top 3 Wins This Week</label>
             <textarea
               value={review.wins}
               onChange={(e) => setReview(prev => ({ ...prev, wins: e.target.value }))}
@@ -97,7 +97,7 @@ function WeeklyReview({ userData, setUserData, addNotification }) {
           </div>
 
           <div>
-            <label className="block text-red-400 font-semibold mb-2">📈 Key Metrics</label>
+            <label className="block text-red-400 font-semibold mb-2"> Key Metrics</label>
             <textarea
               value={review.metrics}
               onChange={(e) => setReview(prev => ({ ...prev, metrics: e.target.value }))}
@@ -107,7 +107,7 @@ function WeeklyReview({ userData, setUserData, addNotification }) {
           </div>
 
           <div>
-            <label className="block text-red-400 font-semibold mb-2">⚠️ Gaps & Improvements</label>
+            <label className="block text-red-400 font-semibold mb-2"> Gaps & Improvements</label>
             <textarea
               value={review.gaps}
               onChange={(e) => setReview(prev => ({ ...prev, gaps: e.target.value }))}
@@ -117,7 +117,7 @@ function WeeklyReview({ userData, setUserData, addNotification }) {
           </div>
 
           <div>
-            <label className="block text-red-400 font-semibold mb-2">🎯 Next Week's Top 3 Priorities</label>
+            <label className="block text-red-400 font-semibold mb-2"> Next Week's Top 3 Priorities</label>
             <textarea
               value={review.nextWeek}
               onChange={(e) => setReview(prev => ({ ...prev, nextWeek: e.target.value }))}
@@ -130,7 +130,7 @@ function WeeklyReview({ userData, setUserData, addNotification }) {
             onClick={saveReview}
             className="btn-primary w-full py-4"
           >
-            💾 SAVE WEEKLY REVIEW
+             SAVE WEEKLY REVIEW
           </button>
         </div>
       </div>
@@ -138,7 +138,7 @@ function WeeklyReview({ userData, setUserData, addNotification }) {
       {/* Past Reviews */}
       {userData.weeklyReviews.length > 0 && (
         <div className="framework-card">
-          <h2 className="section-title">📚 PAST REVIEWS</h2>
+          <h2 className="section-title"> PAST REVIEWS</h2>
           <div className="space-y-3">
             {userData.weeklyReviews.slice(-8).reverse().map((rev, idx) => (
               <div key={idx} className="bg-slate-900/50 rounded-lg p-4 border border-red-900/30">

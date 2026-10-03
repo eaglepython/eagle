@@ -333,13 +333,13 @@ export class RAGEvaluationEngine {
       if (trend > 0.5) {
         insights.push({
           type: 'positive_trend',
-          message: `📈 Daily score trending up +${trend.toFixed(1)} points over last week`,
+          message: ` Daily score trending up +${trend.toFixed(1)} points over last week`,
           action: 'MAINTAIN - You\'re improving!'
         });
       } else if (trend < -0.5) {
         insights.push({
           type: 'negative_trend',
-          message: `📉 Daily score trending down ${trend.toFixed(1)} points - investigate`,
+          message: ` Daily score trending down ${trend.toFixed(1)} points - investigate`,
           action: 'ANALYZE - What changed? Sleep? Stress? Workload?'
         });
       }
@@ -354,7 +354,7 @@ export class RAGEvaluationEngine {
       if (winRate >= 0.60) {
         insights.push({
           type: 'trading_edge',
-          message: `💰 Trading edge detected: ${(winRate * 100).toFixed(0)}% win rate on last 20 trades`,
+          message: ` Trading edge detected: ${(winRate * 100).toFixed(0)}% win rate on last 20 trades`,
           action: 'SCALE - This is your proven edge, increase size slightly'
         });
       }
@@ -366,7 +366,7 @@ export class RAGEvaluationEngine {
     if (offers > 0) {
       insights.push({
         type: 'career_progress',
-        message: `🎯 Career milestone: ${offers} offer(s) in pipeline`,
+        message: ` Career milestone: ${offers} offer(s) in pipeline`,
         action: 'CLOSE - Prepare negotiation strategy'
       });
     }
@@ -428,15 +428,15 @@ export class RAGEvaluationEngine {
    */
   _generateMotivationalMessage(score) {
     if (score >= 90) {
-      return '🔥 EXCEPTIONAL! You\'re crushing your goals. Keep this momentum!';
+      return ' EXCEPTIONAL! You\'re crushing your goals. Keep this momentum!';
     } else if (score >= 75) {
-      return '💪 SOLID PROGRESS! You\'re on track. Small adjustments = big wins.';
+      return ' SOLID PROGRESS! You\'re on track. Small adjustments = big wins.';
     } else if (score >= 60) {
-      return '⚡ BUILDING! You\'re making progress. Focus on 1-2 priority areas.';
+      return ' BUILDING! You\'re making progress. Focus on 1-2 priority areas.';
     } else if (score >= 45) {
-      return '🎯 WAKE UP CALL! Time to refocus. Pick your #1 priority TODAY.';
+      return ' WAKE UP CALL! Time to refocus. Pick your #1 priority TODAY.';
     } else {
-      return '🚨 CRITICAL! You\'re off track. Need immediate action plan.';
+      return ' CRITICAL! You\'re off track. Need immediate action plan.';
     }
   }
 

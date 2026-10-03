@@ -21,7 +21,7 @@ function GoalsManager({ userData, setUserData, addNotification }) {
       goals: [...prev.goals, { ...goal, id: Date.now(), createdAt: new Date().toISOString() }]
     }));
 
-    addNotification(`Goal added: ${goal.title} 🎯`, 'success');
+    addNotification(`Goal added: ${goal.title} `, 'success');
     setGoal({ title: '', category: 'Career', deadline: '', status: 'In Progress' });
   };
 
@@ -59,18 +59,10 @@ function GoalsManager({ userData, setUserData, addNotification }) {
       financeData: { ...prev.financeData, ...demo.financeData },
       tradingData: { ...prev.tradingData, ...demo.tradingData }
     }));
-    addNotification('Demo data loaded! 30 days of realistic data added. 🎉', 'success');
+    addNotification('Demo data loaded! 30 days of realistic data added. ', 'success');
   };
 
-  const categoryEmojis = {
-    Career: '💼',
-    Financial: '💰',
-    Health: '💪',
-    Learning: '📚',
-    Personal: '🎯'
-  };
-
-  const categories = Object.keys(categoryEmojis);
+  const categories = ['Career', 'Financial', 'Health', 'Learning', 'Personal'];
 
   return (
     <div className="space-y-6">
@@ -96,7 +88,7 @@ function GoalsManager({ userData, setUserData, addNotification }) {
             className="input-field"
           >
             {categories.map(cat => (
-              <option key={cat} value={cat}>{categoryEmojis[cat]} {cat}</option>
+              <option key={cat} value={cat}>{cat}</option>
             ))}
           </select>
           <input
@@ -111,14 +103,14 @@ function GoalsManager({ userData, setUserData, addNotification }) {
           onClick={addGoal}
           className="btn-primary w-full py-3"
         >
-          ➕ ADD GOAL
+           ADD GOAL
         </button>
 
         <button
           onClick={loadDemoData}
           className="w-full mt-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 rounded-lg transition-all shadow-lg hover:shadow-xl"
         >
-          📊 LOAD DEMO DATA (30 DAYS)
+           LOAD DEMO DATA (30 DAYS)
         </button>
       </div>
 
@@ -131,7 +123,7 @@ function GoalsManager({ userData, setUserData, addNotification }) {
           return (
             <div key={status} className="framework-card">
               <h3 className="section-title">
-                {status === 'Completed' ? '✅ COMPLETED GOALS' : '🔄 IN PROGRESS GOALS'}
+                {status === 'Completed' ? ' COMPLETED GOALS' : ' IN PROGRESS GOALS'}
               </h3>
               <div className="space-y-3">
                 {filteredGoals.map(g => {
@@ -150,7 +142,7 @@ function GoalsManager({ userData, setUserData, addNotification }) {
                           <div className={`font-semibold text-lg ${
                             g.status === 'Completed' ? 'text-green-400 line-through' : 'text-white'
                           }`}>
-                            {categoryEmojis[g.category]} {g.title}
+                            {g.title}
                           </div>
                           <div className="flex gap-2 mt-2 flex-wrap">
                             <span className="text-xs px-2 py-1 bg-slate-700 rounded text-slate-200">
@@ -160,7 +152,7 @@ function GoalsManager({ userData, setUserData, addNotification }) {
                               <span className={`text-xs px-2 py-1 rounded ${
                                 isOverdue ? 'bg-red-900/50 text-red-200' : 'bg-blue-900/50 text-blue-200'
                               }`}>
-                                {isOverdue ? '⏰ Overdue' : `📅 ${new Date(g.deadline).toLocaleDateString()}`}
+                                {isOverdue ? ' Overdue' : ` ${new Date(g.deadline).toLocaleDateString()}`}
                                 {daysRemaining && !isOverdue && ` (${daysRemaining}d)`}
                               </span>
                             )}
@@ -172,14 +164,14 @@ function GoalsManager({ userData, setUserData, addNotification }) {
                             className="btn-accent"
                             title={g.status === 'Completed' ? 'Mark incomplete' : 'Mark complete'}
                           >
-                            {g.status === 'Completed' ? '↩️' : '✅'}
+                            {g.status === 'Completed' ? '' : ''}
                           </button>
                           <button
                             onClick={() => deleteGoal(g.id)}
                             className="bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-3 rounded-lg transition-all"
                             title="Delete goal"
                           >
-                            🗑️
+                            
                           </button>
                         </div>
                       </div>
@@ -214,7 +206,7 @@ function GoalsManager({ userData, setUserData, addNotification }) {
 
       {/* Framework Notes */}
       <div className="glass rounded-2xl p-4 border border-slate-700 text-sm text-slate-300">
-        <div className="font-semibold text-white mb-2">📌 GOAL SETTING:</div>
+        <div className="font-semibold text-white mb-2"> GOAL SETTING:</div>
         <p>Set SMART goals across 5 categories: Career (target: senior quant role by Q2 2026), Financial ($2M net worth by 2030), Health (12% body fat, marathons), Learning (publish research), Personal (meaningful relationships). Review and adjust quarterly.</p>
       </div>
     </div>

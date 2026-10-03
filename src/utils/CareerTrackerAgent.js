@@ -140,7 +140,7 @@ export class CareerTrackerAgent {
       recommendations.push({
         tier: 'Tier 1',
         type: 'urgent',
-        title: '🎯 Tier 1 Volume Too Low',
+        title: ' Tier 1 Volume Too Low',
         current: `${analysis.tier1.total} applications`,
         target: '5-7 per week',
         problem: 'Tier 1 is the ONLY path to $500K salary + prestige network. Need volume to generate interviews.',
@@ -155,7 +155,7 @@ export class CareerTrackerAgent {
       recommendations.push({
         tier: 'Tier 1',
         type: 'warning',
-        title: '📊 Tier 1 Conversion Rate Low',
+        title: ' Tier 1 Conversion Rate Low',
         current: `${analysis.tier1.conversionRates.applicationToInterview}% app→interview`,
         benchmark: '5-8% is good for Tier 1',
         problem: 'Applications not strong enough. Getting filtered out before human review.',
@@ -182,7 +182,7 @@ export class CareerTrackerAgent {
       recommendations.push({
         tier: 'Tier 2',
         type: 'insight',
-        title: '💼 Tier 2 Pipeline Underdeveloped',
+        title: ' Tier 2 Pipeline Underdeveloped',
         current: `${analysis.tier2.total} applications`,
         target: '3-5 per week',
         benefit: 'Tier 2 has 8% conversion rate vs. 2% Tier 1. Better offer probability.',
@@ -198,7 +198,7 @@ export class CareerTrackerAgent {
       recommendations.push({
         tier: 'Tier 3',
         type: 'insight',
-        title: '🛡️ Tier 3 Safety Net Weak',
+        title: ' Tier 3 Safety Net Weak',
         current: `${analysis.tier3.total} applications`,
         target: '3-5 per week',
         purpose: 'Tier 3 is safety net: 15% conversion rate, solid companies, better odds',
@@ -213,7 +213,7 @@ export class CareerTrackerAgent {
       recommendations.push({
         tier: 'Tier 4',
         type: 'insight',
-        title: '🆘 No Safety Net Applications',
+        title: ' No Safety Net Applications',
         current: '0 applications',
         purpose: 'Tier 4 = Guaranteed backup: 30% conversion rate, remote-friendly',
         strategy: 'Not about prestige, but guaranteed employment if needed',
@@ -246,7 +246,7 @@ export class CareerTrackerAgent {
       if (ratios.tier1Pct < 30) {
         recommendations.push({
           type: 'warning',
-          title: '⚖️ Application Distribution Out of Balance',
+          title: ' Application Distribution Out of Balance',
           current: `Tier 1: ${ratios.tier1Pct}% | Tier 2: ${ratios.tier2Pct}% | Tier 3: ${ratios.tier3Pct}% | Tier 4: ${ratios.tier4Pct}%`,
           ideal: `Tier 1: 40% | Tier 2: 30% | Tier 3: 25% | Tier 4: 5%`,
           problem: 'Too many applications to lower tiers. Reduces offer probability.',
@@ -311,7 +311,7 @@ export class CareerTrackerAgent {
       target,
       completed,
       remaining,
-      status: completed >= target ? '✅ TARGET MET' : `⚠️ NEED ${remaining} MORE`,
+      status: completed >= target ? ' TARGET MET' : ` NEED ${remaining} MORE`,
       breakdown: {
         tier1: thisWeek.filter(a => a.tier === 1 || a.tier === 'tier1').length + ' / 5',
         tier2: thisWeek.filter(a => a.tier === 2 || a.tier === 'tier2').length + ' / 4',

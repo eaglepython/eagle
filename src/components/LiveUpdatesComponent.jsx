@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LiveUpdateAgent from '../utils/LiveUpdateAgent';
 import { AudioNotifications } from '../utils/AudioNotifications';
+import { Radio } from 'lucide-react';
 
 const LiveUpdatesComponent = ({ userData, addNotification }) => {
   const [liveAgent] = useState(() => new LiveUpdateAgent());
@@ -19,10 +20,10 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
       setStats(liveAgent.getUpdateStats());
       // Play update sound notification
       audioNotifications.playUpdateSound();
-      addNotification(`📡 Sample insights refreshed - ${newUpdates.summary.totalUpdates} insights`, 'info');
+      addNotification(` Sample insights refreshed - ${newUpdates.summary.totalUpdates} insights`, 'info');
     };
 
-    // Start the 6-hour update cycle
+    // Start the two-hour local sample refresh cycle.
     liveAgent.startLiveUpdates(userData, handleUpdate);
     
     // Get current updates
@@ -34,7 +35,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
     setIsRunning(true);
 
     return () => {
-      // Cleanup on unmount - keep running in background
+      liveAgent.stopLiveUpdates();
     };
   }, []);
 
@@ -42,16 +43,16 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
     if (isRunning) {
       liveAgent.stopLiveUpdates();
       setIsRunning(false);
-      addNotification('🟢 Live Updates Stopped', 'info');
+      addNotification(' Live Updates Stopped', 'info');
     } else {
       const handleUpdate = (newUpdates) => {
         setUpdates(newUpdates);
         setStats(liveAgent.getUpdateStats());
-      addNotification(`📡 Insight refresh resumed - ${newUpdates.summary.totalUpdates} insights`, 'info');
+      addNotification(` Insight refresh resumed - ${newUpdates.summary.totalUpdates} insights`, 'info');
       };
       liveAgent.startLiveUpdates(userData, handleUpdate);
       setIsRunning(true);
-      addNotification('🔴 Insight auto-refresh started - Every 2 hours', 'success');
+      addNotification(' Insight auto-refresh started - Every 2 hours', 'success');
     }
   };
 
@@ -62,7 +63,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
       setStats(liveAgent.getUpdateStats());
     });
     setLoading(false);
-    addNotification('⚡ Manual update completed!', 'success');
+    addNotification(' Manual update completed!', 'success');
   };
 
   const getCategoryColor = (category) => {
@@ -94,8 +95,8 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
           <div className="flex items-start justify-between mb-6">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <div className={`text-4xl ${isRunning ? 'animate-pulse' : ''}`}>
-                  <span className="inline-block animate-spin" style={{ animationDuration: '2s' }}>📡</span>
+                <div className={`text-cyan-300 ${isRunning ? 'animate-pulse' : ''}`}>
+                  <Radio aria-hidden="true" className="h-9 w-9" />
                 </div>
                 <div>
                   <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
@@ -111,7 +112,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
                   ? 'bg-red-500/20 border border-red-500 text-red-300' 
                   : 'bg-green-500/20 border border-green-500 text-green-300'
               }`}>
-                {isRunning ? '🔴 AUTO-REFRESH' : '🟢 PAUSED'}
+                {isRunning ? ' AUTO-REFRESH' : ' PAUSED'}
               </div>
               <button
                 onClick={toggleLiveUpdates}
@@ -121,7 +122,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
                     : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg'
                 }`}
               >
-                {isRunning ? '⏹ Stop' : '▶ Start'}
+                {isRunning ? ' Stop' : ' Start'}
               </button>
             </div>
           </div>
@@ -133,7 +134,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
               <div className="absolute top-0 right-0 w-12 md:w-20 h-12 md:h-20 bg-cyan-500/10 rounded-full blur-xl md:blur-2xl group-hover:blur-xl" />
               <div className="relative z-10">
                 <div className="text-lg md:text-3xl font-bold text-cyan-400">{stats.totalUpdatesProcessed}</div>
-                <div className="text-xs md:text-xs text-slate-400 mt-1">📊 Updates</div>
+                <div className="text-xs md:text-xs text-slate-400 mt-1"> Updates</div>
               </div>
             </div>
 
@@ -142,7 +143,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
               <div className="absolute top-0 right-0 w-12 md:w-20 h-12 md:h-20 bg-green-500/10 rounded-full blur-xl md:blur-2xl group-hover:blur-xl" />
               <div className="relative z-10">
                 <div className="text-lg md:text-3xl font-bold text-green-400">{stats.activeListeners}</div>
-                <div className="text-xs md:text-xs text-slate-400 mt-1">🎯 Monitors</div>
+                <div className="text-xs md:text-xs text-slate-400 mt-1"> Monitors</div>
               </div>
             </div>
 
@@ -151,7 +152,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
               <div className="absolute top-0 right-0 w-12 md:w-20 h-12 md:h-20 bg-purple-500/10 rounded-full blur-xl md:blur-2xl group-hover:blur-xl" />
               <div className="relative z-10">
                 <div className="text-lg md:text-3xl font-bold text-purple-400">{isRunning ? '✓' : '✗'}</div>
-                <div className="text-xs md:text-xs text-slate-400 mt-1">⚙️ Status</div>
+                <div className="text-xs md:text-xs text-slate-400 mt-1"> Status</div>
               </div>
             </div>
 
@@ -160,7 +161,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
               <div className="absolute top-0 right-0 w-12 md:w-20 h-12 md:h-20 bg-yellow-500/10 rounded-full blur-xl md:blur-2xl group-hover:blur-xl" />
               <div className="relative z-10">
                 <div className="text-xs md:text-sm font-bold text-yellow-400 line-clamp-1">{stats.nextUpdateIn}</div>
-                <div className="text-xs md:text-xs text-slate-400 mt-1">⏱️ Next</div>
+                <div className="text-xs md:text-xs text-slate-400 mt-1"> Next</div>
               </div>
             </div>
 
@@ -173,7 +174,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
                   disabled={loading}
                   className="w-full px-2 md:px-3 py-1.5 md:py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg text-white text-xs font-semibold transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {loading ? '⏳' : '⚡'}
+                  {loading ? '' : ''}
                 </button>
                 <div className="text-xs md:text-xs text-slate-400 mt-1 truncate">Refresh</div>
               </div>
@@ -188,7 +189,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
           <div className="absolute inset-0 bg-gradient-to-r from-red-600/5 via-orange-600/5 to-yellow-600/5 pointer-events-none" />
           <div className="relative bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-3 md:p-6">
             <h2 className="text-lg md:text-2xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent mb-4 md:mb-6">
-              📊 Summary
+               Summary
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 mb-4 md:mb-6">
               {/* Critical */}
@@ -196,7 +197,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
                 <div className="absolute top-0 right-0 w-16 md:w-24 h-16 md:h-24 bg-red-500/10 rounded-full blur-lg md:blur-2xl group-hover:blur-xl" />
                 <div className="relative z-10">
                   <div className="text-2xl md:text-4xl font-bold text-red-400">{updates.summary.criticalActions}</div>
-                  <div className="text-xs md:text-sm text-slate-400 mt-2">🔴 Critical</div>
+                  <div className="text-xs md:text-sm text-slate-400 mt-2"> Critical</div>
                 </div>
               </div>
               {/* High Priority */}
@@ -204,7 +205,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
                 <div className="absolute top-0 right-0 w-16 md:w-24 h-16 md:h-24 bg-orange-500/10 rounded-full blur-lg md:blur-2xl group-hover:blur-xl" />
                 <div className="relative z-10">
                   <div className="text-2xl md:text-4xl font-bold text-orange-400">{updates.summary.highPriorityActions}</div>
-                  <div className="text-xs md:text-sm text-slate-400 mt-2">🟠 High</div>
+                  <div className="text-xs md:text-sm text-slate-400 mt-2"> High</div>
                 </div>
               </div>
               {/* Total Insights */}
@@ -212,7 +213,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
                 <div className="absolute top-0 right-0 w-16 md:w-24 h-16 md:h-24 bg-blue-500/10 rounded-full blur-lg md:blur-2xl group-hover:blur-xl" />
                 <div className="relative z-10">
                   <div className="text-2xl md:text-4xl font-bold text-blue-400">{updates.summary.totalUpdates}</div>
-                  <div className="text-xs md:text-sm text-slate-400 mt-2">📈 Insights</div>
+                  <div className="text-xs md:text-sm text-slate-400 mt-2"> Insights</div>
                 </div>
               </div>
             </div>
@@ -222,7 +223,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
                 <div className="absolute top-0 right-0 w-24 md:w-32 h-24 md:h-32 bg-red-500/10 rounded-full blur-2xl md:blur-3xl" />
                 <div className="relative z-10">
                   <div className="flex items-start gap-2 md:gap-3">
-                    <span className="text-xl md:text-2xl flex-shrink-0">🎯</span>
+                    
                     <div className="flex-1 min-w-0">
                       <h3 className="font-bold text-red-300 text-sm md:text-lg line-clamp-1">{updates.summary.mainHighlight.title}</h3>
                       <p className="text-white text-xs md:text-base mt-1 md:mt-2 line-clamp-2">{updates.summary.mainHighlight.insight}</p>
@@ -255,11 +256,11 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
             }`} />
             <div className="relative z-10">
               <div className="text-xl md:text-3xl mb-2">
-                {cat === 'Discipline' && '🎯'}
-                {cat === 'Career' && '👔'}
-                {cat === 'Trading' && '💹'}
-                {cat === 'Health' && '💪'}
-                {cat === 'Finance' && '💰'}
+                {cat === 'Discipline' && ''}
+                {cat === 'Career' && ''}
+                {cat === 'Trading' && ''}
+                {cat === 'Health' && ''}
+                {cat === 'Finance' && ''}
               </div>
               <div className="text-xs md:text-sm font-semibold">{cat}</div>
               {selectedCategory === cat && (
@@ -274,7 +275,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
       {selectedCategory && updates && updates[selectedCategory.toLowerCase()] && (
         <div className="bg-slate-800/50 rounded-lg md:rounded-lg p-3 md:p-6 border border-slate-700">
           <h2 className="text-lg md:text-2xl font-bold text-white mb-3 md:mb-4">
-            {updates[selectedCategory.toLowerCase()].icon} {selectedCategory}
+            {selectedCategory}
           </h2>
 
           <div className="space-y-2 md:space-y-3">
@@ -294,16 +295,16 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
                     </div>
                     <p className="text-xs text-slate-400 line-clamp-1">{update.source}</p>
                   </div>
-                  <span className="text-lg flex-shrink-0">{expandedUpdate === idx ? '▼' : '▶'}</span>
+                  <span className="text-lg flex-shrink-0">{expandedUpdate === idx ? '▼' : ''}</span>
                 </div>
 
                 {expandedUpdate === idx && (
                   <div className="mt-2 md:mt-3 pt-2 md:pt-3 border-t border-slate-700 space-y-1.5 md:space-y-2">
                     <div className="text-xs md:text-sm text-slate-300">
-                      <strong>💡 Insight:</strong> {update.insight}
+                      <strong> Insight:</strong> {update.insight}
                     </div>
                     <div className="text-xs md:text-sm text-slate-300">
-                      <strong>✅ Action:</strong> {update.action}
+                      <strong> Action:</strong> {update.action}
                     </div>
                     <a
                       href={update.link}
@@ -311,7 +312,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
                       rel="noopener noreferrer"
                       className="inline-block mt-1 md:mt-2 px-2 md:px-3 py-1 md:py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded transition"
                     >
-                      🔗 More
+                       More
                     </a>
                   </div>
                 )}
@@ -322,7 +323,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
           {/* Category Stats */}
           {updates[selectedCategory.toLowerCase()].stats && (
             <div className="mt-4 md:mt-6 bg-slate-900 rounded p-3 md:p-4 border border-slate-700">
-              <h4 className="font-semibold text-white mb-2 md:mb-3 text-sm md:text-base">📊 Stats</h4>
+              <h4 className="font-semibold text-white mb-2 md:mb-3 text-sm md:text-base"> Stats</h4>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-1 md:gap-2">
                 {Object.entries(updates[selectedCategory.toLowerCase()].stats).map(([key, value]) => (
                   <div key={key} className="text-center text-xs md:text-base">
@@ -344,14 +345,14 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
       {/* Empty State */}
       {!selectedCategory && (
         <div className="text-center py-8 md:py-12 bg-slate-800/30 rounded-lg border border-slate-700">
-          <p className="text-slate-400 text-sm md:text-lg">👆 Select category</p>
+          <p className="text-slate-400 text-sm md:text-lg"> Select category</p>
           <p className="text-slate-500 text-xs md:text-sm mt-2">Sample insights refresh every 2 hours. External feeds are not connected.</p>
         </div>
       )}
 
       {/* Update History */}
       <div className="bg-slate-800/50 rounded-lg p-3 md:p-6 border border-slate-700">
-        <h3 className="text-base md:text-lg font-bold text-white mb-3">📜 History</h3>
+        <h3 className="text-base md:text-lg font-bold text-white mb-3"> History</h3>
         <div className="space-y-2 max-h-64 overflow-y-auto">
           {liveAgent.getUpdateHistory().slice().reverse().map((history, idx) => (
             <div key={idx} className="bg-slate-900 rounded p-3 border border-slate-700 text-sm">

@@ -24,27 +24,25 @@ export default function GoalPredictionDashboard({ predictions }) {
     return 'from-red-500 to-orange-500';
   };
 
-  const getStatusEmoji = (prob) => {
-    // Safely extract numeric value from probability string (e.g., "75.3%" -> 75.3)
-    const numStr = String(prob || '0').replace('%', '').trim();
-    const val = parseFloat(numStr);
-    if (isNaN(val)) return '❓';
-    if (val >= 85) return '🟢';
-    if (val >= 70) return '🟡';
-    if (val >= 50) return '🟠';
-    return '🔴';
+  const getStatusLabel = (prob) => {
+    const val = parseFloat(String(prob || '0').replace('%', '').trim());
+    if (isNaN(val)) return 'No forecast';
+    if (val >= 85) return 'Strong';
+    if (val >= 70) return 'On track';
+    if (val >= 50) return 'Developing';
+    return 'At risk';
   };
 
   const goalsList = [
-    { key: 'dailyScore', name: 'Daily Score', icon: '📊' },
-    { key: 'careerRole', name: 'Career: Quant Researcher', icon: '💼' },
-    { key: 'tradingAUM', name: 'Trading: $500K AUM', icon: '📈' },
-    { key: 'netWorth', name: 'Net Worth: $250K+', icon: '💰' },
-    { key: 'bodyFat', name: 'Health: 12% Body Fat', icon: '💪' },
-    { key: 'workouts', name: 'Workouts: 6+/week', icon: '🏋️' },
-    { key: 'applications', name: 'Apps: 15+/week', icon: '📝' },
-    { key: 'savingsRate', name: 'Savings: 30%+', icon: '🏦' },
-    { key: 'learningHours', name: 'Learning: 250h/year', icon: '📚' }
+    { key: 'dailyScore', name: 'Daily Score', },
+    { key: 'careerRole', name: 'Career: Quant Researcher', },
+    { key: 'tradingAUM', name: 'Trading: $500K AUM', },
+    { key: 'netWorth', name: 'Net Worth: $250K+', },
+    { key: 'bodyFat', name: 'Health: 12% Body Fat', },
+    { key: 'workouts', name: 'Workouts: 6+/week', },
+    { key: 'applications', name: 'Apps: 15+/week', },
+    { key: 'savingsRate', name: 'Savings: 30%+', },
+    { key: 'learningHours', name: 'Learning: 250h/year', }
   ];
 
   return (
@@ -56,7 +54,7 @@ export default function GoalPredictionDashboard({ predictions }) {
             <h2 className="text-3xl font-bold mb-2">2026 Goal Predictions</h2>
             <p className="text-indigo-100">AI-powered achievement probability analysis</p>
           </div>
-          <span className="text-6xl">🎯</span>
+          
         </div>
 
         {/* Overall Score */}
@@ -81,7 +79,7 @@ export default function GoalPredictionDashboard({ predictions }) {
 
         {/* Recommendation */}
         <div className="mt-6 bg-white/10 border border-white/20 rounded-lg p-4">
-          <p className="text-sm font-semibold mb-2">🎯 Recommendation</p>
+          <p className="text-sm font-semibold mb-2"> Recommendation</p>
           <p className="text-white">{predictions.recommendation || 'Analyzing your data...'}</p>
         </div>
       </div>
@@ -123,7 +121,6 @@ export default function GoalPredictionDashboard({ predictions }) {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="text-2xl">{goal.icon}</span>
                       <div>
                         <p className="font-semibold text-gray-800">{goal.name}</p>
                         <p className="text-sm text-gray-500">{data.target || data.monthlyTarget || '—'}</p>
@@ -141,7 +138,7 @@ export default function GoalPredictionDashboard({ predictions }) {
 
                   <div className="text-right ml-4">
                     <p className="text-2xl font-bold">{data.probability || '—'}</p>
-                    <p className="text-sm text-gray-500">{getStatusEmoji(data.probability)}</p>
+                    <p className="text-xs text-gray-500">{getStatusLabel(data.probability)}</p>
                   </div>
                 </div>
 
@@ -290,13 +287,11 @@ export default function GoalPredictionDashboard({ predictions }) {
           {Object.entries(predictions.timeline).map(([period, items]) => (
             <div key={period} className="bg-white border border-gray-200 rounded-lg p-4">
               <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                <span className="text-lg">📅</span>
                 {period.replace(/_/g, ' - ').toUpperCase()}
               </h3>
               <ul className="space-y-2">
                 {items.map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-                    <span className="mt-1">{item.startsWith('✅') ? '✅' : '⚠️'}</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -322,17 +317,6 @@ export default function GoalPredictionDashboard({ predictions }) {
                 }`}
               >
                 <div className="flex gap-3">
-                  <span
-                    className={`text-lg flex-shrink-0 ${
-                      risk.severity === 'CRITICAL'
-                        ? ''
-                        : risk.severity === 'HIGH'
-                        ? ''
-                        : ''
-                    }`}
-                  >
-                    ⚠️
-                  </span>
                   <div>
                     <p className="font-semibold text-gray-800">{risk.factor}</p>
                     <p className="text-sm text-gray-700 mt-1">{risk.impact}</p>
@@ -343,7 +327,7 @@ export default function GoalPredictionDashboard({ predictions }) {
             ))
           ) : (
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <p className="text-green-700 font-semibold">✅ No critical risks identified</p>
+              <p className="text-green-700 font-semibold"> No critical risks identified</p>
             </div>
           )}
         </div>
@@ -355,10 +339,9 @@ export default function GoalPredictionDashboard({ predictions }) {
           {predictions.opportunities.map((opp, i) => (
             <div key={i} className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
               <div className="flex gap-3">
-                <span className="text-lg flex-shrink-0 mt-1">⚡</span>
                 <div>
                   <p className="font-semibold text-gray-800">{opp.opportunity}</p>
-                  <p className="text-sm text-gray-700 mt-1">💡 {opp.potential}</p>
+                  <p className="text-sm text-gray-700 mt-1"> {opp.potential}</p>
                   <p className="text-sm font-semibold text-green-700 mt-2">→ {opp.action}</p>
                 </div>
               </div>
@@ -371,7 +354,6 @@ export default function GoalPredictionDashboard({ predictions }) {
       {activeTab === 'critical' && (
         <div className="bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200 rounded-lg p-6">
           <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
-            <span className="text-lg">🎯</span>
             Critical Success Factors
           </h3>
           <div className="space-y-3">

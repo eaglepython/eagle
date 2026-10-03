@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ErrorBoundary from './components/ErrorBoundary';
 import HighValueReminder from './components/HighValueReminder';
 import Dashboard from './components/Dashboard';
@@ -70,13 +70,14 @@ function App() {
   });
   const [notifications, setNotifications] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const notificationId = useRef(0);
 
   // Listen for launcher authentication message from iframe
   useEffect(() => {
     const handleMessage = (event) => {
       // Check for the authentication message from launcher.html
       if (event.origin === window.location.origin && event.data === 'launcher-authenticated') {
-        console.log('✅ Launcher authenticated, showing app');
+        console.log(' Launcher authenticated, showing app');
         sessionStorage.setItem('authenticated', 'true');
         setIsAuthenticated(true);
       }
@@ -85,7 +86,7 @@ function App() {
     // Reset launcher with Ctrl+Shift+L
     const handleKeyPress = (e) => {
       if (e.ctrlKey && e.shiftKey && e.key === 'L') {
-        console.log('🔄 Resetting launcher...');
+        console.log(' Resetting launcher...');
         sessionStorage.removeItem('authenticated');
         setIsAuthenticated(false);
         window.location.reload();
@@ -119,15 +120,15 @@ function App() {
       const minute = now.getMinutes();
 
       const reminders = [
-        { time: '05:00', message: '⏰ Time to wake up! Start your day strong.', id: 'wake' },
-        { time: '05:15', message: '🎯 Deep Work Session #1 - Most Important Task', id: 'dw1' },
-        { time: '06:00', message: '💪 Exercise Time - Get that body moving!', id: 'exercise1' },
-        { time: '08:00', message: '📊 Trading Session - Execute your strategy', id: 'trading' },
-        { time: '12:00', message: '🥗 Lunch & Walk - Recharge your energy', id: 'lunch' },
-        { time: '16:00', message: '📈 Trading Review - Journal your trades', id: 'trading-review' },
-        { time: '20:00', message: '📚 Learning Time - Invest in yourself', id: 'learning' },
-        { time: '21:30', message: '📝 Daily Review - Reflect and plan tomorrow', id: 'review' },
-        { time: '22:00', message: '😴 Sleep Prep - Wind down for quality rest', id: 'sleep' }
+        { time: '05:00', message: ' Time to wake up! Start your day strong.', id: 'wake' },
+        { time: '05:15', message: ' Deep Work Session #1 - Most Important Task', id: 'dw1' },
+        { time: '06:00', message: ' Exercise Time - Get that body moving!', id: 'exercise1' },
+        { time: '08:00', message: ' Trading Session - Execute your strategy', id: 'trading' },
+        { time: '12:00', message: ' Lunch & Walk - Recharge your energy', id: 'lunch' },
+        { time: '16:00', message: ' Trading Review - Journal your trades', id: 'trading-review' },
+        { time: '20:00', message: ' Learning Time - Invest in yourself', id: 'learning' },
+        { time: '21:30', message: ' Daily Review - Reflect and plan tomorrow', id: 'review' },
+        { time: '22:00', message: ' Sleep Prep - Wind down for quality rest', id: 'sleep' }
       ];
 
       reminders.forEach(reminder => {
@@ -143,7 +144,7 @@ function App() {
   }, []);
 
   const addNotification = (message, type = 'info') => {
-    const id = Date.now();
+    const id = `${Date.now()}-${notificationId.current++}`;
     setNotifications(prev => [...prev, { id, message, type }]);
     setTimeout(() => {
       setNotifications(prev => prev.filter(n => n.id !== id));
@@ -152,7 +153,7 @@ function App() {
 
   // Show launcher/passcode screen if not authenticated
   if (!isAuthenticated) {
-    console.log('📍 Rendering launcher - isAuthenticated is false');
+    console.log(' Rendering launcher - isAuthenticated is false');
     return (
       <div className="w-full h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 flex items-center justify-center">
         <div style={{ width: '100%', height: '100%' }}>
@@ -167,10 +168,10 @@ function App() {
             }}
             title="7th Sense Launcher"
             onLoad={() => {
-              console.log('✅ Launcher iframe loaded');
+              console.log(' Launcher iframe loaded');
             }}
             onError={() => {
-              console.error('❌ Launcher iframe failed to load');
+              console.error(' Launcher iframe failed to load');
             }}
           />
         </div>

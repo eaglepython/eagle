@@ -57,7 +57,7 @@ function AudioNotificationManager({ addNotification }) {
       }`}>
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
-            <span className="text-2xl">{isEnabled ? '🔊' : '🔇'}</span>
+            <span className="text-2xl">{isEnabled ? '' : ''}</span>
             <div>
               <div className="font-semibold text-white">Sound Notifications</div>
               <div className="text-xs text-slate-300">
@@ -73,7 +73,7 @@ function AudioNotificationManager({ addNotification }) {
                 : 'bg-slate-700/50 border border-slate-600/50 text-slate-300 hover:bg-slate-600/50'
             }`}
           >
-            {showSettings ? '✕ Close' : '⚙️ Settings'}
+            {showSettings ? '✕ Close' : ' Settings'}
           </button>
         </div>
       </div>
@@ -102,7 +102,7 @@ function AudioNotificationManager({ addNotification }) {
           {/* Volume Control */}
           <div className="p-3 bg-slate-900/50 rounded-lg border border-slate-700/30">
             <div className="flex items-center justify-between mb-2">
-              <label className="font-semibold text-white text-sm">🔊 Volume</label>
+              <label className="font-semibold text-white text-sm"> Volume</label>
               <span className="text-xs bg-red-600/20 border border-red-500/50 text-red-300 px-2 py-1 rounded">
                 {Math.round(volume * 100)}%
               </span>
@@ -126,7 +126,7 @@ function AudioNotificationManager({ addNotification }) {
           {/* Sound Selection */}
           <div className="p-3 bg-slate-900/50 rounded-lg border border-slate-700/30">
             <label className="font-semibold text-white text-sm mb-2 block">
-              🎵 Notification Sound
+               Notification Sound
             </label>
             <select
               value={selectedSound}
@@ -152,12 +152,12 @@ function AudioNotificationManager({ addNotification }) {
                 : 'bg-slate-600 text-slate-400 cursor-not-allowed'
             }`}
           >
-            ▶️ Test Sound
+             Test Sound
           </button>
 
           {/* Info */}
           <div className="text-xs text-slate-400 p-2 bg-slate-900/30 rounded border border-slate-700/30">
-            💡 Sounds play for reminders, live updates, goals achieved, and important alerts. Browser must have audio enabled.
+             Sounds play for reminders, live updates, goals achieved, and important alerts. Browser must have audio enabled.
           </div>
         </div>
       )}
@@ -173,7 +173,7 @@ function AudioNotificationManager({ addNotification }) {
               : 'bg-slate-700/30 border-slate-600/30 text-slate-500 cursor-not-allowed'
           }`}
         >
-          ⏰ Reminder
+           Reminder
         </button>
         <button
           onClick={() => audioManager.playUpdateSound()}
@@ -184,7 +184,7 @@ function AudioNotificationManager({ addNotification }) {
               : 'bg-slate-700/30 border-slate-600/30 text-slate-500 cursor-not-allowed'
           }`}
         >
-          📡 Update
+           Update
         </button>
         <button
           onClick={() => audioManager.playSuccessSound()}
@@ -195,7 +195,7 @@ function AudioNotificationManager({ addNotification }) {
               : 'bg-slate-700/30 border-slate-600/30 text-slate-500 cursor-not-allowed'
           }`}
         >
-          ✅ Success
+           Success
         </button>
         <button
           onClick={() => audioManager.playAlertSound()}
@@ -206,7 +206,7 @@ function AudioNotificationManager({ addNotification }) {
               : 'bg-slate-700/30 border-slate-600/30 text-slate-500 cursor-not-allowed'
           }`}
         >
-          ⚠️ Alert
+           Alert
         </button>
       </div>
     </div>

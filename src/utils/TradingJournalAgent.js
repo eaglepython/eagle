@@ -221,7 +221,7 @@ export class TradingJournalAgent {
     if (winRate < 45) {
       recs.push({
         type: 'urgent',
-        title: '🔴 Critical Win Rate Issue',
+        title: ' Critical Win Rate Issue',
         current: `${winRate}% win rate (${patterns.overall.winCount}/${patterns.overall.totalTrades} trades)`,
         target: '50-55% win rate minimum',
         problem: `${winRate}% means you lose more than you win. Even with good R:R, this is unsustainable.`,
@@ -242,7 +242,7 @@ export class TradingJournalAgent {
     if (rrRatio < 1.5 && rrRatio > 0) {
       recs.push({
         type: 'warning',
-        title: '⚠️ Poor Risk/Reward Ratio',
+        title: ' Poor Risk/Reward Ratio',
         current: `${rrRatio}:1 average risk/reward`,
         target: '2:1 or better',
         problem: `At ${rrRatio}:1, you need a ${(100 / (1 + rrRatio)).toFixed(0)}%+ win rate just to break even.`,
@@ -265,7 +265,7 @@ export class TradingJournalAgent {
       if (assetWinRate < 40 && data.stats.count >= 5) {
         recs.push({
           type: 'warning',
-          title: `📊 ${asset.toUpperCase()}: Low Win Rate`,
+          title: ` ${asset.toUpperCase()}: Low Win Rate`,
           current: `${assetWinRate}% win rate (${data.stats.count} trades, ${assetPnL > 0 ? '+' : ''}$${assetPnL})`,
           problem: `${asset} is underperforming. Consider specializing in fewer assets if needed.`,
           options: [
@@ -285,7 +285,7 @@ export class TradingJournalAgent {
       if (typeWinRate > 55 && data.stats.count >= 3 && typePnL > 0) {
         recs.push({
           type: 'insight',
-          title: `✅ ${type.toUpperCase()} Trades: Your Edge Found`,
+          title: ` ${type.toUpperCase()} Trades: Your Edge Found`,
           performance: `${typeWinRate}% win rate, +$${typePnL} on ${data.stats.count} trades`,
           insight: `This is your PROVEN edge. Double down on this trade type.`,
           recommendation: `Increase allocation to ${type} trades: 40-50% of capital`,
@@ -299,7 +299,7 @@ export class TradingJournalAgent {
     if (patterns.overall.totalPnL < -500) {
       recs.push({
         type: 'urgent',
-        title: '🚨 Negative Month/Week Alert',
+        title: ' Negative Month/Week Alert',
         current: `-$${Math.abs(patterns.overall.totalPnL).toFixed(2)} total P&L`,
         status: 'DRAWDOWN MODE - Risk reduction needed',
         action: [
@@ -313,7 +313,7 @@ export class TradingJournalAgent {
     } else if (patterns.overall.totalPnL > 500) {
       recs.push({
         type: 'insight',
-        title: '🎉 Positive Month Alert',
+        title: ' Positive Month Alert',
         current: `+$${patterns.overall.totalPnL.toFixed(2)} P&L`,
         achievement: `This is YOUR edge working. Document what you did.`,
         action: [
@@ -331,7 +331,7 @@ export class TradingJournalAgent {
     if (consistency === 'LOW') {
       recs.push({
         type: 'warning',
-        title: '📈 Consistency Issue',
+        title: ' Consistency Issue',
         problem: 'Your trading results are too variable. Huge wins, huge losses.',
         solution: [
           '1. Standardize: Same position size for every trade',
@@ -406,7 +406,7 @@ export class TradingJournalAgent {
       winRate: monthTrades.length > 0 ? ((wins.length / monthTrades.length) * 100).toFixed(1) : 0,
       avgWin: wins.length > 0 ? (wins.reduce((sum, t) => sum + parseFloat(t.pnl), 0) / wins.length).toFixed(2) : 0,
       avgLoss: losses.length > 0 ? (losses.reduce((sum, t) => sum + parseFloat(t.pnl), 0) / losses.length).toFixed(2) : 0,
-      status: totalPnL > 0 ? '✅ PROFITABLE' : totalPnL < -500 ? '🔴 DRAWDOWN' : '⚠️ BREAKEVEN',
+      status: totalPnL > 0 ? ' PROFITABLE' : totalPnL < -500 ? ' DRAWDOWN' : ' BREAKEVEN',
       trajectory: `On pace for $${(totalPnL * 12).toFixed(0)}/year at this rate`
     };
   }

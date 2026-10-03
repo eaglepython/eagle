@@ -51,7 +51,7 @@ function CareerTracker({ userData, setUserData, addNotification }) {
       return updatedData;
     });
 
-    addNotification(`Application logged: ${app.company} 💼`, 'success');
+    addNotification(`Application logged: ${app.company} `, 'success');
     setApp({
       date: new Date().toISOString().split('T')[0],
       company: '',
@@ -81,7 +81,7 @@ function CareerTracker({ userData, setUserData, addNotification }) {
       {agentInsights?.recommendations && agentInsights.recommendations.length > 0 && (
         <div className="glass rounded-2xl p-6 border border-blue-900/50">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-2xl">🤖</span>
+            
             <h3 className="text-xl font-bold text-white">TIER-SPECIFIC ANALYSIS</h3>
           </div>
           
@@ -91,7 +91,7 @@ function CareerTracker({ userData, setUserData, addNotification }) {
                 <div className="flex items-start justify-between mb-2">
                   <div className="font-bold text-blue-200">{rec.title}</div>
                   <span className="text-xs px-2 py-1 rounded bg-blue-900/50 text-blue-200">
-                    {rec.type === 'urgent' ? '🔴 URGENT' : rec.type === 'warning' ? '⚠️ WARNING' : '💡 INSIGHT'}
+                    {rec.type === 'urgent' ? ' URGENT' : rec.type === 'warning' ? ' WARNING' : ' INSIGHT'}
                   </span>
                 </div>
                 
@@ -122,7 +122,7 @@ function CareerTracker({ userData, setUserData, addNotification }) {
       {/* Header with Stats */}
       <div className="glass rounded-2xl p-6 border border-red-900/50">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-3xl font-bold text-white">💼 CAREER TRACKER</h2>
+          <h2 className="text-3xl font-bold text-white"> CAREER TRACKER</h2>
           <div className="text-right bg-slate-800 rounded-xl p-4 border border-red-900/50">
             <div className="text-slate-300 text-sm">This Week</div>
             <div className={`text-4xl font-bold font-mono ${thisWeek.length >= 15 ? 'text-green-400' : 'text-yellow-400'}`}>
@@ -153,7 +153,7 @@ function CareerTracker({ userData, setUserData, addNotification }) {
 
       {/* Add Application Form */}
       <div className="framework-card">
-        <h3 className="text-xl font-bold text-white mb-4">➕ LOG NEW APPLICATION</h3>
+        <h3 className="text-xl font-bold text-white mb-4"> LOG NEW APPLICATION</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <input
             type="text"
@@ -174,10 +174,10 @@ function CareerTracker({ userData, setUserData, addNotification }) {
             onChange={(e) => setApp(prev => ({ ...prev, tier: e.target.value }))}
             className="input-field"
           >
-            <option value="Tier 1">⭐ Tier 1 (Dream)</option>
-            <option value="Tier 2">🌟 Tier 2 (Excellent)</option>
-            <option value="Tier 3">✨ Tier 3 (Strong)</option>
-            <option value="Tier 4">💼 Tier 4 (Backup)</option>
+            <option value="Tier 1"> Tier 1 (Dream)</option>
+            <option value="Tier 2"> Tier 2 (Excellent)</option>
+            <option value="Tier 3"> Tier 3 (Strong)</option>
+            <option value="Tier 4"> Tier 4 (Backup)</option>
           </select>
           <select
             value={app.status}
@@ -196,14 +196,14 @@ function CareerTracker({ userData, setUserData, addNotification }) {
           onClick={addApplication}
           className="btn-primary w-full py-3"
         >
-          ➕ ADD APPLICATION
+           ADD APPLICATION
         </button>
       </div>
 
       {/* Recent Applications */}
       {userData.jobApplications.length > 0 && (
         <div className="framework-card">
-          <h3 className="section-title">📋 RECENT APPLICATIONS</h3>
+          <h3 className="section-title"> RECENT APPLICATIONS</h3>
           <div className="space-y-3">
             {userData.jobApplications.slice(-15).reverse().map(application => (
               <div key={application.id} className="bg-slate-900/50 rounded-lg p-4 border border-red-900/30">
@@ -241,7 +241,7 @@ function CareerTracker({ userData, setUserData, addNotification }) {
 
       {/* Framework Notes */}
       <div className="glass rounded-2xl p-4 border border-slate-700 text-sm text-slate-300">
-        <div className="font-semibold text-white mb-2">📌 FRAMEWORK TARGET:</div>
+        <div className="font-semibold text-white mb-2"> FRAMEWORK TARGET:</div>
         <p>15 tailored applications per week to Tier 1-3 companies. Deep dive on each: 30 min research, 20 min resume customization, 30 min cover letter, 10 min submission + 10 min follow-up = 90 min per quality application.</p>
       </div>
     </div>

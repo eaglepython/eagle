@@ -84,7 +84,7 @@ function DailyTracker({ userData, setUserData, addNotification }) {
       return updatedData;
     });
 
-    addNotification(`Daily score saved: ${totalScore.toFixed(1)}/10 ${isExcellent ? '🎉 EXCELLENT' : ''}`, 
+    addNotification(`Daily score saved: ${totalScore.toFixed(1)}/10 ${isExcellent ? ' EXCELLENT' : ''}`, 
       isExcellent ? 'success' : 'info');
   };
 
@@ -94,7 +94,7 @@ function DailyTracker({ userData, setUserData, addNotification }) {
       {agentInsights?.recommendations && agentInsights.recommendations.length > 0 && (
         <div className="glass rounded-2xl p-6 border border-purple-900/50">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-2xl">🤖</span>
+            
             <h3 className="text-xl font-bold text-white">CATEGORY-SPECIFIC INSIGHTS</h3>
           </div>
           
@@ -104,7 +104,7 @@ function DailyTracker({ userData, setUserData, addNotification }) {
                 <div className="flex items-start justify-between mb-2">
                   <div className="font-bold text-purple-200">{rec.title}</div>
                   <span className="text-xs px-2 py-1 rounded bg-purple-900/50 text-purple-200">
-                    {rec.type === 'urgent' ? '🔴 URGENT' : rec.type === 'warning' ? '⚠️ WARNING' : '💡 INSIGHT'}
+                    {rec.type === 'urgent' ? ' URGENT' : rec.type === 'warning' ? ' WARNING' : ' INSIGHT'}
                   </span>
                 </div>
                 
@@ -135,13 +135,13 @@ function DailyTracker({ userData, setUserData, addNotification }) {
       {/* Header */}
       <div className="glass rounded-2xl p-6 border border-red-900/50">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-3xl font-bold text-white">📅 DAILY SCORECARD</h2>
+          <h2 className="text-3xl font-bold text-white"> DAILY SCORECARD</h2>
           <div className="text-right bg-slate-800 rounded-xl p-4 border border-red-900/50">
             <div className="text-slate-300 text-sm">Today's Score</div>
             <div className={`text-4xl font-bold font-mono ${isExcellent ? 'text-green-400' : 'text-orange-400'}`}>
               {totalScore.toFixed(1)}/10
             </div>
-            <div className="text-xs text-slate-400 mt-1">{isExcellent ? '✅ ON TRACK' : '⚠️ NEEDS FOCUS'}</div>
+            <div className="text-xs text-slate-400 mt-1">{isExcellent ? ' ON TRACK' : ' NEEDS FOCUS'}</div>
           </div>
         </div>
         <p className="text-slate-300 text-sm">Rate each category 1-10. Target: 8+ average for excellence.</p>
@@ -187,21 +187,21 @@ function DailyTracker({ userData, setUserData, addNotification }) {
         onClick={saveDaily}
         className="w-full btn-primary text-lg py-4"
       >
-        💾 SAVE TODAY'S SCORE
+         SAVE TODAY'S SCORE
       </button>
 
       {/* Celebration Box */}
       {isExcellent && (
         <div className="framework-card bg-gradient-to-r from-green-900 to-emerald-900 border-green-700">
           <p className="text-green-200 font-bold text-center text-lg">
-            🎉 OUTSTANDING! You're crushing it today! Keep the momentum!
+             OUTSTANDING! You're crushing it today! Keep the momentum!
           </p>
         </div>
       )}
 
       {/* Framework Notes */}
       <div className="glass rounded-2xl p-4 border border-slate-700 text-sm text-slate-300">
-        <div className="font-semibold text-white mb-2">📌 Framework Reminder:</div>
+        <div className="font-semibold text-white mb-2"> Framework Reminder:</div>
         <p>Daily average of 8+ indicates you're executing your Life Structure & Discipline Framework. Consistency compounds over time. 90-day challenge: Maintain 80%+ adherence to system.</p>
       </div>
     </div>

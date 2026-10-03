@@ -58,7 +58,7 @@ export function PsychologyCoachPanel({ userData }) {
       <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg p-6 border-2 border-amber-200">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-amber-900 flex items-center gap-2">
-            🚀 Master System Integration
+             Master System Integration
           </h2>
           <button
             onClick={() => setShowMasterAnalysis(!showMasterAnalysis)}
@@ -88,7 +88,7 @@ export function PsychologyCoachPanel({ userData }) {
           <div className="bg-white p-3 rounded-lg border border-amber-200">
             <div className="text-sm text-gray-600">Trend</div>
             <div className="text-2xl font-bold text-orange-600">
-              {masterAnalysis.systemState.trend > 0 ? '📈' : '📉'}
+              {masterAnalysis.systemState.trend > 0 ? '' : ''}
             </div>
             <div className="text-xs text-gray-500">{masterAnalysis.systemState.momentum}</div>
           </div>
@@ -113,7 +113,7 @@ export function PsychologyCoachPanel({ userData }) {
         {/* Bottlenecks */}
         {masterAnalysis.bottlenecks.length > 0 && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-            <h3 className="font-bold text-red-900 mb-3">🚨 Critical Issues</h3>
+            <h3 className="font-bold text-red-900 mb-3"> Critical Issues</h3>
             <div className="space-y-2">
               {masterAnalysis.bottlenecks.slice(0, 3).map((bottleneck, idx) => (
                 <div key={idx} className="bg-white p-2 rounded border-l-2 border-red-500">
@@ -129,7 +129,7 @@ export function PsychologyCoachPanel({ userData }) {
         {/* Opportunities */}
         {masterAnalysis.opportunities.length > 0 && (
           <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-            <h3 className="font-bold text-green-900 mb-3">💡 Opportunities</h3>
+            <h3 className="font-bold text-green-900 mb-3"> Opportunities</h3>
             <div className="space-y-2">
               {masterAnalysis.opportunities.slice(0, 3).map((opp, idx) => (
                 <div key={idx} className="bg-white p-2 rounded border-l-2 border-green-500">
@@ -149,7 +149,7 @@ export function PsychologyCoachPanel({ userData }) {
 
             {/* Master Plan */}
             <div className="mb-6">
-              <h4 className="font-semibold text-lg text-amber-900 mb-3">📋 Master Plan</h4>
+              <h4 className="font-semibold text-lg text-amber-900 mb-3"> Master Plan</h4>
               <div className="space-y-3">
                 <div className="bg-blue-50 p-3 rounded border-l-2 border-blue-500">
                   <div className="font-semibold text-blue-900">{masterAnalysis.masterPlan.phase1.name}</div>
@@ -168,7 +168,7 @@ export function PsychologyCoachPanel({ userData }) {
 
             {/* Top Actions */}
             <div className="mb-6">
-              <h4 className="font-semibold text-lg text-amber-900 mb-3">⚡ Top Priority Actions</h4>
+              <h4 className="font-semibold text-lg text-amber-900 mb-3"> Top Priority Actions</h4>
               <div className="space-y-2">
                 {masterAnalysis.prioritizedActions.slice(0, 5).map((action, idx) => (
                   <div key={idx} className="bg-gray-50 p-3 rounded border border-gray-200">
@@ -183,7 +183,7 @@ export function PsychologyCoachPanel({ userData }) {
                       <div className="flex-1">
                         <div className="font-semibold text-gray-900">{action.action}</div>
                         <div className="text-xs text-gray-600 mt-1">
-                          ⏱️ {action.timeline} | 📈 {action.impact}
+                           {action.timeline} |  {action.impact}
                         </div>
                         <div className="text-xs text-purple-600 mt-1">From: {action.source}</div>
                       </div>
@@ -195,7 +195,7 @@ export function PsychologyCoachPanel({ userData }) {
 
             {/* Weekly Strategy */}
             <div>
-              <h4 className="font-semibold text-lg text-amber-900 mb-3">📅 This Week's Focus</h4>
+              <h4 className="font-semibold text-lg text-amber-900 mb-3"> This Week's Focus</h4>
               <div className="bg-indigo-50 p-4 rounded border border-indigo-200">
                 <div className="font-semibold text-indigo-900 mb-2">Focus: {masterAnalysis.weeklyStrategy.focus}</div>
                 <div className="text-sm text-gray-700 mb-3">Psychology Module: {masterAnalysis.weeklyStrategy.psychologyFocus}</div>
@@ -216,7 +216,7 @@ export function PsychologyCoachPanel({ userData }) {
       {/* PSYCHOLOGY COACHING MODULES */}
       <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-6 border-2 border-indigo-200">
         <h2 className="text-2xl font-bold text-indigo-900 mb-4 flex items-center gap-2">
-          🧠 Psychology Coach - Brain Enhancement & Mind Management
+           Psychology Coach - Brain Enhancement & Mind Management
         </h2>
 
         <p className="text-gray-700 mb-6">
@@ -236,7 +236,6 @@ export function PsychologyCoachPanel({ userData }) {
                   : 'bg-white text-gray-900 border-indigo-200 hover:border-indigo-400'
               }`}
             >
-              <div className="text-2xl mb-2">{module.icon}</div>
               <div className="font-semibold text-sm line-clamp-2">{module.name}</div>
               <div className={`text-xs mt-2 ${activeModule === idx ? 'text-indigo-100' : 'text-gray-600'}`}>
                 {module.insightCount} insights
@@ -267,7 +266,6 @@ export function PsychologyCoachPanel({ userData }) {
               return (
                 <div className="space-y-4">
                   <div className="flex items-center gap-2 mb-4">
-                    <span className="text-3xl">{moduleData.icon}</span>
                     <div>
                       <h3 className="text-xl font-bold text-indigo-900">{moduleData.module}</h3>
                       <p className="text-xs text-gray-600">Science: {moduleData.scienceBase}</p>
@@ -276,7 +274,7 @@ export function PsychologyCoachPanel({ userData }) {
 
                   {/* Insights */}
                   <div>
-                    <h4 className="font-bold text-indigo-900 mb-3">💡 Insights</h4>
+                    <h4 className="font-bold text-indigo-900 mb-3"> Insights</h4>
                     <div className="space-y-2">
                       {moduleData.insights.slice(0, 3).map((insight, idx) => (
                         <div
@@ -295,12 +293,12 @@ export function PsychologyCoachPanel({ userData }) {
                           <div className="text-sm text-gray-700 mt-1">{insight.message}</div>
                           {insight.science && (
                             <div className="text-xs text-gray-600 mt-2 italic">
-                              📚 {insight.science}
+                               {insight.science}
                             </div>
                           )}
                           {insight.insight && (
                             <div className="text-xs text-gray-800 mt-2 font-semibold">
-                              💡 {insight.insight}
+                               {insight.insight}
                             </div>
                           )}
                         </div>
@@ -310,7 +308,7 @@ export function PsychologyCoachPanel({ userData }) {
 
                   {/* Action Items */}
                   <div>
-                    <h4 className="font-bold text-indigo-900 mb-3">✅ Action Items</h4>
+                    <h4 className="font-bold text-indigo-900 mb-3"> Action Items</h4>
                     <div className="space-y-2">
                       {moduleData.actionItems.slice(0, 2).map((item, idx) => (
                         <div
@@ -328,7 +326,7 @@ export function PsychologyCoachPanel({ userData }) {
                             <div className="flex-1">
                               <div className="font-semibold text-gray-900">{item.action}</div>
                               <div className="text-sm text-gray-700 mt-1">
-                                ⏱️ {item.timeline} | 📈 {item.impact}
+                                 {item.timeline} |  {item.impact}
                               </div>
                             </div>
                           </div>
@@ -345,7 +343,7 @@ export function PsychologyCoachPanel({ userData }) {
         {/* Critical Issues Summary */}
         {psychologyCoaching.criticalIssues.length > 0 && (
           <div className="mt-6 bg-red-50 border-2 border-red-200 rounded-lg p-4">
-            <h3 className="font-bold text-red-900 mb-3">🚨 Critical Psychology Issues</h3>
+            <h3 className="font-bold text-red-900 mb-3"> Critical Psychology Issues</h3>
             <div className="space-y-2">
               {psychologyCoaching.criticalIssues.slice(0, 3).map((issue, idx) => (
                 <div key={idx} className="bg-white p-2 rounded border-l-2 border-red-500">
@@ -359,7 +357,7 @@ export function PsychologyCoachPanel({ userData }) {
 
         {/* Top Priorities */}
         <div className="mt-6 bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4">
-          <h3 className="font-bold text-yellow-900 mb-3">⭐ Top Priorities This Week</h3>
+          <h3 className="font-bold text-yellow-900 mb-3"> Top Priorities This Week</h3>
           <div className="space-y-2">
             {psychologyCoaching.topPriorities.slice(0, 3).map((priority, idx) => (
               <div key={idx} className="bg-white p-3 rounded border border-yellow-200">

@@ -19,49 +19,49 @@ export class AudioNotifications {
   initializeSoundLibrary() {
     return {
       chime: {
-        name: '🎵 Chime',
+        name: ' Chime',
         frequencies: [440, 554, 659],
         duration: 0.3,
         gap: 0.1
       },
       bell: {
-        name: '🔔 Bell',
+        name: ' Bell',
         frequencies: [523],
         duration: 0.4,
         gap: 0.2
       },
       alert: {
-        name: '⚠️ Alert',
+        name: ' Alert',
         frequencies: [800, 600, 800],
         duration: 0.2,
         gap: 0.1
       },
       notification: {
-        name: '📢 Notification',
+        name: ' Notification',
         frequencies: [600, 700],
         duration: 0.3,
         gap: 0.15
       },
       success: {
-        name: '✅ Success',
+        name: ' Success',
         frequencies: [523, 659, 784],
         duration: 0.25,
         gap: 0.1
       },
       reminder: {
-        name: '⏰ Reminder',
+        name: ' Reminder',
         frequencies: [400, 500, 600],
         duration: 0.3,
         gap: 0.2
       },
       update: {
-        name: '📡 Update',
+        name: ' Update',
         frequencies: [440, 550],
         duration: 0.4,
         gap: 0.15
       },
       double_chime: {
-        name: '🎶 Double Chime',
+        name: ' Double Chime',
         frequencies: [659, 784],
         duration: 0.2,
         gap: 0.25
@@ -89,9 +89,7 @@ export class AudioNotifications {
       const sound = this.soundLibrary[soundType] || this.soundLibrary.chime;
       
       // Stop current audio if playing
-      if (this.currentAudio) {
-        this.currentAudio.stop();
-      }
+      this.stopAudio();
 
       // Create oscillators for each frequency
       const oscillators = [];

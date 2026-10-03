@@ -165,7 +165,7 @@ function ReminderManager({ userData, addNotification }) {
       {audioNotifications && (
         <div className="glass rounded-2xl p-6 border border-purple-900/30">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl">🔊</span>
+            
             <h3 className="text-xl font-bold text-white">SOUND NOTIFICATIONS</h3>
           </div>
           <AudioNotificationManager addNotification={addNotification} />
@@ -197,7 +197,7 @@ function ReminderManager({ userData, addNotification }) {
 
         {/* Daily Reminders Info */}
         <div className="text-xs text-slate-400 space-y-1">
-          <div>📅 Daily reminders scheduled:</div>
+          <div> Daily reminders scheduled:</div>
           <div>• 5:00 AM - Morning Routine</div>
           <div>• 8:00 AM - Deep Work Session</div>
           <div>• 12:00 PM - Midday Check</div>

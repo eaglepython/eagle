@@ -419,11 +419,11 @@ export class MasterIntegrationAgent {
     let summary = '';
 
     if (score > 7) {
-      summary = `🟢 You're performing well (${score.toFixed(1)}/10). `;
+      summary = ` You're performing well (${score.toFixed(1)}/10). `;
     } else if (score > 5) {
-      summary = `🟡 Moderate performance (${score.toFixed(1)}/10). `;
+      summary = ` Moderate performance (${score.toFixed(1)}/10). `;
     } else {
-      summary = `🔴 Below target performance (${score.toFixed(1)}/10). `;
+      summary = ` Below target performance (${score.toFixed(1)}/10). `;
     }
 
     if (trend > 0) {
@@ -450,7 +450,7 @@ export class MasterIntegrationAgent {
    */
   _generateMasterPlan(state, bottlenecks, opportunities) {
     return {
-      title: '🎯 Master Plan - Unified Strategy',
+      title: ' Master Plan - Unified Strategy',
       phase1: {
         name: 'Critical Fix (This Week)',
         duration: '7 days',

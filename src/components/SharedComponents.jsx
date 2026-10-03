@@ -47,7 +47,6 @@ export function MetricCard({ label, value, target, color, icon }) {
   return (
     <div className={`metric-card glass rounded-2xl p-6 bg-gradient-to-br ${color}`}>
       <div className="flex items-center justify-between mb-4">
-        <span className="text-4xl">{icon}</span>
         <CircularProgress percentage={Math.min(percentage, 100)} size={60} />
       </div>
       <h3 className="text-white text-sm font-medium mb-1">{label}</h3>
@@ -56,7 +55,7 @@ export function MetricCard({ label, value, target, color, icon }) {
         <span className="text-sm text-white opacity-70">/ {target}</span>
       </div>
       <div className={`mt-2 text-xs font-semibold ${isGood ? 'text-green-200' : 'text-yellow-200'}`}>
-        {isGood ? '✅ On Track' : '⚠️ Needs Focus'}
+        {isGood ? ' On Track' : ' Needs Focus'}
       </div>
     </div>
   );
@@ -68,7 +67,6 @@ export function QuickActionButton({ icon, label, onClick }) {
       onClick={onClick}
       className="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-xl p-4 transition-all text-center"
     >
-      <div className="text-3xl mb-2">{icon}</div>
       <div className="text-white text-sm font-medium">{label}</div>
     </button>
   );

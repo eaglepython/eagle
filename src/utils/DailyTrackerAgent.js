@@ -124,7 +124,7 @@ export class DailyTrackerAgent {
       recs.push({
         category: 'morningRoutine',
         type: 'urgent',
-        title: '⏰ Morning Routine Quality Issue',
+        title: ' Morning Routine Quality Issue',
         specific: `Current: ${details.morningRoutine.current}/10, Target: 9/10`,
         problem: `You're missing 1-2 morning essentials. Late start cascades through entire day.`,
         solution: 'Checklist: 5:00 wake → cold shower (3 min) → vision review (5 min) → read (25 min)',
@@ -139,7 +139,7 @@ export class DailyTrackerAgent {
       recs.push({
         category: 'deepWork',
         type: 'urgent',
-        title: '🎯 Deep Work Insufficient',
+        title: ' Deep Work Insufficient',
         specific: `Current: ${details.deepWork.current}/10 | Target: 9/10 | Gap: -${details.deepWork.gap.toFixed(1)} points`,
         problem: `At ${details.deepWork.average}/10 avg, career progression stalls. Applications improve, but quality suffers.`,
         solution: 'Block 9 AM-1 PM NO INTERRUPTIONS. Phone: silent. Browser: single tab.',
@@ -155,7 +155,7 @@ export class DailyTrackerAgent {
       recs.push({
         category: 'exercise',
         type: 'warning',
-        title: '💪 Workout Gap Detected',
+        title: ' Workout Gap Detected',
         specific: `Current: ${details.exercise.current}/10 | Days since last: check workouts`,
         problem: `Skipping exercise kills daily score AND energy for deep work. They compound.`,
         solution: 'Make it automatic: 6:30 AM gym slot non-negotiable.',
@@ -171,7 +171,7 @@ export class DailyTrackerAgent {
       recs.push({
         category: 'trading',
         type: 'urgent',
-        title: '📊 Trading Execution Missing',
+        title: ' Trading Execution Missing',
         specific: `Current: ${details.trading.current}/10 | Issue: likely trades not executed or not journaled`,
         problem: `Trading only counts if: (1) Trade executed, (2) Journal complete with entry/exit/why`,
         solution: 'Checklist: Market open → execute plan → log in journal by 3 PM',
@@ -186,7 +186,7 @@ export class DailyTrackerAgent {
       recs.push({
         category: 'learning',
         type: 'insight',
-        title: '📚 Skill Development Stalling',
+        title: ' Skill Development Stalling',
         specific: `Current: ${details.learning.current}/10 | Target: 8/10`,
         problem: `60+ mins daily = 365+ hours/year. Skipping compounds negatively.`,
         solution: 'Habit stack: After lunch = 30 min course, Evening = 30 min reading',
@@ -201,7 +201,7 @@ export class DailyTrackerAgent {
       recs.push({
         category: 'nutrition',
         type: 'warning',
-        title: '🥗 Nutrition Impact',
+        title: ' Nutrition Impact',
         specific: `Current: ${details.nutrition.current}/10 | Poor nutrition = brain fog + fatigue`,
         problem: `Diet directly impacts: deep work quality, energy levels, trading psychology`,
         solution: 'Track: Protein, carbs, water. Goal: 12% body fat by 2026',
@@ -216,7 +216,7 @@ export class DailyTrackerAgent {
       recs.push({
         category: 'sleep',
         type: 'urgent',
-        title: '😴 Sleep Quality Critical',
+        title: ' Sleep Quality Critical',
         specific: `Current: ${details.sleep.current}/10 | This affects EVERYTHING`,
         problem: `Poor sleep = -0.5 daily score, -2 trading accuracy, -1 decision quality`,
         solution: 'Non-negotiable: Bed 10 PM, sleep by 10:15 PM, wake 5 AM',
@@ -231,7 +231,7 @@ export class DailyTrackerAgent {
       recs.push({
         category: 'social',
         type: 'insight',
-        title: '👥 Isolation Risk',
+        title: ' Isolation Risk',
         specific: `Current: ${details.social.current}/10 | Mental health risk if ignored`,
         problem: `Isolation: affects motivation, decision quality, and long-term sustainability`,
         solution: 'Schedule: 1x daily meaningful conversation (10-30 min)',
@@ -246,7 +246,7 @@ export class DailyTrackerAgent {
       recs.push({
         category: 'dailyMIT',
         type: 'urgent',
-        title: '✅ Most Important Task',
+        title: ' Most Important Task',
         specific: `Current: ${details.dailyMIT.current}/10 | MIT incomplete = day incomplete`,
         problem: `MIT scores 100% of daily completion. Everything else is bonus.`,
         solution: 'Define MIT by 5 PM: "What ONE thing would make today successful?"',
@@ -371,7 +371,7 @@ export class DailyTrackerAgent {
     return {
       last3DayAverage: parseFloat(average.toFixed(1)),
       trend: trend > 0 ? `↑ improving (+${trend.toFixed(1)})` : trend < 0 ? `↓ declining (${trend.toFixed(1)})` : '→ stable',
-      trajectory: average >= 8 ? '✅ ON TRACK' : average >= 7 ? '⚠️ CLOSE' : '🔴 NEEDS FOCUS'
+      trajectory: average >= 8 ? ' ON TRACK' : average >= 7 ? ' CLOSE' : ' NEEDS FOCUS'
     };
   }
 }

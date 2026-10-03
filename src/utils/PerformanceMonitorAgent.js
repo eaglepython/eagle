@@ -122,7 +122,7 @@ export class PerformanceMonitorAgent {
     return {
       last7DayAverage: parseFloat(avg7Day.toFixed(1)),
       last30DayAverage: parseFloat(avg30Day.toFixed(1)),
-      trend: trend > 0 ? `📈 +${trend.toFixed(1)}` : trend < 0 ? `📉 ${trend.toFixed(1)}` : '→ Stable',
+      trend: trend > 0 ? ` +${trend.toFixed(1)}` : trend < 0 ? ` ${trend.toFixed(1)}` : '→ Stable',
       deepWorkHoursNeeded: 4.5,
       estimatedDeepWorkHours: (avg7Day / 10) * 4.5,
       productivityGap: Math.max(0, 4.5 - ((avg7Day / 10) * 4.5)),
@@ -162,11 +162,11 @@ export class PerformanceMonitorAgent {
         ? `CRITICAL: Implement distraction elimination. Recover ${(distractionEstimate / 100 * 8).toFixed(1)}h/day`
         : 'Maintain focus protocols',
       focusToolsNeeded: [
-        distractionEstimate > 30 ? '📱 Phone airplane mode' : null,
-        distractionEstimate > 30 ? '🔕 Disable notifications' : null,
-        distractionEstimate > 30 ? '🌐 Block social sites' : null,
-        distractionEstimate > 30 ? '🎵 Focus music' : null,
-        distractionEstimate > 30 ? '🚪 Distraction-free location' : null
+        distractionEstimate > 30 ? ' Phone airplane mode' : null,
+        distractionEstimate > 30 ? ' Disable notifications' : null,
+        distractionEstimate > 30 ? ' Block social sites' : null,
+        distractionEstimate > 30 ? ' Focus music' : null,
+        distractionEstimate > 30 ? ' Distraction-free location' : null
       ].filter(Boolean)
     };
   }
@@ -208,18 +208,18 @@ export class PerformanceMonitorAgent {
     const burnoutRisk = energyTrend < -0.5 && totalActivityLoad > 40 ? 'HIGH' : energyTrend < 0 ? 'MODERATE' : 'LOW';
 
     return {
-      energyTrend: energyTrend > 0 ? `📈 Rising` : energyTrend < 0 ? `📉 Declining` : '→ Stable',
+      energyTrend: energyTrend > 0 ? ` Rising` : energyTrend < 0 ? ` Declining` : '→ Stable',
       burnoutRisk,
       currentEnergyLevel: parseFloat(secondHalf.toFixed(1)),
       activityLoad: totalActivityLoad,
       recoveryNeeded: burnoutRisk === 'HIGH',
       recoveryProtocol: burnoutRisk === 'HIGH' ? [
-        '😴 Sleep 8h minimum',
-        '🧘 20 min morning meditation',
-        '🏃 Light yoga/walks only',
-        '📵 1 evening digital detox',
-        '🎵 Leisure activity'
-      ] : ['✅ Maintain current pace'],
+        ' Sleep 8h minimum',
+        ' 20 min morning meditation',
+        ' Light yoga/walks only',
+        ' 1 evening digital detox',
+        ' Leisure activity'
+      ] : [' Maintain current pace'],
       status: burnoutRisk === 'HIGH' ? 'critical' : burnoutRisk === 'MODERATE' ? 'warning' : 'good'
     };
   }
@@ -369,12 +369,12 @@ export class PerformanceMonitorAgent {
         ? 'CRITICAL: Optimize sleep for +40% cognitive function'
         : 'Sleep quality excellent - maintain protocols',
       sleepOptimizationProtocol: [
-        '⏰ Consistent bedtime (every night)',
-        '😴 Target 8 hours',
-        '🌙 Cool (65-68°F), dark, quiet',
-        '📵 No screens 1h before bed',
-        '☕ No caffeine after 2 PM',
-        '🌅 Morning sun exposure 10 min'
+        ' Consistent bedtime (every night)',
+        ' Target 8 hours',
+        ' Cool (65-68°F), dark, quiet',
+        ' No screens 1h before bed',
+        ' No caffeine after 2 PM',
+        ' Morning sun exposure 10 min'
       ]
     };
   }
@@ -405,18 +405,18 @@ export class PerformanceMonitorAgent {
         ? 'Implement daily stress management protocol'
         : 'Maintain stress management practices',
       stressReductionTechniques: [
-        '🧘 4-7-8 breathing (1 min)',
-        '🏃 10 min walk (restores 20% resilience)',
-        '💧 Hydration (critical)',
-        '🎵 Calming music',
-        '🤝 Social connection',
-        '😴 Sleep optimization'
+        ' 4-7-8 breathing (1 min)',
+        ' 10 min walk (restores 20% resilience)',
+        ' Hydration (critical)',
+        ' Calming music',
+        ' Social connection',
+        ' Sleep optimization'
       ],
       emotionalRegulationTips: [
-        '📓 Name emotions (deactivates amygdala)',
-        '🤔 Understand context',
-        '🧠 Reframe thoughts',
-        '💪 Choose response (emotion ≠ behavior)'
+        ' Name emotions (deactivates amygdala)',
+        ' Understand context',
+        ' Reframe thoughts',
+        ' Choose response (emotion ≠ behavior)'
       ]
     };
   }
@@ -467,7 +467,7 @@ export class PerformanceMonitorAgent {
     return {
       week1Average: parseFloat(week1.toFixed(1)),
       week2Average: parseFloat(week2.toFixed(1)),
-      trend: diff > 0.5 ? '📈 Strong positive' : diff > 0 ? '📈 Positive' : diff < -0.5 ? '📉 Strong negative' : '→ Stable',
+      trend: diff > 0.5 ? ' Strong positive' : diff > 0 ? ' Positive' : diff < -0.5 ? ' Strong negative' : '→ Stable',
       change: parseFloat(diff.toFixed(2)),
       projection: week2 + diff * 2 // Predict 2 weeks ahead
     };

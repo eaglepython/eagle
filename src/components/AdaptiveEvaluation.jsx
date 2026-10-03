@@ -189,7 +189,7 @@ function AdaptiveEvaluation({ userData, setUserData }) {
       {/* Next Steps */}
       {evaluation.nextSteps && evaluation.nextSteps.length > 0 && (
         <div className="glass rounded-2xl p-6 border border-blue-900/30">
-          <h3 className="text-2xl font-bold text-white mb-4">🎯 PRIORITY ACTIONS</h3>
+          <h3 className="text-2xl font-bold text-white mb-4"> PRIORITY ACTIONS</h3>
           
           <div className="space-y-3">
             {evaluation.nextSteps.map((step, idx) => (

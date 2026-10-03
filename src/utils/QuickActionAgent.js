@@ -17,8 +17,7 @@ export class QuickActionAgent {
     const lastScore = this.userData.dailyScores[this.userData.dailyScores.length - 1];
     
     const recommendations = {
-      title: '📝 Daily Score Recommendations',
-      icon: '📊',
+      title: ' Daily Score Recommendations',
       currentScore: todayScore?.totalScore || null,
       target: 8.0,
       insights: [],
@@ -53,13 +52,13 @@ export class QuickActionAgent {
       if (avgScore >= 8) {
         recommendations.insights.push({
           type: 'success',
-          message: `✅ Yesterday averaged ${avgScore}/10! Maintain momentum today.`,
+          message: ` Yesterday averaged ${avgScore}/10! Maintain momentum today.`,
           action: 'MAINTAIN'
         });
       } else {
         recommendations.insights.push({
           type: 'opportunity',
-          message: `📈 Yesterday averaged ${avgScore}/10. Focus on ${weakAreas[0].category} today.`,
+          message: ` Yesterday averaged ${avgScore}/10. Focus on ${weakAreas[0].category} today.`,
           action: 'IMPROVE'
         });
       }
@@ -69,31 +68,31 @@ export class QuickActionAgent {
     recommendations.actionItems = [
       {
         priority: 'CRITICAL',
-        action: '⏰ Complete 5AM morning routine',
+        action: ' Complete 5AM morning routine',
         deadline: 'Start of day',
         impact: '+1.5 points'
       },
       {
         priority: 'CRITICAL',
-        action: '🎯 2 hrs deep work session (MIT)',
+        action: ' 2 hrs deep work session (MIT)',
         deadline: 'Before noon',
         impact: '+2.0 points'
       },
       {
         priority: 'HIGH',
-        action: '💪 1 workout (30+ min)',
+        action: ' 1 workout (30+ min)',
         deadline: 'During day',
         impact: '+1.0 point'
       },
       {
         priority: 'HIGH',
-        action: '📚 1 hour learning/study',
+        action: ' 1 hour learning/study',
         deadline: 'Evening',
         impact: '+0.8 points'
       },
       {
         priority: 'MEDIUM',
-        action: '😴 8 hrs quality sleep',
+        action: ' 8 hrs quality sleep',
         deadline: 'Before midnight',
         impact: '+1.2 points'
       }
@@ -122,8 +121,7 @@ export class QuickActionAgent {
     });
 
     const recommendations = {
-      title: '💼 Job Application Recommendations',
-      icon: '📋',
+      title: ' Job Application Recommendations',
       currentWeek: thisWeek.length,
       target: 15,
       insights: [],
@@ -139,21 +137,21 @@ export class QuickActionAgent {
     if (tier1Week.length >= 5) {
       recommendations.insights.push({
         type: 'success',
-        message: `✅ ${tier1Week.length} Tier 1 apps this week! Great focus on quality.`,
+        message: ` ${tier1Week.length} Tier 1 apps this week! Great focus on quality.`,
         action: 'MAINTAIN'
       });
       recommendations.tierFocus = 'EXPAND_VOLUME';
     } else if (tier1Week.length > 0) {
       recommendations.insights.push({
         type: 'opportunity',
-        message: `📈 ${tier1Week.length}/5 Tier 1 apps. Target ${5 - tier1Week.length} more this week.`,
+        message: ` ${tier1Week.length}/5 Tier 1 apps. Target ${5 - tier1Week.length} more this week.`,
         action: 'PRIORITIZE_TIER1'
       });
       recommendations.tierFocus = 'FOCUS_TIER1';
     } else {
       recommendations.insights.push({
         type: 'critical',
-        message: `🚨 Zero Tier 1 applications this week! Must prioritize quality companies.`,
+        message: ` Zero Tier 1 applications this week! Must prioritize quality companies.`,
         action: 'PIVOT_TO_TIER1'
       });
       recommendations.tierFocus = 'URGENT_TIER1';
@@ -175,31 +173,31 @@ export class QuickActionAgent {
     recommendations.actionItems = [
       {
         priority: 'CRITICAL',
-        action: '🎯 Apply to 5 Tier 1 companies',
+        action: ' Apply to 5 Tier 1 companies',
         deadline: 'This week',
         impact: 'Meets target'
       },
       {
         priority: 'CRITICAL',
-        action: '📝 Customize cover letter per company',
+        action: ' Customize cover letter per company',
         deadline: 'Before applying',
         impact: '+15% response rate'
       },
       {
         priority: 'HIGH',
-        action: '🔗 LinkedIn outreach to 3 recruiters',
+        action: ' LinkedIn outreach to 3 recruiters',
         deadline: 'This week',
         impact: '+20% interview chances'
       },
       {
         priority: 'HIGH',
-        action: '📊 Update resume with 2026 achievements',
+        action: ' Update resume with 2026 achievements',
         deadline: 'Today',
         impact: '+10% quality increase'
       },
       {
         priority: 'MEDIUM',
-        action: '📋 Create target company list (50 companies)',
+        action: ' Create target company list (50 companies)',
         deadline: 'This weekend',
         impact: 'Streamlines process'
       }
@@ -220,8 +218,7 @@ export class QuickActionAgent {
     });
 
     const recommendations = {
-      title: '📊 Trading Log Recommendations',
-      icon: '💹',
+      title: ' Trading Log Recommendations',
       currentWeekTrades: thisWeek.length,
       targetTrades: '3-5',
       insights: [],
@@ -249,19 +246,19 @@ export class QuickActionAgent {
     if (winRate >= 55) {
       recommendations.insights.push({
         type: 'success',
-        message: `✅ Win rate at ${winRate}%! Above 50% target. Consider scaling.`,
+        message: ` Win rate at ${winRate}%! Above 50% target. Consider scaling.`,
         action: 'SCALE'
       });
     } else if (winRate >= 45) {
       recommendations.insights.push({
         type: 'opportunity',
-        message: `📈 Win rate at ${winRate}%. Need 55%+ for profitability. Review losing trades.`,
+        message: ` Win rate at ${winRate}%. Need 55%+ for profitability. Review losing trades.`,
         action: 'IMPROVE_EDGE'
       });
     } else {
       recommendations.insights.push({
         type: 'critical',
-        message: `🚨 Win rate ${winRate}% is too low. Review strategy immediately.`,
+        message: ` Win rate ${winRate}% is too low. Review strategy immediately.`,
         action: 'REVIEW_STRATEGY'
       });
     }
@@ -269,13 +266,13 @@ export class QuickActionAgent {
     if (allPnL > 0) {
       recommendations.insights.push({
         type: 'success',
-        message: `💰 Weekly P&L: +$${allPnL.toFixed(2)}. On track for $5K monthly target.`,
+        message: ` Weekly P&L: +$${allPnL.toFixed(2)}. On track for $5K monthly target.`,
         action: 'MAINTAIN'
       });
     } else if (allPnL < 0) {
       recommendations.insights.push({
         type: 'warning',
-        message: `⚠️ Negative P&L this week (-$${Math.abs(allPnL).toFixed(2)}). Reduce size and tighten stops.`,
+        message: ` Negative P&L this week (-$${Math.abs(allPnL).toFixed(2)}). Reduce size and tighten stops.`,
         action: 'REDUCE_SIZE'
       });
     }
@@ -284,31 +281,31 @@ export class QuickActionAgent {
     recommendations.actionItems = [
       {
         priority: 'CRITICAL',
-        action: '📋 Journal every trade (3-5 today)',
+        action: ' Journal every trade (3-5 today)',
         deadline: 'During market hours',
         impact: 'Captures edge patterns'
       },
       {
         priority: 'CRITICAL',
-        action: '✏️ Review 5 worst trades from this month',
+        action: ' Review 5 worst trades from this month',
         deadline: 'After market close',
         impact: '+5% edge improvement'
       },
       {
         priority: 'HIGH',
-        action: '📊 Set position sizing rules (risk 1% max)',
+        action: ' Set position sizing rules (risk 1% max)',
         deadline: 'Before next trade',
         impact: 'Better risk management'
       },
       {
         priority: 'HIGH',
-        action: '🎯 Identify 2 high-probability setups',
+        action: ' Identify 2 high-probability setups',
         deadline: 'Next session',
         impact: '+10% win rate'
       },
       {
         priority: 'MEDIUM',
-        action: '📈 Analyze market conditions (trend, volatility)',
+        action: ' Analyze market conditions (trend, volatility)',
         deadline: 'Morning prep',
         impact: 'Context awareness'
       }
@@ -336,8 +333,7 @@ export class QuickActionAgent {
     });
 
     const recommendations = {
-      title: '💪 Workout Recommendations',
-      icon: '🏋️',
+      title: ' Workout Recommendations',
       currentWeek: thisWeek.length,
       target: 6,
       insights: [],
@@ -364,14 +360,14 @@ export class QuickActionAgent {
     if (thisWeek.length >= 6) {
       recommendations.insights.push({
         type: 'success',
-        message: `✅ ${thisWeek.length} workouts this week! Goal met. Maintain consistency.`,
+        message: ` ${thisWeek.length} workouts this week! Goal met. Maintain consistency.`,
         action: 'MAINTAIN'
       });
     } else {
       const remaining = 6 - thisWeek.length;
       recommendations.insights.push({
         type: 'opportunity',
-        message: `📈 ${thisWeek.length}/6 workouts. Need ${remaining} more to hit target.`,
+        message: ` ${thisWeek.length}/6 workouts. Need ${remaining} more to hit target.`,
         action: 'SCHEDULE_NOW'
       });
     }
@@ -380,13 +376,13 @@ export class QuickActionAgent {
     if (Object.keys(types).length >= 3) {
       recommendations.insights.push({
         type: 'success',
-        message: `💯 Great variety: ${Object.keys(types).join(', ')}. Balanced approach.`,
+        message: ` Great variety: ${Object.keys(types).join(', ')}. Balanced approach.`,
         action: 'MAINTAIN'
       });
     } else {
       recommendations.insights.push({
         type: 'opportunity',
-        message: `🔄 Add workout variety. Currently: ${Object.keys(types).join(', ')}`,
+        message: ` Add workout variety. Currently: ${Object.keys(types).join(', ')}`,
         action: 'ADD_VARIETY'
       });
     }
@@ -395,31 +391,31 @@ export class QuickActionAgent {
     recommendations.actionItems = [
       {
         priority: 'CRITICAL',
-        action: '⏰ Schedule 6 workouts for this week',
+        action: ' Schedule 6 workouts for this week',
         deadline: 'Monday morning',
         impact: 'Locks in commitment'
       },
       {
         priority: 'CRITICAL',
-        action: '💪 Complete today\'s workout (30+ min)',
+        action: ' Complete today\'s workout (30+ min)',
         deadline: 'Today',
         impact: '+1 toward target'
       },
       {
         priority: 'HIGH',
-        action: '🏃 2 cardio sessions (running/bike)',
+        action: ' 2 cardio sessions (running/bike)',
         deadline: 'This week',
         impact: 'Cardiovascular health'
       },
       {
         priority: 'HIGH',
-        action: '🏋️ 3 strength training sessions',
+        action: ' 3 strength training sessions',
         deadline: 'This week',
         impact: 'Muscle development'
       },
       {
         priority: 'MEDIUM',
-        action: '📊 Track body metrics weekly',
+        action: ' Track body metrics weekly',
         deadline: 'Sunday evening',
         impact: 'Progress monitoring'
       }
@@ -446,8 +442,7 @@ export class QuickActionAgent {
     const careerGoals = goals.filter(g => g.category === 'career');
     
     const recommendations = {
-      title: '📚 Learning & Resources Recommendations',
-      icon: '🎓',
+      title: ' Learning & Resources Recommendations',
       insights: [],
       actionItems: [],
       topResources: [],
@@ -457,13 +452,13 @@ export class QuickActionAgent {
     // Generate insights
     recommendations.insights.push({
       type: 'opportunity',
-      message: '🎯 Resources system provides AI-curated learning for all 10 goals',
+      message: ' Resources system provides AI-curated learning for all 10 goals',
       action: 'EXPLORE'
     });
 
     recommendations.insights.push({
       type: 'info',
-      message: '📚 Click on any goal to see strategies, action items, and online resources',
+      message: ' Click on any goal to see strategies, action items, and online resources',
       action: 'LEARN'
     });
 
@@ -471,25 +466,25 @@ export class QuickActionAgent {
     recommendations.actionItems = [
       {
         priority: 'CRITICAL',
-        action: '🎯 Select top goal to get resources',
+        action: ' Select top goal to get resources',
         deadline: 'Now',
         impact: 'Immediate actionable steps'
       },
       {
         priority: 'HIGH',
-        action: '📖 Read 1 CRITICAL resource from selected goal',
+        action: ' Read 1 CRITICAL resource from selected goal',
         deadline: 'Today',
         impact: '+1 knowledge point'
       },
       {
         priority: 'HIGH',
-        action: '📋 Implement 1 strategy from recommendations',
+        action: ' Implement 1 strategy from recommendations',
         deadline: 'This week',
         impact: 'Direct goal progress'
       },
       {
         priority: 'MEDIUM',
-        action: '🔄 Refresh recommendations weekly',
+        action: ' Refresh recommendations weekly',
         deadline: 'Every Sunday',
         impact: 'Fresh strategies'
       }
@@ -541,8 +536,7 @@ export class QuickActionAgent {
     });
 
     const recommendations = {
-      title: '📋 Weekly Reflection Recommendations',
-      icon: '🎯',
+      title: ' Weekly Reflection Recommendations',
       weekMetrics: {},
       insights: [],
       actionItems: [],
@@ -569,19 +563,19 @@ export class QuickActionAgent {
     if (avgWeekScore >= 8) {
       recommendations.insights.push({
         type: 'success',
-        message: `✅ Excellent week! Average ${avgWeekScore}/10. Keep this momentum going.`,
+        message: ` Excellent week! Average ${avgWeekScore}/10. Keep this momentum going.`,
         action: 'CELEBRATE'
       });
     } else if (avgWeekScore >= 6.5) {
       recommendations.insights.push({
         type: 'opportunity',
-        message: `📈 Good week at ${avgWeekScore}/10. Target 8.0+ next week.`,
+        message: ` Good week at ${avgWeekScore}/10. Target 8.0+ next week.`,
         action: 'IMPROVE'
       });
     } else {
       recommendations.insights.push({
         type: 'critical',
-        message: `🚨 Challenging week (${avgWeekScore}/10). Review what went wrong and adjust.`,
+        message: ` Challenging week (${avgWeekScore}/10). Review what went wrong and adjust.`,
         action: 'RESET'
       });
     }
@@ -590,31 +584,31 @@ export class QuickActionAgent {
     recommendations.actionItems = [
       {
         priority: 'CRITICAL',
-        action: '🎯 Review all 7 daily scores from this week',
+        action: ' Review all 7 daily scores from this week',
         deadline: 'Now',
         impact: 'Pattern recognition'
       },
       {
         priority: 'CRITICAL',
-        action: '📊 Analyze best day (${bestDay}/10) - what was different?',
+        action: ' Analyze best day (${bestDay}/10) - what was different?',
         deadline: '30 min',
         impact: 'Identify success patterns'
       },
       {
         priority: 'HIGH',
-        action: '🔍 Identify worst performing category',
+        action: ' Identify worst performing category',
         deadline: '1 hour',
         impact: 'Target improvement area'
       },
       {
         priority: 'HIGH',
-        action: '✍️ Write 3 wins and 3 lessons for next week',
+        action: ' Write 3 wins and 3 lessons for next week',
         deadline: '1.5 hours',
         impact: 'Reflection & learning'
       },
       {
         priority: 'MEDIUM',
-        action: '🎯 Set specific 3 goals for next week',
+        action: ' Set specific 3 goals for next week',
         deadline: '2 hours',
         impact: 'Direction & motivation'
       }

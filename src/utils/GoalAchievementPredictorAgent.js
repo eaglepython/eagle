@@ -486,20 +486,20 @@ export class GoalAchievementPredictorAgent {
     
     return {
       q4_2025: [
-        getProb(predictions.dailyScore?.probability) >= 0.5 ? '✅ Daily Score 7.5+' : '⚠️ Daily Score building',
-        (predictions.applications?.last7Days || 0) >= 10 ? '✅ Career momentum' : '⚠️ Increase app volume'
+        getProb(predictions.dailyScore?.probability) >= 0.5 ? ' Daily Score 7.5+' : ' Daily Score building',
+        (predictions.applications?.last7Days || 0) >= 10 ? ' Career momentum' : ' Increase app volume'
       ],
       q1_2026: [
-        (predictions.careerRole?.projectedInterviews || 0) > 0 ? '✅ Career interviews' : '⚠️ Interview prep needed',
-        getProb(predictions.tradingAUM?.probability) >= 0.5 ? '✅ Trading scalable' : '⚠️ Focus on consistency'
+        (predictions.careerRole?.projectedInterviews || 0) > 0 ? ' Career interviews' : ' Interview prep needed',
+        getProb(predictions.tradingAUM?.probability) >= 0.5 ? ' Trading scalable' : ' Focus on consistency'
       ],
       q2_q3_2026: [
-        getProb(predictions.careerRole?.probability) >= 0.7 ? '✅ Offer likely' : '⚠️ Maintain pressure',
-        getProb(predictions.netWorth?.probability) >= 0.7 ? '✅ Net worth on track' : '⚠️ Income acceleration needed'
+        getProb(predictions.careerRole?.probability) >= 0.7 ? ' Offer likely' : ' Maintain pressure',
+        getProb(predictions.netWorth?.probability) >= 0.7 ? ' Net worth on track' : ' Income acceleration needed'
       ],
       q4_2026: [
-        '✅ 2026 objectives achieved',
-        '🚀 Ready for 2027 scaling'
+        ' 2026 objectives achieved',
+        ' Ready for 2027 scaling'
       ]
     };
   }
@@ -603,13 +603,13 @@ export class GoalAchievementPredictorAgent {
    */
   _identifyCriticalFactors() {
     return [
-      '🎯 Career: 15+ quality applications/week (path to $500K salary)',
-      '📈 Trading: 50%+ win rate + consistent execution (path to $500K AUM)',
-      '💪 Health: 6+ workouts/week + sleep optimization (supports both)',
-      '🧠 Discipline: 7+ daily score + consistency streak (neuroplasticity)',
-      '💰 Finance: 30% savings rate + income growth (path to $2M)',
-      '📚 Learning: 1h/day focused learning (supports all goals)',
-      '😴 Sleep: 8h nightly (multiplier for all performance)'
+      ' Career: 15+ quality applications/week (path to $500K salary)',
+      ' Trading: 50%+ win rate + consistent execution (path to $500K AUM)',
+      ' Health: 6+ workouts/week + sleep optimization (supports both)',
+      ' Discipline: 7+ daily score + consistency streak (neuroplasticity)',
+      ' Finance: 30% savings rate + income growth (path to $2M)',
+      ' Learning: 1h/day focused learning (supports all goals)',
+      ' Sleep: 8h nightly (multiplier for all performance)'
     ];
   }
 
@@ -640,13 +640,13 @@ export class GoalAchievementPredictorAgent {
     const prob = (parseFloat(probStr) || 0) / 100;
 
     if (prob >= 0.85) {
-      return '🟢 EXCELLENT - On track for 95%+ of 2026 goals. Maintain systems, execute, optimize.';
+      return ' EXCELLENT - On track for 95%+ of 2026 goals. Maintain systems, execute, optimize.';
     } else if (prob >= 0.70) {
-      return '🟡 GOOD - 70-85% probability. Focus on fixing 1-2 bottlenecks (career apps, sleep).';
+      return ' GOOD - 70-85% probability. Focus on fixing 1-2 bottlenecks (career apps, sleep).';
     } else if (prob >= 0.50) {
-      return '🟠 FAIR - 50-70% probability. Critical fixes needed: increase app volume + consistency.';
+      return ' FAIR - 50-70% probability. Critical fixes needed: increase app volume + consistency.';
     } else {
-      return '🔴 POOR - <50% probability. Major restructuring needed. Focus on top 3 goals only.';
+      return ' POOR - <50% probability. Major restructuring needed. Focus on top 3 goals only.';
     }
   }
 

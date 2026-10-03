@@ -20,7 +20,7 @@ class LiveUpdateAgent {
     if (this.isRunning) return;
 
     this.isRunning = true;
-    console.log('🔴 Insight auto-refresh started - Refreshing every 2 hours');
+    console.log(' Insight auto-refresh started - Refreshing every 2 hours');
 
     // Initial update immediately
     this.fetchAllUpdates(userData, onUpdateCallback);
@@ -41,7 +41,7 @@ class LiveUpdateAgent {
     this.activeListeners.forEach(intervalId => clearInterval(intervalId));
     this.activeListeners = [];
     this.isRunning = false;
-    console.log('🟢 LIVE Update Agent Stopped');
+    console.log(' LIVE Update Agent Stopped');
   }
 
   /**
@@ -49,7 +49,7 @@ class LiveUpdateAgent {
    */
   async fetchAllUpdates(userData, onUpdateCallback) {
     const timestamp = new Date().toISOString();
-    console.log(`\n📡 LIVE UPDATE CHECK at ${timestamp}`);
+    console.log(`\n LIVE UPDATE CHECK at ${timestamp}`);
 
     const updates = {
       discipline: await this.fetchDisciplineUpdates(),
@@ -89,7 +89,6 @@ class LiveUpdateAgent {
   async fetchDisciplineUpdates() {
     return {
       category: 'Discipline',
-      icon: '🎯',
       updates: [
         {
           title: 'Morning Routine Optimization',
@@ -121,7 +120,7 @@ class LiveUpdateAgent {
         actionableInsights: 2,
         timeToImplement: '15 minutes'
       },
-      nextCheck: new Date(Date.now() + 6 * 60 * 60 * 1000).toLocaleTimeString()
+      nextCheck: new Date(Date.now() + this.updateInterval).toLocaleTimeString()
     };
   }
 
@@ -131,7 +130,6 @@ class LiveUpdateAgent {
   async fetchCareerUpdates() {
     return {
       category: 'Career',
-      icon: '👔',
       updates: [
         {
           title: 'Hot Tech Companies Now Hiring',
@@ -170,7 +168,7 @@ class LiveUpdateAgent {
         jobsOpenings: '50K+',
         topCompanies: 5,
         avgSalary: '$180K',
-        nextCheck: new Date(Date.now() + 6 * 60 * 60 * 1000).toLocaleTimeString()
+        nextCheck: new Date(Date.now() + this.updateInterval).toLocaleTimeString()
       }
     };
   }
@@ -181,7 +179,6 @@ class LiveUpdateAgent {
   async fetchTradingUpdates() {
     return {
       category: 'Trading',
-      icon: '💹',
       updates: [
         {
           title: 'Today\'s Top Trading Setups',
@@ -230,7 +227,7 @@ class LiveUpdateAgent {
         topOpportunities: 5,
         winRatePotential: '58%'
       },
-      nextCheck: new Date(Date.now() + 6 * 60 * 60 * 1000).toLocaleTimeString()
+        nextCheck: new Date(Date.now() + this.updateInterval).toLocaleTimeString()
     };
   }
 
@@ -240,7 +237,6 @@ class LiveUpdateAgent {
   async fetchHealthUpdates() {
     return {
       category: 'Health',
-      icon: '💪',
       updates: [
         {
           title: 'Workout Program Update',
@@ -280,7 +276,7 @@ class LiveUpdateAgent {
         bodyfatPath: '12% achievable in 12 weeks',
         keyMetric: '6 workouts/week + nutrition'
       },
-      nextCheck: new Date(Date.now() + 6 * 60 * 60 * 1000).toLocaleTimeString()
+        nextCheck: new Date(Date.now() + this.updateInterval).toLocaleTimeString()
     };
   }
 
@@ -290,7 +286,6 @@ class LiveUpdateAgent {
   async fetchFinanceUpdates() {
     return {
       category: 'Finance',
-      icon: '💰',
       updates: [
         {
           title: 'Stock Market Opportunity',
@@ -339,7 +334,7 @@ class LiveUpdateAgent {
         investmentOpportunity: 'Index Funds',
         timelineYears: '10-15'
       },
-      nextCheck: new Date(Date.now() + 6 * 60 * 60 * 1000).toLocaleTimeString()
+      nextCheck: new Date(Date.now() + this.updateInterval).toLocaleTimeString()
     };
   }
 
@@ -362,7 +357,7 @@ class LiveUpdateAgent {
       highPriorityActions: totalActions - criticalCount,
       mainHighlight: this.getMainHighlight(updates),
       timestamp: new Date().toLocaleString(),
-      nextUpdateIn: '6 hours'
+      nextUpdateIn: '2 hours'
     };
   }
 
@@ -418,7 +413,7 @@ class LiveUpdateAgent {
    * Manual update trigger
    */
   async manualUpdate(userData, onUpdateCallback) {
-    console.log('⚡ MANUAL UPDATE TRIGGERED');
+    console.log(' MANUAL UPDATE TRIGGERED');
     return this.fetchAllUpdates(userData, onUpdateCallback);
   }
 
@@ -440,7 +435,10 @@ class LiveUpdateAgent {
       isRunning: this.isRunning,
       totalUpdatesProcessed: this.updateHistory.length,
       lastUpdateTime: this.lastUpdates.timestamp || 'Never',
-      nextUpdateIn: new Date(Date.now() + this.updateInterval).toLocaleTimeString(),
+      nextUpdateIn: new Date(
+        (this.lastUpdates.timestamp ? new Date(this.lastUpdates.timestamp).getTime() : Date.now()) +
+        this.updateInterval
+      ).toLocaleTimeString(),
       historyCount: this.updateHistory.length,
       activeListeners: this.activeListeners.length
     };
