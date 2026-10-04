@@ -9,7 +9,7 @@ const decode = (text = '') => text.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1').
 const tag = (xml, name) => decode(xml.match(new RegExp(`<${name}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${name}>`, 'i'))?.[1] || '');
 
 async function readFeed(feed) {
-  const response = await fetch(feed.url, { headers: { Accept: 'application/rss+xml, application/xml, text/xml' }, signal: AbortSignal.timeout(8000) });
+  const response = await fetch(feed.url, { headers: { Accept: 'application/rss+xml, application/xml, text/xml', 'User-Agent': 'Mozilla/5.0 (compatible; EagleLifeTracker/1.0; +https://eaglelife.netlify.app/)' }, signal: AbortSignal.timeout(8000) });
   if (!response.ok) throw new Error(`Feed HTTP ${response.status}`);
   if (feed.pubmed) {
     const search = await response.json();
