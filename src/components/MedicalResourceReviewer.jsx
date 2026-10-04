@@ -1,0 +1,194 @@
+import React, { useEffect, useMemo, useState } from 'react';
+import { MEDICAL_RESOURCE_CATEGORIES, MEDICAL_RESOURCE_REVIEWS } from '../utils/medicalResourceReviews';
+
+const STORAGE_KEY = 'medicalResourceReviewNotes';
+
+function readSavedReviews() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  } catch {
+    return {};
+  }
+}
+
+function MedicalResourceReviewer() {
+  const [category, setCategory] = useState('All');
+  const [savedReviews, setSavedReviews] = useState(readSavedReviews);
+  const [openPdf, setOpenPdf] = useState(null);
+  const [pdfError, setPdfError] = useState('');
+
+  const resources = useMemo(() => MEDICAL_RESOURCE_REVIEWS.filter((resource) => (
+    category === 'All' || resource.category === category
+  )), [category]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(savedReviews));
+  }, [savedReviews]);
+
+  useEffect(() => () => {
+    if (openPdf?.url) URL.revokeObjectURL(openPdf.url);
+  }, [openPdf]);
+
+  const updateReview = (id, patch) => {
+    setSavedReviews((current) => ({
+      ...current,
+      [id]: { ...(current[id] || {}), ...patch }
+    }));
+  };
+
+  const openLocalPdf = (resource, file) => {
+    if (!file) return;
+    if (file.name.toLocaleLowerCase() !== resource.fileName.toLocaleLowerCase()) {
+      setPdfError(`Choose “${resource.fileName}” from your Downloads\\medical folder.`);
+      return;
+    }
+    setPdfError('');
+    setOpenPdf({ name: file.name, url: URL.createObjectURL(file) });
+  };
+
+  return (
+    <section className="space-y-5" aria-labelledby="medical-resource-reviewer-title">
+      <div className="rounded-xl border border-teal-700/60 bg-gradient-to-br from-slate-900 via-slate-900 to-teal-950/60 p-5 md:p-6">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-teal-300">Private study library</p>
+            <h2 id="medical-resource-reviewer-title" className="mt-2 text-2xl font-bold text-white">Medical Resource Reviewer</h2>
+            <p className="mt-2 max-w-3xl text-sm text-slate-300">
+              Reviews and focused study plans for the five books in your medical folder. Notes are saved only in this browser.
+            </p>
+          </div>
+          <div className="rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-300">
+            5 resources <span className="mx-2 text-slate-600">·</span> 3 subjects
+          </div>
+        </div>
+
+        <div className="mt-5 flex flex-wrap gap-2" aria-label="Filter medical resources">
+          {MEDICAL_RESOURCE_CATEGORIES.map((item) => (
+            <button
+              key={item}
+              type="button"
+              onClick={() => setCategory(item)}
+              aria-pressed={category === item}
+              className={`rounded-full border px-3 py-1.5 text-sm transition ${category === item
+                ? 'border-teal-400 bg-teal-500/20 text-teal-100'
+                : 'border-slate-700 bg-slate-900/70 text-slate-300 hover:border-slate-500'}`}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {pdfError && (
+        <p role="alert" className="rounded-lg border border-amber-700/60 bg-amber-950/30 px-4 py-3 text-sm text-amber-200">{pdfError}</p>
+      )}
+
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+        {resources.map((resource) => {
+          const review = savedReviews[resource.id] || {};
+          return (
+            <article key={resource.id} className="overflow-hidden rounded-xl border border-slate-700 bg-slate-900/80">
+              <div className="border-b border-slate-700/80 p-5">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="rounded-full border border-teal-800 bg-teal-950/70 px-2.5 py-1 text-xs font-medium text-teal-200">{resource.category}</span>
+                  <span className="text-xs text-slate-400">{resource.edition}</span>
+                </div>
+                <h3 className="mt-3 text-lg font-bold text-white">{resource.title}</h3>
+                <p className="mt-1 text-sm text-slate-400">{resource.authors}</p>
+                <p className="mt-3 text-sm leading-6 text-slate-300">{resource.review}</p>
+              </div>
+
+              <div className="space-y-4 p-5">
+                <div>
+                  <h4 className="text-sm font-semibold text-white">Coverage</h4>
+                  <p className="mt-1 text-sm leading-5 text-slate-300">{resource.scope}</p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-semibold text-white">Reviewer’s notes</h4>
+                  <ul className="mt-1 list-inside list-disc space-y-1 text-sm leading-5 text-slate-300">
+                    {resource.strengths.map((strength) => <li key={strength}>{strength}</li>)}
+                  </ul>
+                  <p className="mt-2 rounded-lg border border-amber-800/60 bg-amber-950/20 p-3 text-sm leading-5 text-amber-100">
+                    <span className="font-semibold">Currency and safety check: </span>{resource.caution}
+                  </p>
+                </div>
+                <div className="rounded-lg border border-slate-700 bg-slate-950/50 p-4">
+                  <h4 className="text-sm font-semibold text-white">Proposed review</h4>
+                  <ol className="mt-2 list-inside list-decimal space-y-1.5 text-sm leading-5 text-slate-300">
+                    {resource.proposedReview.map((step) => <li key={step}>{step}</li>)}
+                  </ol>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <label className="inline-flex cursor-pointer items-center rounded-lg border border-teal-700 bg-teal-950/40 px-3 py-2 text-sm font-medium text-teal-100 transition hover:bg-teal-900/60">
+                    Open local PDF
+                    <input
+                      className="sr-only"
+                      type="file"
+                      accept="application/pdf,.pdf"
+                      onChange={(event) => {
+                        openLocalPdf(resource, event.target.files?.[0]);
+                        event.target.value = '';
+                      }}
+                    />
+                  </label>
+                  <span className="min-w-0 break-all text-xs text-slate-500" title={`${resource.sourceFolder}/${resource.fileName}`}>{resource.fileName}</span>
+                </div>
+
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-[180px_1fr]">
+                  <label className="text-xs font-medium text-slate-300">
+                    Review status
+                    <select
+                      value={review.status || 'Not started'}
+                      onChange={(event) => updateReview(resource.id, { status: event.target.value })}
+                      className="mt-1 block w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+                    >
+                      <option>Not started</option>
+                      <option>In progress</option>
+                      <option>Reviewed</option>
+                    </select>
+                  </label>
+                  <label className="text-xs font-medium text-slate-300">
+                    Your notes
+                    <textarea
+                      value={review.notes || ''}
+                      onChange={(event) => updateReview(resource.id, { notes: event.target.value })}
+                      placeholder="Add page references, questions, or takeaways…"
+                      rows={2}
+                      className="mt-1 block w-full resize-y rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-600"
+                    />
+                  </label>
+                </div>
+
+                <a
+                  href={resource.currentSourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex text-xs text-sky-300 underline decoration-sky-700 underline-offset-2 hover:text-sky-200"
+                >
+                  {resource.currentSourceLabel} ↗
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      <p className="rounded-lg border border-slate-700 bg-slate-900/60 p-3 text-xs leading-5 text-slate-400">
+        Educational resource reviews only; not patient-specific medical advice. The PDFs stay on your computer: selecting one opens a temporary browser preview and does not upload it. For clinical use, confirm current guidelines and local policy.
+      </p>
+
+      {openPdf && (
+        <div className="fixed inset-0 z-[100] flex flex-col bg-slate-950/95 p-3 md:p-6" role="dialog" aria-modal="true" aria-label={`PDF preview: ${openPdf.name}`}>
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <p className="min-w-0 truncate text-sm font-medium text-white">{openPdf.name}</p>
+            <button type="button" onClick={() => setOpenPdf(null)} className="rounded-lg border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-white hover:bg-slate-700">Close PDF</button>
+          </div>
+          <iframe title={openPdf.name} src={openPdf.url} className="min-h-0 flex-1 rounded-lg border border-slate-700 bg-white" />
+        </div>
+      )}
+    </section>
+  );
+}
+
+export default MedicalResourceReviewer;

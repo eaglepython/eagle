@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Activity, Atom, BrainCircuit, CalendarDays, ChartNoAxesCombined, ChevronLeft, ChevronRight, CircleDollarSign, Cpu, Dna } from 'lucide-react';
 import COMPREHENSIVE_FORMULAS from '../utils/formulasDatabase.js';
 
-export function Header({ currentTime }) {
+export function Header({ currentTime, setCurrentView }) {
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [formulaIndex, setFormulaIndex] = useState(0);
   const [showFormulaDetails, setShowFormulaDetails] = useState(false);
@@ -208,6 +208,18 @@ export function Header({ currentTime }) {
                   <code>{currentFormula.code}</code>
                 </pre>
               </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowFormulaDetails(false);
+                  setCurrentView?.('resources');
+                }}
+                className="w-full rounded-lg border border-teal-700 bg-teal-950/50 px-4 py-3 text-left text-sm font-semibold text-teal-100 transition hover:bg-teal-900/70"
+              >
+                Open medical resource reviews <span className="float-right">→</span>
+                <span className="mt-1 block text-xs font-normal text-teal-200/70">Integrative medicine · Nursing · Pathophysiology</span>
+              </button>
             </div>
           </div>
         </div>

@@ -198,7 +198,7 @@ function App() {
       <HighValueReminder userData={userData} addNotification={addNotification} />
       <div className="w-full h-screen overflow-y-auto overflow-x-hidden flex flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800">
         <div className="px-3 md:px-4 lg:px-6 pt-3 md:pt-4">
-          <Header currentTime={currentTime} />
+          <Header currentTime={currentTime} setCurrentView={setCurrentView} />
         </div>
         <div className="px-3 md:px-4 lg:px-6">
           <Navigation currentView={currentView} setCurrentView={setCurrentView} views={views} />

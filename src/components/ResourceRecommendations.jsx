@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import OnlineResourceAgent from '../utils/OnlineResourceAgent';
+import MedicalResourceReviewer from './MedicalResourceReviewer';
 
 const ResourceRecommendations = ({ userData, addNotification }) => {
   const [recommendations, setRecommendations] = useState({});
@@ -73,8 +74,8 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
     <div className="space-y-6">
       {/* Header */}
       <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-lg p-6 border border-slate-700">
-        <h1 className="text-3xl font-bold text-white mb-2"> Goal-Based Resource Recommendations</h1>
-        <p className="text-slate-400">Online resources, strategies, and actionable steps for each goal</p>
+        <h1 className="text-3xl font-bold text-white mb-2">Resource Library & Reviews</h1>
+        <p className="text-slate-400">Review local medical resources or get goal-based recommendations</p>
         <button
           onClick={loadRecommendations}
           className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm font-medium transition"
@@ -82,6 +83,8 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
            Refresh Recommendations
         </button>
       </div>
+
+      <MedicalResourceReviewer />
 
       {/* Goals Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
