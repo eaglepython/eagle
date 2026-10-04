@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/restore-launcher.mjs",
     "preview": "vite preview",
     "deploy": "npm run build"
   },
@@ -13,6 +13,7 @@
     "chart.js": "^4.4.0",
     "date-fns": "^2.30.0",
     "lucide-react": "^0.555.0",
+    "pdfjs-dist": "6.3.289",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

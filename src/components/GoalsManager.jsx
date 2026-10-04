@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavIcons } from './IconSystem';
 import { generateDemoData } from '../utils/demoData';
+import LocalDataTools from './LocalDataTools';
 
 function GoalsManager({ userData, setUserData, addNotification }) {
   const [goal, setGoal] = useState({
@@ -209,6 +210,8 @@ function GoalsManager({ userData, setUserData, addNotification }) {
         <div className="font-semibold text-white mb-2"> GOAL SETTING:</div>
         <p>Set SMART goals across 5 categories: Career (target: senior quant role by Q2 2026), Financial ($2M net worth by 2030), Health (12% body fat, marathons), Learning (publish research), Personal (meaningful relationships). Review and adjust quarterly.</p>
       </div>
+
+      <LocalDataTools userData={userData} setUserData={setUserData} addNotification={addNotification} />
     </div>
   );
 }

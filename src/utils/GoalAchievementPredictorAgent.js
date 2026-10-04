@@ -90,7 +90,8 @@ export class GoalAchievementPredictorAgent {
       try {
         const weight = Number(weights[goal] || 1) || 1;
         // Parse probability string (e.g., "75.3%") to number
-        const probStr = String(pred?.probability || '0').replace('%', '').trim();
+        if (!pred || pred.probability == null) return;
+        const probStr = String(pred.probability).replace('%', '').trim();
         let probNum = parseFloat(probStr);
         
         // Ensure probNum is a valid number
@@ -258,15 +259,16 @@ export class GoalAchievementPredictorAgent {
     const totalPnL = this.tradingJournal.reduce((sum, t) => sum + (t.pnl || 0), 0);
     const avgMonthlyPnL = totalPnL / Math.max(1, this.tradingJournal.length / 20); // Estimate months
     
-    const currentAUM = this.financialData?.tradingAUM || 50000; // Assume starting point
+    const currentAUM = this.financialData?.tradingAUM == null || this.financialData?.tradingAUM === '' ? NaN : Number(this.financialData.tradingAUM);
+    if (!Number.isFinite(currentAUM) || currentAUM < 0) return { probability: null, current: 'Not tracked', target: '$500K', note: 'Enter actual trading AUM to assess this goal.' };
     const targetAUM = 500000;
     
     // Calculate growth rate
-    const monthlyReturnRate = avgMonthlyPnL > 0 ? avgMonthlyPnL / currentAUM : 0.15; // Assume 15% monthly if no PnL yet
+    const monthlyReturnRate = avgMonthlyPnL > 0 ? avgMonthlyPnL / currentAUM : 0;
     const monthsRemaining = Math.ceil(this.daysRemaining / 30);
     
     // Compound growth
-    const projectedAUM = currentAUM * Math.pow(1 + monthlyReturnRate, monthsRemaining);
+    const projectedAUM = Math.max(0, currentAUM + (avgMonthlyPnL * monthsRemaining));
     const probability = Math.min(1, projectedAUM / targetAUM);
 
     return {
@@ -276,7 +278,7 @@ export class GoalAchievementPredictorAgent {
       probability: (probability * 100).toFixed(1) + '%',
       winRate: (winRate * 100).toFixed(0) + '%',
       monthlyReturnRate: (monthlyReturnRate * 100).toFixed(1) + '%',
-      monthsToTarget: projectedAUM >= targetAUM ? 'Achieved' : `${Math.ceil(Math.log(targetAUM / currentAUM) / Math.log(1 + monthlyReturnRate))} months`,
+      monthsToTarget: projectedAUM >= targetAUM ? 'Achieved' : avgMonthlyPnL > 0 ? `${Math.ceil((targetAUM - currentAUM) / avgMonthlyPnL)} months at recorded average P&L` : 'Not projected from recorded P&L',
       criticalFactor: winRate < 0.45 ? 'CRITICAL: Win rate too low' : 'On track',
       factors: [
         `Current: $${(currentAUM / 1000).toFixed(0)}K`,
@@ -291,40 +293,30 @@ export class GoalAchievementPredictorAgent {
    * Predict Net Worth ($2M by 2030, track progress to 2026)
    */
   _predictNetWorth() {
-    const currentNetWorth = this.financialData?.netWorth || 100000;
-    const target2026 = 250000; // Intermediate target (1/4 of way to $2M by 2030)
-    
-    const monthlyIncome = this.financialData?.monthlyIncome || 5000;
-    const savingsRate = this.financialData?.savingsRate || 0.3;
-    const monthlySavings = monthlyIncome * savingsRate;
-    
-    const investmentReturn = 0.15; // Assume 15% annual return
-    const monthlyReturnRate = Math.pow(1 + investmentReturn, 1/12) - 1;
-    
-    const monthsRemaining = Math.ceil(this.daysRemaining / 30);
+    const currentNetWorth = this.financialData?.netWorth == null || this.financialData?.netWorth === '' ? NaN : Number(this.financialData.netWorth);
+    const monthlyIncome = Number(this.financialData?.monthlyIncome);
+    const monthlyExpenses = Number(this.financialData?.monthlyExpenses);
+    if (![currentNetWorth, monthlyIncome, monthlyExpenses].every(Number.isFinite)) return { probability: null, current: 'Not tracked', target: '$2M by 2030', note: 'Enter current net worth, income, and expenses to estimate a cash-savings-only path.' };
+    const target2030 = Number(this.goals.find((goal) => /net worth/i.test(`${goal.name || ''} ${goal.title || ''}`))?.target) || 2000000;
+    const monthlySavings = monthlyIncome - monthlyExpenses;
+    const monthsRemaining = Math.max(0, Math.ceil((new Date(2030, 11, 31) - this.today) / (1000 * 60 * 60 * 24 * 30)));
     
     // Calculate compound growth
-    let projected = currentNetWorth;
-    for (let i = 0; i < monthsRemaining; i++) {
-      projected = projected * (1 + monthlyReturnRate) + monthlySavings;
-    }
+    const projected = currentNetWorth + monthlySavings * monthsRemaining;
     
-    const probability = Math.min(1, projected / target2026);
+    const probability = Math.min(1, projected / target2030);
 
     return {
       current: `$${(currentNetWorth / 1000).toFixed(0)}K`,
-      target2026: `$${(target2026 / 1000).toFixed(0)}K`,
-      target2030: '$2M',
-      projected2026: `$${(projected / 1000).toFixed(0)}K`,
+      target2030: `$${target2030.toLocaleString()}`,
+      projected2030: `$${Math.round(projected).toLocaleString()}`,
       probability: (probability * 100).toFixed(1) + '%',
       monthlySavings: `$${monthlySavings.toFixed(0)}`,
-      investmentReturn: `${(investmentReturn * 100).toFixed(0)}% annual`,
+      assumption: 'Cash savings only; investment returns excluded',
       factors: [
         `Current: $${(currentNetWorth / 1000).toFixed(0)}K`,
         `Monthly savings: $${monthlySavings.toFixed(0)}`,
-        `Investment returns: ${(investmentReturn * 100).toFixed(0)}% annually`,
-        `Career growth impact: +$100K/year potential`,
-        `Trading success impact: +$50K-200K/year`
+        'Investment returns and future income growth excluded'
       ]
     };
   }
@@ -340,23 +332,24 @@ export class GoalAchievementPredictorAgent {
       return date >= weekAgo;
     }).length;
 
-    const currentBodyFat = this.financialData?.bodyFat || 14;
+    const currentBodyFat = this.userData.healthData?.bodyFat == null || this.userData.healthData?.bodyFat === '' ? NaN : Number(this.userData.healthData.bodyFat);
+    if (!Number.isFinite(currentBodyFat)) return { probability: null, current: 'Not tracked', target: '12%', note: 'Enter an actual body-fat measurement in Health Tracker. Workouts do not estimate body fat.' };
     const target = 12;
-    const improvementPerMonth = 0.5; // Estimate -0.5% per month with consistent training
+    const improvementPerMonth = 0;
     
     const monthsRemaining = Math.ceil(this.daysRemaining / 30);
-    const projected = currentBodyFat - (improvementPerMonth * monthsRemaining);
+    const projected = currentBodyFat;
     
-    const probability = Math.min(1, (currentBodyFat - projected) / (currentBodyFat - target));
+    const probability = currentBodyFat <= target ? 1 : null;
 
     return {
       current: `${currentBodyFat}%`,
       target: '12%',
       projected: `${Math.max(target, projected).toFixed(1)}%`,
-      probability: (probability * 100).toFixed(1) + '%',
+      probability: probability == null ? null : `${(probability * 100).toFixed(1)}%`,
       workoutsPerWeek: workoutsPerWeek,
-      improvementPerMonth: `-${improvementPerMonth}% estimated`,
-      timeline: projected <= target ? 'Achieved' : `${Math.ceil((projected - target) / improvementPerMonth)} months`,
+      improvementPerMonth: 'Not projected from workout frequency',
+      timeline: projected <= target ? 'Achieved' : 'Needs another measured value to assess trend',
       criticalFactor: workoutsPerWeek >= 6 ? 'On pace' : `ATTENTION: Only ${workoutsPerWeek}/week (target 6+)`
     };
   }

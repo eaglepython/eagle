@@ -20,10 +20,10 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
       setStats(liveAgent.getUpdateStats());
       // Play update sound notification
       audioNotifications.playUpdateSound();
-      addNotification(` Sample insights refreshed - ${newUpdates.summary.totalUpdates} insights`, 'info');
+      addNotification(newUpdates.feedError ? newUpdates.feedError : `Public feeds refreshed - ${newUpdates.summary.totalUpdates} items`, newUpdates.feedError ? 'warning' : 'info');
     };
 
-    // Start the two-hour local sample refresh cycle.
+    // Refresh public feed titles and sources every 30 minutes; only local score summaries use tracker data.
     liveAgent.startLiveUpdates(userData, handleUpdate);
     
     // Get current updates
@@ -48,11 +48,11 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
       const handleUpdate = (newUpdates) => {
         setUpdates(newUpdates);
         setStats(liveAgent.getUpdateStats());
-      addNotification(` Insight refresh resumed - ${newUpdates.summary.totalUpdates} insights`, 'info');
+      addNotification(newUpdates.feedError ? newUpdates.feedError : `Public feeds refreshed - ${newUpdates.summary.totalUpdates} items`, newUpdates.feedError ? 'warning' : 'info');
       };
       liveAgent.startLiveUpdates(userData, handleUpdate);
       setIsRunning(true);
-      addNotification(' Insight auto-refresh started - Every 2 hours', 'success');
+      addNotification('Public feed refresh started - Every 30 minutes', 'success');
     }
   };
 
@@ -63,7 +63,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
       setStats(liveAgent.getUpdateStats());
     });
     setLoading(false);
-    addNotification(' Manual update completed!', 'success');
+    addNotification(newUpdates.feedError || 'Public feed refresh completed.', newUpdates.feedError ? 'warning' : 'success');
   };
 
   const getCategoryColor = (category) => {
@@ -102,7 +102,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
                   <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                     Live Updates Intelligence
                   </h1>
-                  <p className="text-slate-300 mt-1">Sample market & life insights • Refreshed locally every 2 hours</p>
+                  <p className="text-slate-300 mt-1">Public labor, health research, and Federal Reserve feeds • Refreshes every 30 minutes</p>
                 </div>
               </div>
             </div>
@@ -341,6 +341,7 @@ const LiveUpdatesComponent = ({ userData, addNotification }) => {
           </div>
         </div>
       )}
+      {updates?.feedError && <p role="status" className="rounded-lg border border-amber-700/60 bg-amber-950/30 p-3 text-sm text-amber-200">{updates.feedError}. Try again when connected. Tracker data was not sent with the feed request.</p>}
 
       {/* Empty State */}
       {!selectedCategory && (

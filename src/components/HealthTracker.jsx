@@ -11,6 +11,14 @@ function HealthTracker({ userData, setUserData, addNotification }) {
   });
 
   const [agentInsights, setAgentInsights] = useState(null);
+  const bodyFat = userData.healthData?.bodyFat ?? '';
+
+  const saveBodyFat = (value) => {
+    setUserData((current) => ({
+      ...current,
+      healthData: { ...(current.healthData || {}), bodyFat: value === '' ? null : Number(value) }
+    }));
+  };
 
   useEffect(() => {
     const agent = new HealthTrackerAgent(userData);
@@ -129,6 +137,15 @@ function HealthTracker({ userData, setUserData, addNotification }) {
             <div className="text-3xl font-bold text-purple-400">{avgDuration} min</div>
           </div>
         </div>
+      </div>
+
+      {/* Add Workout Form */}
+      <div className="framework-card">
+        <h3 className="text-lg font-bold text-white">BODY FAT MEASUREMENT</h3>
+        <p className="mt-1 text-sm text-slate-400">Enter a measured value. The tracker will not estimate body fat from workouts.</p>
+        <label className="mt-3 block max-w-xs text-sm text-slate-300">Current body fat (%)
+          <input type="number" min="1" max="75" step="0.1" value={bodyFat} onChange={(event) => saveBodyFat(event.target.value)} placeholder="e.g. 18.5" className="input-field mt-1" />
+        </label>
       </div>
 
       {/* Add Workout Form */}

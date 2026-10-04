@@ -76,7 +76,7 @@ export class RAGEvaluationEngine {
       aumProgression: {
         metric: 'Trading AUM Target',
         target: 500000, // $500K by 2026
-        current: this._estimateAUM(),
+        current: this._actualNumber(this.userData.financialData?.tradingAUM),
         importance: 'CRITICAL',
         category: 'trading',
         description: 'Build to $500K AUM with 20%+ returns by 2026'
@@ -95,7 +95,7 @@ export class RAGEvaluationEngine {
       bodyFatGoal: {
         metric: 'Body Fat %',
         target: 0.12, // 12% by 2026
-        current: this._estimateBodyFat(),
+        current: this._actualNumber(this.userData.healthData?.bodyFat, true),
         importance: 'MEDIUM',
         category: 'health',
         description: 'Achieve 12% body fat by 2026'
@@ -114,7 +114,7 @@ export class RAGEvaluationEngine {
       netWorthGoal: {
         metric: 'Net Worth Target',
         target: 2000000, // $2M by 2030
-        current: this.userData.financialData?.netWorth || 0,
+        current: this._actualNumber(this.userData.financialData?.netWorth),
         importance: 'CRITICAL',
         category: 'finance',
         description: 'Build to $2M net worth by 2030'
@@ -122,12 +122,19 @@ export class RAGEvaluationEngine {
     };
   }
 
+  _actualNumber(value, percent = false) {
+    if (value === null || value === undefined || value === '') return null;
+    const number = Number(value);
+    if (!Number.isFinite(number)) return null;
+    return percent ? (number > 1 ? number / 100 : number) : number;
+  }
+
   /**
    * Calculate current daily score average
    */
   _calculateCurrentDailyScore() {
     const dailyScores = this.userData.dailyScores || [];
-    if (dailyScores.length === 0) return 0;
+    if (dailyScores.length === 0) return null;
 
     const lastWeek = dailyScores.slice(-7);
     const avg = lastWeek.reduce((sum, s) => sum + (s.totalScore || 0), 0) / lastWeek.length;
@@ -164,7 +171,7 @@ export class RAGEvaluationEngine {
    */
   _calculateInterviewConversion() {
     const apps = this.userData.jobApplications || [];
-    if (apps.length === 0) return 0;
+    if (apps.length === 0) return null;
 
     const interviews = apps.filter(a => 
       a.status === 'Interview' || 
@@ -180,7 +187,7 @@ export class RAGEvaluationEngine {
    */
   _calculateWinRate() {
     const trades = this.userData.tradingJournal || [];
-    if (trades.length === 0) return 0;
+    if (trades.length === 0) return null;
 
     const wins = trades.filter(t => parseFloat(t.pnl) > 0).length;
     return parseFloat((wins / trades.length).toFixed(3));
@@ -203,13 +210,7 @@ export class RAGEvaluationEngine {
    * Estimate AUM based on trading performance
    */
   _estimateAUM() {
-    // Estimate based on monthly P&L trajectory
-    const monthlyPnL = this._calculateMonthlyPnL();
-    const annualReturn = monthlyPnL * 12;
-    const targetReturn = 0.20; // 20% target
-
-    if (annualReturn === 0) return 0;
-    return Math.max(0, Math.round((annualReturn / targetReturn) * 0.3)); // Rough estimate
+    return this._actualNumber(this.userData.financialData?.tradingAUM);
   }
 
   /**
@@ -227,13 +228,7 @@ export class RAGEvaluationEngine {
    * Estimate body fat based on workouts and nutrition tracking
    */
   _estimateBodyFat() {
-    // Simplified estimate: with 6+ workouts/week and tracking, assume progress toward 12%
-    const workoutsThisWeek = this._calculateWorkoutsThisWeek();
-    
-    if (workoutsThisWeek >= 6) {
-      return 0.14; // Assuming 14% with consistent training (would need actual data)
-    }
-    return 0.16; // Estimate without perfect consistency
+    return this._actualNumber(this.userData.healthData?.bodyFat, true);
   }
 
   /**
@@ -244,7 +239,7 @@ export class RAGEvaluationEngine {
     const income = financialData.monthlyIncome || 0;
     const expenses = financialData.monthlyExpenses || 0;
 
-    if (income === 0) return 0;
+    if (income <= 0) return null;
     return parseFloat(((income - expenses) / income).toFixed(3));
   }
 
@@ -268,10 +263,10 @@ export class RAGEvaluationEngine {
     });
 
     // Calculate overall score
-    const categoryScores = Object.values(evaluation.categories).map(c => c.score);
-    evaluation.overallScore = Math.round(
-      categoryScores.reduce((a, b) => a + b, 0) / categoryScores.length
-    );
+    const categoryScores = Object.values(evaluation.categories).map(c => c.score).filter(Number.isFinite);
+    evaluation.overallScore = categoryScores.length
+      ? Math.round(categoryScores.reduce((a, b) => a + b, 0) / categoryScores.length)
+      : 0;
 
     // Generate insights
     evaluation.keyInsights = this._generateKeyInsights();
@@ -286,14 +281,21 @@ export class RAGEvaluationEngine {
    */
   _evaluateGoal(goal) {
     const { target, current, importance } = goal;
+
+    if (current === null || current === undefined || !Number.isFinite(Number(current))) {
+      return { score: null, status: 'Add measurement', gap: null, current: null, target, importance };
+    }
     
     let score = 0;
     let status = '';
     let gap = '';
+    const lowerIsBetter = goal.metric === 'Body Fat %';
 
     // Calculate progress percentage
     if (typeof target === 'number') {
-      const percentage = target === 0 ? 100 : (current / target) * 100;
+      const percentage = target === 0 ? 100 : lowerIsBetter
+        ? (current <= target ? 100 : (target / current) * 100)
+        : (current / target) * 100;
       score = Math.min(100, Math.round(percentage));
 
       if (percentage >= 90) {
@@ -306,7 +308,7 @@ export class RAGEvaluationEngine {
         status = 'Critical';
       }
 
-      gap = target - current;
+      gap = lowerIsBetter ? current - target : target - current;
     }
 
     return {
@@ -382,7 +384,7 @@ export class RAGEvaluationEngine {
     const goals = this.goals;
 
     // Check critical goals
-    if (goals.dailyScore.current < goals.dailyScore.target) {
+    if (goals.dailyScore.current != null && goals.dailyScore.current < goals.dailyScore.target) {
       steps.push({
         priority: 1,
         area: 'Daily Discipline',
@@ -401,7 +403,7 @@ export class RAGEvaluationEngine {
       });
     }
 
-    if (goals.tradingWinRate.current < goals.tradingWinRate.target) {
+    if (goals.tradingWinRate.current != null && goals.tradingWinRate.current < goals.tradingWinRate.target) {
       steps.push({
         priority: 2,
         area: 'Trading',
@@ -410,7 +412,7 @@ export class RAGEvaluationEngine {
       });
     }
 
-    if (goals.workoutsPerWeek.current < goals.workoutsPerWeek.target) {
+    if (goals.workoutsPerWeek.current != null && goals.workoutsPerWeek.current < goals.workoutsPerWeek.target) {
       const gap = goals.workoutsPerWeek.target - goals.workoutsPerWeek.current;
       steps.push({
         priority: 3,
@@ -449,8 +451,9 @@ export class RAGEvaluationEngine {
 
     // For each below-target goal, generate specific recommendation
     Object.entries(goals).forEach(([key, goal]) => {
-      if (goal.current < goal.target) {
-        const shortfall = goal.target - goal.current;
+      const lowerIsBetter = goal.metric === 'Body Fat %';
+      if (goal.current !== null && (lowerIsBetter ? goal.current > goal.target : goal.current < goal.target)) {
+        const shortfall = lowerIsBetter ? goal.current - goal.target : goal.target - goal.current;
         const percentBehind = parseFloat(((shortfall / goal.target) * 100).toFixed(0));
 
         recs.push({

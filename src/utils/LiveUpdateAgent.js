@@ -1,12 +1,12 @@
 /**
  * LiveUpdateAgent.js
- * Refreshes the bundled sample insights every 2 hours.
- * External news or market feeds are not connected yet.
+ * Reads public labor, health research, and Federal Reserve feeds. Tracker data
+ * is used only in the browser for the private discipline summary.
  */
 
 class LiveUpdateAgent {
   constructor() {
-    this.updateInterval = 2 * 60 * 60 * 1000; // 2 hours
+    this.updateInterval = 30 * 60 * 1000;
     this.activeListeners = [];
     this.lastUpdates = JSON.parse(localStorage.getItem('liveUpdates')) || {};
     this.updateHistory = JSON.parse(localStorage.getItem('updateHistory')) || [];
@@ -49,22 +49,30 @@ class LiveUpdateAgent {
    */
   async fetchAllUpdates(userData, onUpdateCallback) {
     const timestamp = new Date().toISOString();
-    console.log(`\n LIVE UPDATE CHECK at ${timestamp}`);
-
+    let feeds = {};
+    let fetchedAt = timestamp;
+    let feedError = '';
+    try {
+      const response = await fetch('/.netlify/functions/live-feeds', { headers: { Accept: 'application/json' } });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      ({ feeds = {}, fetchedAt = timestamp } = await response.json());
+    } catch (error) { feedError = `Live feeds unavailable: ${error.message}`; }
+    const recentScores = (userData.dailyScores || []).slice(-7);
     const updates = {
-      discipline: await this.fetchDisciplineUpdates(),
-      career: await this.fetchCareerUpdates(),
-      trading: await this.fetchTradingUpdates(),
-      health: await this.fetchHealthUpdates(),
-      finance: await this.fetchFinanceUpdates(),
-      timestamp,
+      ...feeds,
+      discipline: {
+        category: 'Discipline',
+        updates: recentScores.length ? [{
+          title: 'Your recent daily score trend', source: 'Your local tracker data',
+          insight: `${recentScores.length} recorded day(s); latest score ${Number(recentScores.at(-1).totalScore ?? recentScores.at(-1).score ?? 0).toFixed(1)}/10.`,
+          relevance: 'MEDIUM', action: 'Open Daily Tracker to review the categories behind your recent scores.'
+        }] : [], nextCheck: '30 minutes'
+      },
+      timestamp: fetchedAt,
+      feedError,
       summary: null
     };
-
-    // Generate summary
     updates.summary = this.generateUpdateSummary(updates);
-
-    // Save to localStorage
     this.lastUpdates = updates;
     this.updateHistory.push({
       timestamp,
@@ -73,7 +81,7 @@ class LiveUpdateAgent {
     });
 
     localStorage.setItem('liveUpdates', JSON.stringify(updates));
-    localStorage.setItem('updateHistory', JSON.stringify(this.updateHistory.slice(-50))); // Keep last 50
+    localStorage.setItem('updateHistory', JSON.stringify(this.updateHistory.slice(-50)));
 
     // Notify callback
     if (onUpdateCallback) {
@@ -357,7 +365,7 @@ class LiveUpdateAgent {
       highPriorityActions: totalActions - criticalCount,
       mainHighlight: this.getMainHighlight(updates),
       timestamp: new Date().toLocaleString(),
-      nextUpdateIn: '2 hours'
+      nextUpdateIn: '30 minutes'
     };
   }
 

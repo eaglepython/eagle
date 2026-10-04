@@ -111,7 +111,7 @@ function AdaptiveEvaluation({ userData, setUserData }) {
                     {formatCategoryName(key)}
                   </div>
                   <div className={`text-2xl font-bold font-mono whitespace-nowrap ${getScoreColor(data.score)}`}>
-                    {data.score}%
+                    {data.score == null ? '—' : `${data.score}%`}
                   </div>
                 </div>
 
@@ -135,13 +135,13 @@ function AdaptiveEvaluation({ userData, setUserData }) {
                       data.score >= 45 ? 'bg-orange-500' :
                       'bg-red-500'
                     }`}
-                    style={{ width: `${Math.min(100, data.score)}%` }}
+                    style={{ width: `${Math.min(100, Number(data.score) || 0)}%` }}
                   />
                 </div>
 
                 {/* Current vs Target */}
                 <div className="flex justify-between text-xs text-slate-400 mb-3 bg-slate-800/30 -mx-4 -mb-4 px-4 py-2">
-                  <span>Current: <span className="text-slate-200 font-semibold">{typeof data.current === 'number' ? data.current.toFixed(1) : data.current}</span></span>
+                  <span>Current: <span className="text-slate-200 font-semibold">{data.current == null ? 'Not tracked' : typeof data.current === 'number' ? data.current.toFixed(1) : data.current}</span></span>
                   <span>Target: <span className="text-slate-200 font-semibold">{typeof data.target === 'number' ? data.target.toFixed(1) : data.target}</span></span>
                 </div>
 
@@ -150,8 +150,8 @@ function AdaptiveEvaluation({ userData, setUserData }) {
                   <div className="mt-3 pt-3 border-t border-slate-700/50 space-y-2 text-xs">
                     <div>
                       <span className="text-slate-400">Gap to Target:</span>
-                      <span className={`font-bold ml-2 ${data.gap > 0 ? 'text-orange-400' : 'text-green-400'}`}>
-                        {data.gap > 0 ? `+${data.gap.toFixed(1)}` : data.gap.toFixed(1)}
+                      <span className={`font-bold ml-2 ${data.gap == null ? 'text-slate-400' : data.gap > 0 ? 'text-orange-400' : 'text-green-400'}`}>
+                        {data.gap == null ? 'Not available' : data.gap > 0 ? `+${data.gap.toFixed(1)}` : data.gap.toFixed(1)}
                       </span>
                     </div>
                     {data.importance && (

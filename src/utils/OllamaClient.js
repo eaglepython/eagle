@@ -1,5 +1,13 @@
 const DEFAULT_OLLAMA_URL = 'http://localhost:11434';
 
+export function loadOllamaSettings() {
+  try {
+    return { enabled: false, baseUrl: DEFAULT_OLLAMA_URL, model: '', ...JSON.parse(localStorage.getItem('lifeTrackerOllamaSettings') || '{}') };
+  } catch {
+    return { enabled: false, baseUrl: DEFAULT_OLLAMA_URL, model: '' };
+  }
+}
+
 function normalizeBaseUrl(value) {
   let url;
   try {

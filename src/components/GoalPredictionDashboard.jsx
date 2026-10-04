@@ -25,6 +25,7 @@ export default function GoalPredictionDashboard({ predictions }) {
   };
 
   const getStatusLabel = (prob) => {
+    if (prob == null) return 'Not enough data';
     const val = parseFloat(String(prob || '0').replace('%', '').trim());
     if (isNaN(val)) return 'No forecast';
     if (val >= 85) return 'Strong';
