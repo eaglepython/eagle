@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { MEDICAL_RESOURCE_CATEGORIES, MEDICAL_RESOURCE_REVIEWS } from '../utils/medicalResourceReviews';
+import { getMedicalReviewTopics } from '../utils/MedicalReviewAgent';
 
 const STORAGE_KEY = 'medicalResourceReviewNotes';
 
@@ -16,6 +17,7 @@ function MedicalResourceReviewer() {
   const [savedReviews, setSavedReviews] = useState(readSavedReviews);
   const [openPdf, setOpenPdf] = useState(null);
   const [pdfError, setPdfError] = useState('');
+  const [now, setNow] = useState(() => Date.now());
 
   const resources = useMemo(() => MEDICAL_RESOURCE_REVIEWS.filter((resource) => (
     category === 'All' || resource.category === category
@@ -24,6 +26,16 @@ function MedicalResourceReviewer() {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(savedReviews));
   }, [savedReviews]);
+
+  useEffect(() => {
+    const updateClock = () => setNow(Date.now());
+    const timer = window.setInterval(updateClock, 1000);
+    document.addEventListener('visibilitychange', updateClock);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', updateClock);
+    };
+  }, []);
 
   useEffect(() => () => {
     if (openPdf?.url) URL.revokeObjectURL(openPdf.url);
@@ -46,6 +58,10 @@ function MedicalResourceReviewer() {
     setOpenPdf({ name: file.name, url: URL.createObjectURL(file) });
   };
 
+  const rotatingReview = getMedicalReviewTopics(now);
+  const secondsToNext = Math.max(0, Math.ceil((rotatingReview.nextRotationAt - now) / 1000));
+  const countdown = `${String(Math.floor(secondsToNext / 60)).padStart(2, '0')}:${String(secondsToNext % 60).padStart(2, '0')}`;
+
   return (
     <section className="space-y-5" aria-labelledby="medical-resource-reviewer-title">
       <div className="rounded-xl border border-teal-700/60 bg-gradient-to-br from-slate-900 via-slate-900 to-teal-950/60 p-5 md:p-6">
@@ -61,8 +77,58 @@ function MedicalResourceReviewer() {
             5 resources <span className="mx-2 text-slate-600">·</span> 3 subjects
           </div>
         </div>
+      </div>
 
-        <div className="mt-5 flex flex-wrap gap-2" aria-label="Filter medical resources">
+      <section aria-labelledby="rotating-medical-topics-title" className="space-y-4">
+        <div className="flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">Medical Review Agent</p>
+            <h3 id="rotating-medical-topics-title" className="mt-1 text-xl font-bold text-white">Detailed study topic for each subject</h3>
+          </div>
+          <p className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-300" aria-live="off">
+            New topics in <span className="font-mono font-semibold text-cyan-200">{countdown}</span>
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+          {rotatingReview.topics.map(({ id, section, book, evidenceLabel, evidenceUrl, sequence, total, topic }) => (
+            <article key={id} className="rounded-xl border border-cyan-900/70 bg-gradient-to-b from-slate-900 to-slate-950 p-5 shadow-lg shadow-black/10">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="rounded-full border border-cyan-900 bg-cyan-950/70 px-2.5 py-1 text-xs font-medium text-cyan-200">{section}</span>
+                <span className="text-xs text-slate-500">Topic {sequence} / {total}</span>
+              </div>
+              <h4 className="mt-3 text-lg font-bold leading-snug text-white">{topic.title}</h4>
+              <p className="mt-2 text-sm leading-5 text-slate-300">{topic.focus}</p>
+
+              <h5 className="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-200">Core ideas</h5>
+              <ul className="mt-2 list-inside list-disc space-y-1.5 text-sm leading-5 text-slate-300">
+                {topic.keyIdeas.map((idea) => <li key={idea}>{idea}</li>)}
+              </ul>
+
+              <h5 className="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-200">Guided review</h5>
+              <ol className="mt-2 list-inside list-decimal space-y-1.5 text-sm leading-5 text-slate-300">
+                {topic.reviewSteps.map((step) => <li key={step}>{step}</li>)}
+              </ol>
+
+              <div className="mt-4 rounded-lg border border-slate-700 bg-slate-950/70 p-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-violet-200">Synthesis question</p>
+                <p className="mt-1 text-sm leading-5 text-slate-200">{topic.synthesis}</p>
+              </div>
+              <p className="mt-3 text-xs leading-5 text-amber-200/90">{topic.safety}</p>
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-slate-800 pt-3">
+                <span className="text-xs text-slate-500">From: {book}</span>
+                <a href={evidenceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-sky-300 underline decoration-sky-700 underline-offset-2 hover:text-sky-200">{evidenceLabel} ↗</a>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p className="text-xs text-slate-500">The reviewer rotates to a new prepared topic in all three subjects every five minutes while this page is open. Six topics are queued per subject, then the cycle repeats.</p>
+      </section>
+
+      <div className="rounded-xl border border-slate-700 bg-slate-900/60 p-5">
+        <h3 className="text-lg font-bold text-white">Book-by-book reviews and study plans</h3>
+        <p className="mt-1 text-sm text-slate-400">Open the PDFs locally, save review notes, and track your progress. The notes stay in this browser.</p>
+        <div className="mt-4 flex flex-wrap gap-2" aria-label="Filter book reviews">
           {MEDICAL_RESOURCE_CATEGORIES.map((item) => (
             <button
               key={item}

@@ -56,17 +56,6 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
     return icons[priority] || '';
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin mb-4"></div>
-          <p className="text-slate-300">Loading recommendations...</p>
-        </div>
-      </div>
-    );
-  }
-
   const goals = userData.goals || [];
   const goalRecommendations = selectedGoal ? recommendations[selectedGoal.id] : null;
 
@@ -78,13 +67,16 @@ const ResourceRecommendations = ({ userData, addNotification }) => {
         <p className="text-slate-400">Review local medical resources or get goal-based recommendations</p>
         <button
           onClick={loadRecommendations}
-          className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm font-medium transition"
+          disabled={loading}
+          className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:cursor-wait disabled:opacity-60 rounded text-white text-sm font-medium transition"
         >
-           Refresh Recommendations
+          {loading ? 'Loading goal recommendations…' : 'Refresh Recommendations'}
         </button>
       </div>
 
       <MedicalResourceReviewer />
+
+      {loading && <p className="text-sm text-slate-400" role="status">Personalized goal recommendations are loading below. The medical reviewer is ready now.</p>}
 
       {/* Goals Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
