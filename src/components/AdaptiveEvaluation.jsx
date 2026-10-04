@@ -64,6 +64,13 @@ function AdaptiveEvaluation({ userData, setUserData }) {
       .trim();
   };
 
+  const formatValue = (metric, value) => {
+    if (value == null) return 'Not tracked';
+    if (/(body fat|win rate|conversion rate|savings rate)/i.test(metric)) return `${(Number(value) * 100).toFixed(1)}%`;
+    if (/(aum|net worth|p&l)/i.test(metric)) return `$${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+    return typeof value === 'number' ? value.toFixed(1) : value;
+  };
+
   return (
     <div className="space-y-6 p-4">
       {/* Overall Score Panel */}
@@ -141,8 +148,8 @@ function AdaptiveEvaluation({ userData, setUserData }) {
 
                 {/* Current vs Target */}
                 <div className="flex justify-between text-xs text-slate-400 mb-3 bg-slate-800/30 -mx-4 -mb-4 px-4 py-2">
-                  <span>Current: <span className="text-slate-200 font-semibold">{data.current == null ? 'Not tracked' : typeof data.current === 'number' ? data.current.toFixed(1) : data.current}</span></span>
-                  <span>Target: <span className="text-slate-200 font-semibold">{typeof data.target === 'number' ? data.target.toFixed(1) : data.target}</span></span>
+                  <span>Current: <span className="text-slate-200 font-semibold">{formatValue(data.metric, data.current)}</span></span>
+                  <span>Target: <span className="text-slate-200 font-semibold">{formatValue(data.metric, data.target)}</span></span>
                 </div>
 
                 {/* Expanded Details */}
@@ -228,9 +235,9 @@ function AdaptiveEvaluation({ userData, setUserData }) {
                 </div>
                 
                 <div className="text-xs text-slate-400 mb-2 bg-slate-800/30 -mx-4 -mb-3 px-4 py-2">
-                  <span>Current: <span className="text-slate-100 font-semibold">{typeof rec.current === 'number' ? rec.current.toFixed(1) : rec.current}</span></span>
+                  <span>Current: <span className="text-slate-100 font-semibold">{formatValue(rec.goal, rec.current)}</span></span>
                   <span className="mx-2">•</span>
-                  <span>Target: <span className="text-slate-100 font-semibold">{typeof rec.target === 'number' ? rec.target.toFixed(1) : rec.target}</span></span>
+                  <span>Target: <span className="text-slate-100 font-semibold">{formatValue(rec.goal, rec.target)}</span></span>
                 </div>
 
                 <div className="text-sm text-yellow-300 font-semibold mb-2 px-3 py-1 bg-yellow-900/20 rounded">

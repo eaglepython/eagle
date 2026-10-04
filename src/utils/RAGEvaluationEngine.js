@@ -283,7 +283,7 @@ export class RAGEvaluationEngine {
     const { target, current, importance } = goal;
 
     if (current === null || current === undefined || !Number.isFinite(Number(current))) {
-      return { score: null, status: 'Add measurement', gap: null, current: null, target, importance };
+      return { score: null, status: 'Add measurement', gap: null, current: null, target, importance, metric: goal.metric };
     }
     
     let score = 0;
@@ -317,7 +317,8 @@ export class RAGEvaluationEngine {
       gap,
       current,
       target,
-      importance
+      importance,
+      metric: goal.metric
     };
   }
 

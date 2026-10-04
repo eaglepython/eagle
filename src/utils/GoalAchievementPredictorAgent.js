@@ -155,6 +155,7 @@ export class GoalAchievementPredictorAgent {
    */
   _predictDailyScore() {
     try {
+      if (!this.dailyScores.length) return { probability: null, current: 'Not tracked', target: 8, note: 'Log daily scores to establish a baseline.' };
       const last7 = this.dailyScores.slice(-7).map(s => Number(s?.score || 0) || 0);
       const last30 = this.dailyScores.slice(-30).map(s => Number(s?.score || 0) || 0);
       
@@ -256,11 +257,15 @@ export class GoalAchievementPredictorAgent {
       ? (this.tradingJournal.filter(t => (t.pnl || 0) > 0).length / totalTrades)
       : 0;
     
-    const totalPnL = this.tradingJournal.reduce((sum, t) => sum + (t.pnl || 0), 0);
-    const avgMonthlyPnL = totalPnL / Math.max(1, this.tradingJournal.length / 20); // Estimate months
+    const datedTrades = this.tradingJournal.filter((trade) => trade.date && Number.isFinite(new Date(trade.date).getTime()));
+    const totalPnL = datedTrades.reduce((sum, trade) => sum + (Number(trade.pnl) || 0), 0);
     
     const currentAUM = this.financialData?.tradingAUM == null || this.financialData?.tradingAUM === '' ? NaN : Number(this.financialData.tradingAUM);
     if (!Number.isFinite(currentAUM) || currentAUM < 0) return { probability: null, current: 'Not tracked', target: '$500K', note: 'Enter actual trading AUM to assess this goal.' };
+    if (!datedTrades.length) return { probability: null, current: `$${currentAUM.toLocaleString()}`, target: '$500K', note: 'Record dated trade P&L to estimate a trajectory from actual trading history.' };
+    const earliest = Math.min(...datedTrades.map((trade) => new Date(trade.date).getTime()));
+    const observedMonths = Math.max(1, (this.today.getTime() - earliest) / (1000 * 60 * 60 * 24 * 30.4375));
+    const avgMonthlyPnL = totalPnL / observedMonths;
     const targetAUM = 500000;
     
     // Calculate growth rate
@@ -426,9 +431,12 @@ export class GoalAchievementPredictorAgent {
    * Predict Savings Rate (30%)
    */
   _predictSavingsRate() {
-    const monthlyIncome = this.financialData?.monthlyIncome || 5000;
-    const monthlyExpenses = this.financialData?.monthlyExpenses || 3500;
-    const currentRate = monthlyIncome > 0 ? ((monthlyIncome - monthlyExpenses) / monthlyIncome) : 0;
+    const monthlyIncome = this.financialData?.monthlyIncome;
+    const monthlyExpenses = this.financialData?.monthlyExpenses;
+    if (monthlyIncome == null || monthlyExpenses == null || Number(monthlyIncome) <= 0) return { probability: null, current: 'Not tracked', target: '30%', note: 'Enter monthly income and expenses to calculate the savings rate.' };
+    const income = Number(monthlyIncome);
+    const expenses = Number(monthlyExpenses);
+    const currentRate = (income - expenses) / income;
     const target = 0.30;
 
     const probability = Math.min(1, currentRate / target);
@@ -438,9 +446,9 @@ export class GoalAchievementPredictorAgent {
       target: '30%',
       probability: (probability * 100).toFixed(1) + '%',
       status: currentRate >= target ? 'On pace' : 'Below target',
-      monthlyIncome: `$${monthlyIncome.toFixed(0)}`,
-      monthlyExpenses: `$${monthlyExpenses.toFixed(0)}`,
-      monthlySavings: `$${(monthlyIncome - monthlyExpenses).toFixed(0)}`,
+      monthlyIncome: `$${income.toFixed(0)}`,
+      monthlyExpenses: `$${expenses.toFixed(0)}`,
+      monthlySavings: `$${(income - expenses).toFixed(0)}`,
       recommendation: currentRate < target ? 'Reduce expenses or increase income' : 'Maintain discipline'
     };
   }
@@ -449,6 +457,8 @@ export class GoalAchievementPredictorAgent {
    * Predict Learning Progress
    */
   _predictLearningProgress() {
+    const recordedHours = Number(this.userData.learningHours);
+    if (!Number.isFinite(recordedHours) || recordedHours <= 0) return { probability: null, target: '250 hours/year', note: 'Learning hours are not tracked in the current app yet.' };
     const target = 250; // hours per year
     const monthsRemaining = Math.ceil(this.daysRemaining / 30);
     const hoursRemaining = target * (monthsRemaining / 12);
