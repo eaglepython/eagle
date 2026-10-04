@@ -327,7 +327,7 @@ export class TradingJournalAgent {
     }
 
     // Consistency check
-    const consistency = patterns.patterns.includes('LOW_CONSISTENCY') ? 'LOW' : 'GOOD';
+    const consistency = this._assessConsistency(analysis.recentTrades) === 'LOW_CONSISTENCY' ? 'LOW' : 'GOOD';
     if (consistency === 'LOW') {
       recs.push({
         type: 'warning',
