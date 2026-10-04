@@ -5,7 +5,7 @@ import { DailyTrackerAgent } from '../utils/DailyTrackerAgent';
 function DailyTracker({ userData, setUserData, addNotification }) {
   const today = new Date().toISOString().split('T')[0];
   const [scores, setScores] = useState(() => {
-    const existing = userData.dailyScores.find(s => s.date === today);
+    const existing = (userData.dailyScores || []).find(s => s.date === today);
     return existing ? existing.scores : {
       morningRoutine: 5,
       deepWork: 5,
@@ -18,6 +18,7 @@ function DailyTracker({ userData, setUserData, addNotification }) {
       dailyMIT: 5
     };
   });
+  const hasSavedToday = (userData.dailyScores || []).some(s => s.date === today);
 
   const [agentInsights, setAgentInsights] = useState(null);
 
@@ -139,9 +140,9 @@ function DailyTracker({ userData, setUserData, addNotification }) {
           <div className="text-right bg-slate-800 rounded-xl p-4 border border-red-900/50">
             <div className="text-slate-300 text-sm">Today's Score</div>
             <div className={`text-4xl font-bold font-mono ${isExcellent ? 'text-green-400' : 'text-orange-400'}`}>
-              {totalScore.toFixed(1)}/10
+              {hasSavedToday ? `${totalScore.toFixed(1)}/10` : 'Not logged'}
             </div>
-            <div className="text-xs text-slate-400 mt-1">{isExcellent ? ' ON TRACK' : ' NEEDS FOCUS'}</div>
+            <div className="text-xs text-slate-400 mt-1">{hasSavedToday ? (isExcellent ? ' ON TRACK' : ' NEEDS FOCUS') : 'Save today’s ratings to track progress'}</div>
           </div>
         </div>
         <p className="text-slate-300 text-sm">Rate each category 1-10. Target: 8+ average for excellence.</p>

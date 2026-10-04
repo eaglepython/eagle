@@ -13,7 +13,7 @@ export class DailyTrackerAgent {
    */
   analyzeCategoryDetails() {
     const dailyScores = this.userData.dailyScores || [];
-    if (dailyScores.length < 2) return null;
+    if (dailyScores.length === 0) return null;
 
     const categories = {
       morningRoutine: {

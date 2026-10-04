@@ -3,6 +3,8 @@
  * Tier-specific, quality-focused analysis and actionable recommendations
  */
 
+const getTierNumber = (tier) => Number(String(tier ?? '').match(/(?:tier\s*)?([1-4])/i)?.[1] || tier) || null;
+
 export class CareerTrackerAgent {
   constructor(userData) {
     this.userData = userData;
@@ -13,7 +15,6 @@ export class CareerTrackerAgent {
    */
   analyzeTierPerformance() {
     const applications = this.userData.jobApplications || [];
-    if (applications.length === 0) return null;
 
     // Define tiers
     const tiers = {
@@ -56,21 +57,19 @@ export class CareerTrackerAgent {
     Object.entries(tiers).forEach(([key, tier]) => {
       const tierApps = applications.filter(app => {
         // Group applications into tiers (you'd have this logic based on actual company data)
-        if (key === 'tier1') return app.tier === 1 || app.tier === 'tier1';
-        if (key === 'tier2') return app.tier === 2 || app.tier === 'tier2';
-        if (key === 'tier3') return app.tier === 3 || app.tier === 'tier3';
-        if (key === 'tier4') return app.tier === 4 || app.tier === 'tier4';
+        return getTierNumber(app.tier) === Number(key.slice(-1));
       });
 
+      const normalizeStatus = (status) => String(status || '').trim().toLowerCase().replace(/[\s_-]+/g, ' ');
       const statuses = {
-        applied: tierApps.filter(a => a.status === 'applied').length,
-        interview: tierApps.filter(a => a.status === 'interview' || a.status === 'interviewing').length,
-        offer: tierApps.filter(a => a.status === 'offer').length,
-        rejected: tierApps.filter(a => a.status === 'rejected').length
+        applied: tierApps.filter(a => normalizeStatus(a.status) === 'applied').length,
+        interview: tierApps.filter(a => ['interview', 'interviewing', 'phone screen'].includes(normalizeStatus(a.status))).length,
+        offer: tierApps.filter(a => normalizeStatus(a.status) === 'offer').length,
+        rejected: tierApps.filter(a => normalizeStatus(a.status) === 'rejected').length
       };
 
       const conversionRates = {
-        applicationToInterview: statuses.applied > 0 ? parseFloat((statuses.interview / statuses.applied * 100).toFixed(1)) : 0,
+        applicationToInterview: tierApps.length > 0 ? parseFloat((statuses.interview / tierApps.length * 100).toFixed(1)) : 0,
         interviewToOffer: statuses.interview > 0 ? parseFloat((statuses.offer / statuses.interview * 100).toFixed(1)) : 0,
         applicationToOffer: tierApps.length > 0 ? parseFloat((statuses.offer / tierApps.length * 100).toFixed(1)) : 0
       };
@@ -94,9 +93,10 @@ export class CareerTrackerAgent {
    */
   _assessPipelineHealth(tierApps, tierDef) {
     if (tierApps.length === 0) return 'EMPTY - No applications';
-    
-    const interviews = tierApps.filter(a => a.status === 'interview' || a.status === 'interviewing').length;
-    const offers = tierApps.filter(a => a.status === 'offer').length;
+
+    const normalizeStatus = (status) => String(status || '').trim().toLowerCase().replace(/[\s_-]+/g, ' ');
+    const interviews = tierApps.filter(a => ['interview', 'interviewing', 'phone screen'].includes(normalizeStatus(a.status))).length;
+    const offers = tierApps.filter(a => normalizeStatus(a.status) === 'offer').length;
     
     if (offers > 0) return 'STRONG - Offers in pipeline';
     if (interviews > tierApps.length * 0.1) return 'HEALTHY - 10%+ interview rate';
@@ -109,13 +109,14 @@ export class CareerTrackerAgent {
    */
   _identifyQualityIssues(tierApps, tierDef) {
     const flags = [];
+    const normalizeStatus = (status) => String(status || '').trim().toLowerCase().replace(/[\s_-]+/g, ' ');
     
-    if (tierApps.length > 0 && tierApps.filter(a => a.status !== 'rejected').length === 0) {
+    if (tierApps.length > 0 && tierApps.filter(a => normalizeStatus(a.status) !== 'rejected').length === 0) {
       flags.push('ALL_REJECTED');
     }
     
     const recentRejections = tierApps
-      .filter(a => a.status === 'rejected')
+      .filter(a => normalizeStatus(a.status) === 'rejected')
       .sort((a, b) => new Date(b.date) - new Date(a.date))
       .slice(0, 3);
     
@@ -313,10 +314,10 @@ export class CareerTrackerAgent {
       remaining,
       status: completed >= target ? ' TARGET MET' : ` NEED ${remaining} MORE`,
       breakdown: {
-        tier1: thisWeek.filter(a => a.tier === 1 || a.tier === 'tier1').length + ' / 5',
-        tier2: thisWeek.filter(a => a.tier === 2 || a.tier === 'tier2').length + ' / 4',
-        tier3: thisWeek.filter(a => a.tier === 3 || a.tier === 'tier3').length + ' / 4',
-        tier4: thisWeek.filter(a => a.tier === 4 || a.tier === 'tier4').length + ' / 2'
+        tier1: thisWeek.filter(a => getTierNumber(a.tier) === 1).length + ' / 5',
+        tier2: thisWeek.filter(a => getTierNumber(a.tier) === 2).length + ' / 4',
+        tier3: thisWeek.filter(a => getTierNumber(a.tier) === 3).length + ' / 4',
+        tier4: thisWeek.filter(a => getTierNumber(a.tier) === 4).length + ' / 2'
       },
       pace: `At current pace: ${(completed * 52).toFixed(0)} applications/year (${(completed * 52 / 15).toFixed(1)}x target)`
     };
@@ -327,9 +328,10 @@ export class CareerTrackerAgent {
    */
   getInterviewPipeline() {
     const applications = this.userData.jobApplications || [];
-    const interviews = applications.filter(a => a.status === 'interview' || a.status === 'interviewing');
-    const offers = applications.filter(a => a.status === 'offer');
-    const rejected = applications.filter(a => a.status === 'rejected');
+    const normalizeStatus = (status) => String(status || '').trim().toLowerCase().replace(/[\s_-]+/g, ' ');
+    const interviews = applications.filter(a => ['interview', 'interviewing', 'phone screen'].includes(normalizeStatus(a.status)));
+    const offers = applications.filter(a => normalizeStatus(a.status) === 'offer');
+    const rejected = applications.filter(a => normalizeStatus(a.status) === 'rejected');
 
     return {
       totalApplications: applications.length,

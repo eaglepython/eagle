@@ -255,6 +255,8 @@ The Live Updates screen refreshes bundled sample cards locally; it does not fetc
 - TradingJournalAgent - Trading patterns
 - HealthTrackerAgent - Fitness optimization
 - FinanceTrackerAgent - Wealth analysis
+
+The assistant can optionally use a local Ollama model. See [Local Ollama Assistant](OLLAMA_LOCAL_ASSISTANT.md) for setup and privacy details.
 - RAGEvaluationEngine - Central evaluation
 
 ### Data Systems
